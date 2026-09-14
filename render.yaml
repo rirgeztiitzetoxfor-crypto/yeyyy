@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: radha-dudeja-portfolio
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    headers:
+      - key: Cross-Origin-Opener-Policy
+        value: same-origin
+      - key: Cross-Origin-Embedder-Policy
+        value: require-corp
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

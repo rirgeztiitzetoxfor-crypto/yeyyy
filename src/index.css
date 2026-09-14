@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 14% 3%;
+    --foreground: 35 50% 85%;
+
+    --card: 30 10% 6%;
+    --card-foreground: 35 50% 85%;
+
+    --popover: 30 10% 6%;
+    --popover-foreground: 35 50% 85%;
+
+    --primary: 42 50% 54%;
+    --primary-foreground: 30 14% 3%;
+
+    --secondary: 30 10% 10%;
+    --secondary-foreground: 35 50% 85%;
+
+    --muted: 30 8% 12%;
+    --muted-foreground: 35 20% 55%;
+
+    --accent: 42 50% 54%;
+    --accent-foreground: 30 14% 3%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 42 20% 18%;
+    --input: 42 20% 18%;
+    --ring: 42 50% 54%;
+
+    --radius: 0.25rem;
+
+    --gold: 42 50% 54%;
+    --gold-light: 42 55% 72%;
+    --gold-dark: 42 45% 38%;
+    --cream: 35 50% 85%;
+    --charcoal: 30 10% 8%;
+    --charcoal-dark: 30 14% 3%;
+
+    --sidebar-background: 30 10% 6%;
+    --sidebar-foreground: 35 50% 85%;
+    --sidebar-primary: 42 50% 54%;
+    --sidebar-primary-foreground: 30 14% 3%;
+    --sidebar-accent: 30 10% 10%;
+    --sidebar-accent-foreground: 35 50% 85%;
+    --sidebar-border: 42 20% 18%;
+    --sidebar-ring: 42 50% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Gold gradient text utility */
+.text-gold-gradient {
+  background: linear-gradient(135deg, hsl(42 50% 54%), hsl(42 55% 72%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+  backdrop-filter: blur(10px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(30 14% 3%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(42 50% 54% / 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(42 50% 54% / 0.5);
+}

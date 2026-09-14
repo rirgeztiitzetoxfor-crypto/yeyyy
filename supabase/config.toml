@@ -1,0 +1,10 @@
+project_id = "cjpszvjqdpnchgxuhzje"
+
+[functions.chat]
+verify_jwt = false
+
+[functions.elevenlabs-tts]
+verify_jwt = false
+
+[functions.admin-media]
+verify_jwt = false
