@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useState, useEffect } from 'react';
 import { Lock } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import Index from "./pages/Index";
 import GodLevelIndex from "./pages/GodLevel/Index";
 import StellarIndex from "./pages/Stellar/StellarIndex";
@@ -78,6 +79,7 @@ export default function App() {
             </form>
           </div>
         )}
+        <Analytics />
       </TooltipProvider>
     </QueryClientProvider>
   );
