@@ -159,7 +159,6 @@ export default function WeddingsPage() {
         <a href="#sangeet" onClick={() => setIsMenuOpen(false)}>Luxury Sangeet</a>
         <a href="#games" onClick={() => setIsMenuOpen(false)}>Signature Family Games</a>
         <a href="#vault" onClick={() => setIsMenuOpen(false)}>Wedding Video Vault</a>
-        <a href="/blog" onClick={() => setIsMenuOpen(false)} className="text-[#F06292]">Blog & Insights</a>
         <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Couples' Reviews</a>
         <a href="#booking" onClick={() => setIsMenuOpen(false)}>Reserve Dates</a>
         <a href="/corporate" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C]">Switch to Corporate Portal</a>
@@ -175,7 +174,6 @@ export default function WeddingsPage() {
           <li><a href="#sangeet">Sangeet</a></li>
           <li><a href="#games">Family Games</a></li>
           <li><a href="#vault">Video Vault</a></li>
-          <li><a href="/blog" className="text-[#F06292]">Blog</a></li>
           <li><a href="#reviews">Google Reviews</a></li>
           <li><a href="#booking" className="nav-cta" style={{ background: "#CC2936" }}>Reserve Dates</a></li>
           <li>
@@ -378,11 +376,10 @@ export default function WeddingsPage() {
             </p>
           </div>
           <div>
-            <div className="footer-col-title">Portals & Journal</div>
+            <div className="footer-col-title">Portals</div>
             <ul className="footer-links">
               <li><a href="/weddings">Weddings & Sangeet Portal</a></li>
               <li><a href="/corporate">Corporate Summits Portal</a></li>
-              <li><a href="/blog" className="text-[#F06292] font-semibold">Blog & Event Playbooks</a></li>
               <li><a href="/">Home Gateway</a></li>
               <li><a href="/admin">Admin Portal</a></li>
             </ul>

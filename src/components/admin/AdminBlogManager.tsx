@@ -282,7 +282,7 @@ export default function AdminBlogManager() {
               <div className="md:col-span-12">
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                    Full Article Content (Supports Markdown: ### Header, &gt; Quote, * List)
+                    Full Article Content (Supports Markdown: ### Header, > Quote, * List)
                   </label>
                 </div>
                 <textarea

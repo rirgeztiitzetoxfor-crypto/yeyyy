@@ -160,7 +160,6 @@ export default function CorporatePage() {
         <a href="#summits" onClick={() => setIsMenuOpen(false)}>Tech Summits</a>
         <a href="#awards" onClick={() => setIsMenuOpen(false)}>Award Galas</a>
         <a href="#vault" onClick={() => setIsMenuOpen(false)}>Corporate Video Vault</a>
-        <a href="/blog" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C]">Blog & Insights</a>
         <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Corporate Reviews</a>
         <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Corporate Emcee</a>
         <a href="/weddings" onClick={() => setIsMenuOpen(false)} className="text-[#CC2936]">Switch to Weddings Portal</a>
@@ -175,7 +174,6 @@ export default function CorporatePage() {
           <li><a href="#billboard">Live Reel</a></li>
           <li><a href="#summits">Summits</a></li>
           <li><a href="#vault">Video Vault</a></li>
-          <li><a href="/blog" className="text-[#C9A84C]">Blog</a></li>
           <li><a href="#reviews">Testimonials</a></li>
           <li><a href="#booking" className="nav-cta">Book Emcee</a></li>
           <li>
@@ -379,11 +377,10 @@ export default function CorporatePage() {
             </p>
           </div>
           <div>
-            <div className="footer-col-title">Portals & Journal</div>
+            <div className="footer-col-title">Portals</div>
             <ul className="footer-links">
               <li><a href="/corporate">Corporate Summits Portal</a></li>
               <li><a href="/weddings">Weddings & Sangeet Portal</a></li>
-              <li><a href="/blog" className="text-[#C9A84C] font-semibold">Blog & Event Playbooks</a></li>
               <li><a href="/">Home Gateway</a></li>
               <li><a href="/admin">Admin Portal</a></li>
             </ul>
