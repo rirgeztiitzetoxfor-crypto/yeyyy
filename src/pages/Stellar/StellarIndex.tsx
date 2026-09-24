@@ -226,8 +226,8 @@ export default function StellarIndex() {
       <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
         <a href="#billboard" onClick={() => setIsMenuOpen(false)}>Home</a>
         <a href="#master-vault" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C] font-semibold">Video Vault (Reels)</a>
-        <a href="#corporate" onClick={() => setIsMenuOpen(false)}>Corporate Summits</a>
-        <a href="#weddings" onClick={() => setIsMenuOpen(false)}>Weddings & Sangeet</a>
+        <a href="/corporate" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-[#C9A84C]">Corporate Portal</a>
+        <a href="/weddings" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-[#CC2936]">Weddings & Sangeet Portal</a>
         <a href="#about" onClick={() => setIsMenuOpen(false)}>About Radhaa</a>
         <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Google Reviews</a>
         <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Me</a>
@@ -242,8 +242,8 @@ export default function StellarIndex() {
         <ul className="nav-links">
           <li><a href="#billboard">Live Reel</a></li>
           <li><a href="#master-vault" className="text-[#C9A84C]">Video Vault</a></li>
-          <li><a href="#corporate">Corporate</a></li>
-          <li><a href="#weddings">Weddings</a></li>
+          <li><a href="/corporate" className="hover:text-[#C9A84C] transition-colors">Corporate</a></li>
+          <li><a href="/weddings" className="hover:text-[#CC2936] transition-colors">Weddings</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#reviews">Google Reviews</a></li>
           <li><a href="#booking" className="nav-cta">Book Now</a></li>
@@ -267,8 +267,97 @@ export default function StellarIndex() {
         />
       </section>
 
+      {/* DUAL-VERTICAL GATEWAY: CHOOSE YOUR DEDICATED EXPERIENCE */}
+      <section className="relative z-30 max-w-7xl mx-auto px-6 sm:px-12 -mt-14 mb-10">
+        <div className="bg-black/85 backdrop-blur-xl border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div className="text-center max-w-2xl mx-auto mb-6">
+            <span className="text-xs uppercase tracking-widest text-[#C9A84C] font-semibold bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-3 py-1 rounded-full">
+              Two Dedicated Portals · Zero Confusion
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-white mt-3">
+              Select Your Tailored Experience
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-300 mt-2">
+              Corporate clients and wedding families get dedicated spaces with tailored reels, master video vault, and booking workflows.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Corporate Portal Card */}
+            <div className="group relative overflow-hidden rounded-2xl border border-[#C9A84C]/30 bg-gradient-to-br from-neutral-900 to-[#121008] p-6 sm:p-8 hover:border-[#C9A84C] transition-all duration-300 hover:shadow-2xl hover:shadow-[#C9A84C]/10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#C9A84C]/20 border border-[#C9A84C]/40 flex items-center justify-center text-[#C9A84C]">
+                    <Briefcase className="w-6 h-6" />
+                  </div>
+                  <span className="text-[11px] font-semibold tracking-wider text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-2.5 py-1 rounded-full uppercase">
+                    Vertical 01 · Corporate
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-serif text-white font-bold group-hover:text-[#C9A84C] transition-colors">
+                  Corporate Summits & Awards
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-300 mt-2">
+                  Tailored for CXOs, Fortune 500 summits, leadership conclaves, and high-glamour award galas. Flawless protocol, bilingual delivery, and zero dead air.
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {["Tech Summits", "Annual Galas", "Award Ceremonies", "Executive Firesides"].map((tag) => (
+                    <span key={tag} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-neutral-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10">
+                <a
+                  href="/corporate"
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#C9A84C] text-black font-semibold text-sm hover:bg-[#E2C775] transition-all shadow-lg shadow-[#C9A84C]/20"
+                >
+                  Enter Dedicated Corporate Portal <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            {/* Wedding & Sangeet Card */}
+            <div className="group relative overflow-hidden rounded-2xl border border-[#CC2936]/40 bg-gradient-to-br from-neutral-900 to-[#1C0A0D] p-6 sm:p-8 hover:border-[#CC2936] transition-all duration-300 hover:shadow-2xl hover:shadow-[#CC2936]/10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#CC2936]/20 border border-[#CC2936]/40 flex items-center justify-center text-[#F06292]">
+                    <Heart className="w-6 h-6 fill-[#CC2936] text-[#CC2936]" />
+                  </div>
+                  <span className="text-[11px] font-semibold tracking-wider text-[#F06292] bg-[#CC2936]/10 border border-[#CC2936]/30 px-2.5 py-1 rounded-full uppercase">
+                    Vertical 02 · Weddings
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-serif text-white font-bold group-hover:text-[#F06292] transition-colors">
+                  Weddings, Sangeet & Games
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-300 mt-2">
+                  Tailored for brides, grooms & families. High-voltage Sangeet MCing, signature family games, crowd roasts, and emotional Royal Varmala storytelling.
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {["Sangeet Battles", "Family Games", "Haldi Fiesta", "Royal Varmala"].map((tag) => (
+                    <span key={tag} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-neutral-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/10">
+                <a
+                  href="/weddings"
+                  className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[#CC2936] to-[#b01e2b] text-white font-semibold text-sm hover:from-[#e0313f] hover:to-[#CC2936] transition-all shadow-lg shadow-[#CC2936]/30"
+                >
+                  Enter Dedicated Weddings Portal <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* NETFLIX-STYLE HORIZONTAL MEDIA RAILS */}
-      <div className="relative z-20 -mt-10 pb-8 space-y-4">
+      <div className="relative z-20 pb-8 space-y-4">
         {/* Rail 1: Corporate Summits & Galas */}
         <NetflixMediaRail
           title="Trending: Corporate Summits & Annual Galas"

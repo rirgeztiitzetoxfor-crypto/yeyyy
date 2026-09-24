@@ -8,6 +8,8 @@ import { Lock } from 'lucide-react';
 import Index from "./pages/Index";
 import GodLevelIndex from "./pages/GodLevel/Index";
 import StellarIndex from "./pages/Stellar/StellarIndex";
+import CorporatePage from "./pages/Corporate/CorporatePage";
+import WeddingsPage from "./pages/Weddings/WeddingsPage";
 import NotFound from "./pages/NotFound.tsx";
 import ShadowRoom from './components/ShadowRoom';
 import Admin from "./pages/Admin.tsx";
@@ -50,6 +52,9 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<StellarIndex />} />
+            <Route path="/corporate" element={<CorporatePage />} />
+            <Route path="/weddings" element={<WeddingsPage />} />
+            <Route path="/weddings-sangeet" element={<WeddingsPage />} />
             <Route path="/god-level" element={<GodLevelIndex />} />
             <Route path="/old-index" element={<Index />} />
             <Route path="/admin" element={<Admin />} />
