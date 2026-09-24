@@ -109,6 +109,11 @@ export default defineConfig(({ mode }) => {
         overlay: false,
       },
     },
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(env.VITE_SUPABASE_URL || "https://placeholder.supabase.co"),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(env.VITE_SUPABASE_PUBLISHABLE_KEY || "placeholder-anon-key"),
+      "import.meta.env.VITE_ADMIN_PASSWORD": JSON.stringify(env.VITE_ADMIN_PASSWORD || "ATMOSPHERE_2026"),
+    },
     plugins: [react(), voicePreviewProxy(env.ELEVENLABS_API_KEY), mode === "development" && componentTagger()].filter(Boolean),
     resolve: {
       alias: {

@@ -1,40 +1,108 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useSiteMedia } from '@/hooks/useSiteMedia';
-import VoiceAgentSection from '@/components/VoiceAgentSection';
-import './Stellar.css';
+import React, { useEffect, useState, useRef } from "react";
+import { useSiteMedia, type SiteMedia } from "@/hooks/useSiteMedia";
+import VoiceAgentSection from "@/components/VoiceAgentSection";
+import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
+import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
+import SocialChannelsBar from "@/components/SocialChannelsBar";
+import ParticleBackground from "@/components/ParticleBackground";
+import TiltCard from "@/components/TiltCard";
+import NetflixBillboard from "@/components/NetflixBillboard";
+import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
+import confetti from "canvas-confetti";
+import {
+  Briefcase,
+  Heart,
+  Play,
+  ArrowRight,
+  ExternalLink,
+  MessageCircle,
+  FileText,
+  Sparkles,
+  Award,
+  Users,
+  Music,
+  Gamepad2,
+  Calendar,
+  ShieldCheck,
+  Star,
+  CheckCircle,
+  Volume2,
+} from "lucide-react";
+import "./Stellar.css";
 
-const galleryData = [
-  { img: 'images/img_17.jpg', caption: 'Hotel Entrance – Red Evening Gown' },
-  { img: 'images/img_11.jpg', caption: 'Restaurant – Black Sparkle Dress' },
-  { img: 'images/img_28.jpg', caption: 'Outdoor Ceremony – Pink Top' },
-  { img: 'images/img_22.jpg', caption: 'Hotel Lobby – Black Lace Gown' },
-  { img: 'images/img_01.jpg', caption: 'Event Hosting – Floral White Dress' },
-  { img: 'images/img_14.jpg', caption: 'Wedding Stage – Pastel Blue Gown' },
-  { img: 'images/img_25.jpg', caption: 'Sangeet Ceremony – Night Event' },
-  { img: 'images/img_32.jpg', caption: 'Haldi Function – Green Velvet' },
-  { img: 'images/img_13.jpg', caption: 'Hotel Lobby – Maroon Dress' },
-  { img: 'images/img_33.jpg', caption: 'Wedding Stage – Pink Co-ord' },
-  { img: 'images/img_20.jpg', caption: 'Hotel – Maroon Evening Gown' },
-  { img: 'images/img_23.jpg', caption: 'Safari Resort – Purple Top' },
-  { img: 'images/img_24.jpg', caption: 'Sangeet Night – Dark Red' },
-  { img: 'images/img_29.jpg', caption: 'Sangeet Night – Red Sparkle' },
-  { img: 'images/img_31.jpg', caption: 'Wedding Stage – Red Polka Dot' },
-  { img: 'images/img_08.jpg', caption: 'Temple Event – Floral White' },
-  { img: 'images/img_06.jpg', caption: 'Salon – Pink Sequin Top' },
-  { img: 'images/img_04.jpg', caption: 'Hotel Room – Black Mini Dress' },
+const baseCorporateRail: MediaRailItem[] = [
+  { img: "images/img_14.jpg", caption: "National Leadership Tech Summit 2026", vertical: "corporate", type: "image", badge: "Trending" },
+  { img: "images/img_06.jpg", caption: "Brand Launch & Keynote Reveal Gala", vertical: "corporate", type: "image", badge: "High Impact" },
+  { img: "images/img_11.jpg", caption: "Annual Fortune 500 Awards Gala", vertical: "corporate", type: "image", badge: "Black Tie" },
+  { img: "images/img_20.jpg", caption: "Executive Leadership Fireside Moderation", vertical: "corporate", type: "image", badge: "Exclusive" },
+  { img: "images/img_13.jpg", caption: "Corporate Stagecraft & Executive Pacing", vertical: "corporate", type: "image" },
+  { img: "images/img_22.jpg", caption: "International Delegations Gala Evening", vertical: "corporate", type: "image" },
+];
+
+const baseWeddingsRail: MediaRailItem[] = [
+  { img: "images/img_28.jpg", caption: "Electric Sangeet Night MC & Dance Cues", vertical: "weddings_sangeet", type: "image", badge: "Crowd Favorite" },
+  { img: "images/img_01.jpg", caption: "Royal Varmala Direction & Sacred Entrance", vertical: "weddings_sangeet", type: "image", badge: "Royalty" },
+  { img: "images/img_25.jpg", caption: "Sangeet Dance Battles & DJ Coordination", vertical: "weddings_sangeet", type: "image", badge: "High Energy" },
+  { img: "images/img_32.jpg", caption: "Haldi & Mehendi Afternoon Fiesta", vertical: "weddings_sangeet", type: "image", badge: "Festive" },
+  { img: "images/img_33.jpg", caption: "Signature Family Games & Crowd Engagement", vertical: "weddings_sangeet", type: "image" },
+  { img: "images/img_17.jpg", caption: "Destination Wedding Reception Gala", vertical: "weddings_sangeet", type: "image" },
+];
+
+const familyGamesRail: MediaRailItem[] = [
+  { img: "images/img_33.jpg", caption: "The Couple Roast & Shoe Game", vertical: "weddings_sangeet", type: "image", badge: "Hilarious" },
+  { img: "images/img_25.jpg", caption: "Grandparents' Antakshari Melodies", vertical: "weddings_sangeet", type: "image", badge: "Emotional" },
+  { img: "images/img_28.jpg", caption: "Larkiwale vs. Ladkewale Dance Off", vertical: "weddings_sangeet", type: "image", badge: "Dance Battle" },
+  { img: "images/img_11.jpg", caption: "Table Relay & Rapid Trivia Rush", vertical: "weddings_sangeet", type: "image", badge: "Interactive" },
 ];
 
 export default function StellarIndex() {
-  const { getMediaUrl, getMediaAlt } = useSiteMedia();
+  const { media, settings, getMediaUrl } = useSiteMedia();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<{ url: string; caption: string; type: "image" | "video" } | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [formStatus, setFormStatus] = useState('✨  Send Inquiry  ✨');
-  const [isFormSuccess, setIsFormSuccess] = useState(false);
-  
+
+  const [formStatus, setFormStatus] = useState("✨  Send Inquiry  ✨");
+  const [selectedVertical, setSelectedVertical] = useState<"Corporate Event" | "Wedding / Sangeet / Games">("Corporate Event");
+
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
-  const heroBgRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic items from Admin Google Drive / Supabase
+  const customHeroItems = media
+    .filter((m) => m.category === "hero" || m.category === "videos")
+    .map((m) => ({
+      url: m.media_url,
+      title: m.alt_text,
+      type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
+    }));
+
+  const dynamicCorporate = [
+    ...media
+      .filter((m) => m.vertical === "corporate" || m.category === "corporate")
+      .map((m) => ({
+        id: m.id || m.slot_id,
+        img: m.media_url,
+        caption: m.alt_text,
+        vertical: "corporate" as const,
+        type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
+        badge: "Admin Added",
+      })),
+    ...baseCorporateRail,
+  ];
+
+  const dynamicWeddings = [
+    ...media
+      .filter((m) => m.vertical === "weddings_sangeet" || m.category === "weddings_sangeet")
+      .map((m) => ({
+        id: m.id || m.slot_id,
+        img: m.media_url,
+        caption: m.alt_text,
+        vertical: "weddings_sangeet" as const,
+        type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
+        badge: "Admin Added",
+      })),
+    ...baseWeddingsRail,
+  ];
 
   useEffect(() => {
     let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
@@ -56,708 +124,647 @@ export default function StellarIndex() {
       requestAnimationFrame(animateRing);
     };
 
-    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener("mousemove", onMouseMove);
     animateRing();
-
-    const onHoverEnter = () => document.body.classList.add('cursor-hover');
-    const onHoverLeave = () => document.body.classList.remove('cursor-hover');
-    const attachHovers = () => {
-      document.querySelectorAll('a, button, .gallery-item, .event-card, .social-card').forEach(el => {
-        el.addEventListener('mouseenter', onHoverEnter);
-        el.addEventListener('mouseleave', onHoverLeave);
-      });
-    };
-    attachHovers();
-    
-    setTimeout(attachHovers, 500);
 
     const onScroll = () => {
       setIsScrolled(window.scrollY > 60);
-      if (heroBgRef.current) {
-        heroBgRef.current.style.transform = `scale(1.05) translateY(${window.scrollY * 0.3}px)`;
-      }
     };
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
 
     return () => {
       stopCursor = true;
-      document.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('scroll', onScroll);
-      document.querySelectorAll('a, button, .gallery-item, .event-card, .social-card').forEach(el => {
-        el.removeEventListener('mouseenter', onHoverEnter);
-        el.removeEventListener('mouseleave', onHoverLeave);
-      });
+      document.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
   useEffect(() => {
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => { 
-        if (e.isIntersecting) e.target.classList.add('visible'); 
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
 
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((el) => revealObserver.observe(el));
     return () => revealObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const animateCounter = (el: Element, target: number, suffix: string) => {
-      let current = 0;
-      const increment = target / 60;
-      const timer = window.setInterval(() => {
-        current += increment;
-        if (current >= target) { 
-          current = target; 
-          clearInterval(timer); 
-        }
-        const numEl = el.querySelector('.stat-num');
-        if (numEl) numEl.innerHTML = Math.round(current) + suffix;
-      }, 16);
-    };
-
-    const statsObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        const target = e.target as HTMLElement;
-        if (e.isIntersecting && !target.dataset.counted) {
-          target.dataset.counted = "true";
-          const items = target.querySelectorAll('.stat-item');
-          const data = [
-            { target: 500, suffix: '<span style="font-size:2rem">+</span>' },
-            { target: 8, suffix: '<span style="font-size:2rem">+</span>' },
-            { target: 3, suffix: '' },
-            { target: 100, suffix: '<span style="font-size:2rem">%</span>' },
-          ];
-          items.forEach((item, i) => {
-            setTimeout(() => animateCounter(item, data[i].target, data[i].suffix), i * 150);
-          });
-        }
-      });
-    }, { threshold: 0.5 });
-    
-    const strip = document.querySelector('.stats-strip');
-    if (strip) statsObserver.observe(strip);
-    
-    return () => statsObserver.disconnect();
   }, []);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFormStatus('✅  Inquiry Sent! Will respond within 24 hours.');
-    setIsFormSuccess(true);
+    setFormStatus("🎉 Inquiry Sent! Radha will respond within 24 hours.");
+
+    confetti({
+      particleCount: 90,
+      spread: 70,
+      origin: { y: 0.7 },
+      colors: ["#C9A84C", "#E2C775", "#ffffff", "#CC2936"],
+    });
+
     setTimeout(() => {
-      setFormStatus('✨  Send Inquiry  ✨');
-      setIsFormSuccess(false);
+      setFormStatus("✨  Send Inquiry  ✨");
       (e.target as HTMLFormElement).reset();
-    }, 4000);
+    }, 4500);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (lightboxIndex === null) return;
-      if (e.key === 'Escape') setLightboxIndex(null);
-      if (e.key === 'ArrowLeft') setLightboxIndex((lightboxIndex - 1 + galleryData.length) % galleryData.length);
-      if (e.key === 'ArrowRight') setLightboxIndex((lightboxIndex + 1) % galleryData.length);
-    };
-    if (lightboxIndex !== null) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
-    
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxIndex]);
+  const scrollToBooking = () => {
+    const el = document.getElementById("booking");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="stellar-wrapper">
+    <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
+      {/* 3D Gold Particle Constellation */}
+      <ParticleBackground />
+
       <VoiceAgentSection />
-      
-{/* PAGE LOADER */}
-<div className="page-loader" id="loader" style={{ display: 'none' }}></div>
 
-{/* CUSTOM CURSOR */}
-<div className="cursor" ref={cursorRef}></div>
-<div className="cursor-ring" ref={cursorRingRef}></div>
+      {/* CUSTOM CURSOR */}
+      <div className="cursor" ref={cursorRef} />
+      <div className="cursor-ring" ref={cursorRingRef} />
 
-{/* LIGHTBOX */}
-<div className={`lightbox ${lightboxIndex !== null ? 'active' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) setLightboxIndex(null); }}>
-  <div className="lightbox-close" onClick={() => setLightboxIndex(null)}>✕</div>
-  {lightboxIndex !== null && (
-    <>
-      <div className="lightbox-nav lightbox-prev" onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex - 1 + galleryData.length) % galleryData.length); }}>‹</div>
-      <img src={getMediaUrl(`gallery_${lightboxIndex + 1}`, galleryData[lightboxIndex].img)} alt="Gallery" />
-      <div className="lightbox-nav lightbox-next" onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex + 1) % galleryData.length); }}>›</div>
-    </>
-  )}
-</div>
-
-{/* MOBILE MENU */}
-<div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
-  <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
-  <a href="#events" onClick={() => setIsMenuOpen(false)}>Events</a>
-  <a href="#gallery" onClick={() => setIsMenuOpen(false)}>Gallery</a>
-  <a href="#videos" onClick={() => setIsMenuOpen(false)}>Videos</a>
-  <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Me</a>
-</div>
-
-{/* NAVIGATION */}
-<nav id="navbar" className={isScrolled ? "scrolled" : ""}>
-  <div className="nav-logo">Radha Dudeja</div>
-  <ul className="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#events">Events</a></li>
-    <li><a href="#strengths">Strengths</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#videos">Videos</a></li>
-    <li><a href="#booking" className="nav-cta">Book Now</a></li>
-  </ul>
-  <div className={`hamburger ${isMenuOpen ? "open" : ""}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-{/* HERO */}
-<section id="hero">
-  <div className="hero-bg" ref={heroBgRef}></div>
-  <div className="hero-overlay"></div>
-  <div className="hero-grain"></div>
-  <div className="hero-content">
-    <div className="hero-pre">✦ India's Premier Anchor & Emcee ✦</div>
-    <h1 className="hero-name">
-      Radha<span>Dudeja</span>
-    </h1>
-    <div className="hero-title">Anchor &nbsp;·&nbsp; Emcee &nbsp;·&nbsp; Host &nbsp;·&nbsp; Speaker</div>
-    <div className="hero-tagline">"Let's create a moment worth remembering"</div>
-    <div className="hero-badges">
-      <div className="hero-badge">
-        <div className="hero-badge-num">500+</div>
-        <div className="hero-badge-label">Events Hosted</div>
-      </div>
-      <div className="hero-divider"></div>
-      <div className="hero-badge">
-        <div className="hero-badge-num">3</div>
-        <div className="hero-badge-label">Languages</div>
-      </div>
-      <div className="hero-divider"></div>
-      <div className="hero-badge">
-        <div className="hero-badge-num">8+</div>
-        <div className="hero-badge-label">Years Experience</div>
-      </div>
-      <div className="hero-divider"></div>
-      <div className="hero-badge">
-        <div className="hero-badge-num">PAN</div>
-        <div className="hero-badge-label">India Travel</div>
-      </div>
-    </div>
-    <div className="hero-btns">
-      <a href="#booking" className="btn-primary">Book Radha</a>
-      <a href="#gallery" className="btn-ghost">View Portfolio</a>
-    </div>
-  </div>
-  <div className="hero-scroll">
-    <span>Scroll</span>
-    <div className="scroll-line"></div>
-  </div>
-</section>
-
-{/* MARQUEE */}
-<div className="marquee-strip">
-  <div className="marquee-track" id="marqueeTrack">
-    <span className="marquee-item">Corporate Events <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Weddings &amp; Sangeets <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">TEDx-Style Hosting <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Trilingual MC <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Cultural Festivals <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Summit Moderator <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Team Building <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Award Ceremonies <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Corporate Events <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Weddings &amp; Sangeets <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">TEDx-Style Hosting <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Trilingual MC <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Cultural Festivals <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Summit Moderator <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Team Building <span className="marquee-dot">✦</span></span>
-    <span className="marquee-item">Award Ceremonies <span className="marquee-dot">✦</span></span>
-  </div>
-</div>
-
-{/* ABOUT */}
-<section id="about">
-  <div className="about-visual reveal-left">
-    <div className="about-gold-accent"></div>
-    <div className="about-frame"></div>
-    <img src="images/img_14.jpg" alt="Radha Dudeja on stage" className="about-img-main" />
-    <img src="images/img_28.jpg" alt="Radha Dudeja close-up" className="about-img-accent" />
-  </div>
-  <div className="about-text reveal-right">
-    <div className="section-label">The Anchor Behind the Magic</div>
-    <h2 className="section-title">From the foothills of <em>Uttarakhand</em> to centre stage across India</h2>
-    <div className="gold-line"></div>
-    <div className="about-quote">"I don't just host an event, I ignite an experience."</div>
-    <p className="about-body">
-      Radha Dudeja enters every stage with the energy of a live wire and the poise of a seasoned speaker. 
-      Growing up in Ramnagar near the lush forests of Jim Corbett, she was always the one who could charm 
-      a room — and today, that natural magnetism has blossomed into a career that spans Fortune 500 
-      conferences, destination weddings, and cultural festivals across India.
-    </p>
-    <p className="about-body">
-      Her TEDx-style philosophy is beautifully simple: <em>engage the mind, ignite the heart</em>, 
-      and the audience will remember your message. Every event she hosts becomes a living, breathing 
-      story — thoughtfully crafted, spontaneously delivered.
-    </p>
-    <div className="about-langs">
-      <div className="lang-tag">🇮🇳 Hindi</div>
-      <div className="lang-tag">🌍 English</div>
-      <div className="lang-tag">🎉 Punjabi</div>
-    </div>
-    <div style={{"display":"flex","gap":"1.2rem","flexWrap":"wrap","marginTop":"1rem"}}>
-      <a href="#booking" className="btn-primary">Book Radha</a>
-      <a href="https://www.youtube.com/@anchorrd8794" target="_blank" className="btn-ghost">Watch Showreel</a>
-    </div>
-  </div>
-</section>
-
-{/* STATS STRIP */}
-<div className="stats-strip">
-  <div className="stat-item reveal reveal-delay-1">
-    <div className="stat-num">500<span style={{"fontSize":"2rem"}}>+</span></div>
-    <div className="stat-label">Events Hosted</div>
-  </div>
-  <div className="stat-item reveal reveal-delay-2">
-    <div className="stat-num">8<span style={{"fontSize":"2rem"}}>+</span></div>
-    <div className="stat-label">Years Experience</div>
-  </div>
-  <div className="stat-item reveal reveal-delay-3">
-    <div className="stat-num">3</div>
-    <div className="stat-label">Languages Fluent</div>
-  </div>
-  <div className="stat-item reveal reveal-delay-4">
-    <div className="stat-num">100<span style={{"fontSize":"2rem"}}>%</span></div>
-    <div className="stat-label">Client Satisfaction</div>
-  </div>
-</div>
-
-{/* EVENTS */}
-<section id="events">
-  <div className="section-label reveal">What Radha Hosts</div>
-  <h2 className="section-title reveal reveal-delay-1">Versatile across every <em>stage & setting</em></h2>
-  <div className="events-grid" style={{"marginTop":"4rem"}}>
-    <div className="event-card reveal reveal-delay-1">
-      <img src="images/img_06.jpg" alt="Corporate Events" />
-      <div className="event-card-content">
-        <div className="event-card-tag">Corporate</div>
-        <div className="event-card-icon">💼</div>
-        <div className="event-card-title">Corporate Events & Summits</div>
-        <div className="event-card-desc">Conferences, product launches, award nights, and team-building retreats — delivered with polished grace and lively energy.</div>
-        <div className="flex gap-2 mt-4 flex-wrap">
-          {getMediaUrl('pdf_corporate', '') && <a href={getMediaUrl('pdf_corporate', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#fff'}}>📑 Download Kit</a>}
-          {getMediaUrl('media_corporate', '') && <a href={getMediaUrl('media_corporate', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#CC2936', color: '#fff'}}>▶ Watch Media Cut</a>}
-        </div>
-      </div>
-    </div>
-    <div className="event-card reveal reveal-delay-2">
-      <img src="images/img_01.jpg" alt="Weddings" />
-      <div className="event-card-content">
-        <div className="event-card-tag">Celebrations</div>
-        <div className="event-card-icon">💍</div>
-        <div className="event-card-title">Weddings & Sangeets</div>
-        <div className="event-card-desc">From intimate mehendi ceremonies to grand reception nights — Radha becomes the heartbeat of your celebration.</div>
-        <div className="flex gap-2 mt-4 flex-wrap">
-          {getMediaUrl('pdf_sangeet', '') && <a href={getMediaUrl('pdf_sangeet', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#fff'}}>📑 Download Kit</a>}
-          {getMediaUrl('media_sangeet', '') && <a href={getMediaUrl('media_sangeet', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#CC2936', color: '#fff'}}>▶ Watch Media Cut</a>}
-        </div>
-      </div>
-    </div>
-    <div className="event-card reveal reveal-delay-3">
-      <img src="images/img_08.jpg" alt="Cultural Events" />
-      <div className="event-card-content">
-        <div className="event-card-tag">Cultural</div>
-        <div className="event-card-icon">🎭</div>
-        <div className="event-card-title">Cultural & Festive Events</div>
-        <div className="event-card-desc">Holi, New Year, community nights, public ceremonies — Radha's bilingual energy unites diverse audiences.</div>
-        <div className="flex gap-2 mt-4 flex-wrap">
-          {getMediaUrl('pdf_emcee', '') && <a href={getMediaUrl('pdf_emcee', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#fff'}}>📑 Download Kit</a>}
-          {getMediaUrl('media_emcee', '') && <a href={getMediaUrl('media_emcee', '')} target="_blank" rel="noreferrer" className="event-card-tag !mt-0 !mb-0" style={{background: '#CC2936', color: '#fff'}}>▶ Watch Media Cut</a>}
-        </div>
-      </div>
-    </div>
-    <div className="event-card reveal reveal-delay-4">
-      <img src="images/img_13.jpg" alt="Team Building" />
-      <div className="event-card-content">
-        <div className="event-card-tag">Interactive</div>
-        <div className="event-card-icon">🎲</div>
-        <div className="event-card-title">Team-Building & Games</div>
-        <div className="event-card-desc">Interactive hosting for corporate offsites, fun games, workshops, and employee engagement sessions.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{/* STRENGTHS */}
-<section id="strengths">
-  <div className="strengths-header">
-    <div>
-      <div className="section-label reveal">Why Radha?</div>
-      <h2 className="section-title reveal reveal-delay-1">Stage presence that <em>sets her apart</em></h2>
-    </div>
-    <p className="strengths-intro reveal reveal-delay-2">
-      Radha is frequently praised as an "articulate and engaging anchor" who brings a unique blend of 
-      professionalism and charisma. From spontaneous crowd management to heartfelt storytelling, 
-      she adapts to every audience with precision and warmth.
-    </p>
-  </div>
-  <div className="strengths-grid">
-    <div className="strength-card reveal reveal-delay-1">
-      <div className="strength-num">01</div>
-      <div className="strength-title">⚡ High Energy & Enthusiasm</div>
-      <p className="strength-body">Radha has a knack for instantly lighting up any venue. Her voice is assertive yet friendly, commanding attention from the first word without ever needing to shout.</p>
-    </div>
-    <div className="strength-card reveal reveal-delay-2">
-      <div className="strength-num">02</div>
-      <div className="strength-title">❤️ Audience Connection</div>
-      <p className="strength-body">Her genuine warmth helps her bond with audiences of all sizes. Guests frequently remark that they feel like they've known her for years after just one event.</p>
-    </div>
-    <div className="strength-card reveal reveal-delay-3">
-      <div className="strength-num">03</div>
-      <div className="strength-title">🎭 Spontaneity & Grace</div>
-      <p className="strength-body">Schedule change? Chief guest running late? AV glitch? Radha's improv skills and quick wit keep the audience entertained no matter what happens backstage.</p>
-    </div>
-    <div className="strength-card reveal reveal-delay-1">
-      <div className="strength-num">04</div>
-      <div className="strength-title">🌐 Multilingual Fluency</div>
-      <p className="strength-body">Fluent in Hindi, English, and Punjabi. She might welcome delegates in polished English, then charm locals with a Punjabi proverb — inclusivity in every syllable.</p>
-    </div>
-    <div className="strength-card reveal reveal-delay-2">
-      <div className="strength-num">05</div>
-      <div className="strength-title">💎 Elegance & Professionalism</div>
-      <p className="strength-body">From formal gowns for corporate galas to vibrant outfits for cultural events — Radha embodies professional glamour, punctuality, and thorough preparation.</p>
-    </div>
-    <div className="strength-card reveal reveal-delay-3">
-      <div className="strength-num">06</div>
-      <div className="strength-title">🎤 TEDx-Style Philosophy</div>
-      <p className="strength-body">She approaches every stage with a speaker's mindset: meticulous preparation, an improviser's flexibility, and a deep desire to move hearts — not just fill schedules.</p>
-    </div>
-  </div>
-</section>
-
-{/* PHILOSOPHY */}
-<section id="philosophy">
-  <div className="philosophy-bg"></div>
-  <div className="philosophy-content">
-    <div className="phil-stars">✦ ✦ ✦</div>
-    <div className="philosophy-quote reveal">"Let's create a moment worth remembering."</div>
-    <div className="phil-stars">✦ ✦ ✦</div>
-    <div className="philosophy-attr reveal reveal-delay-1">
-      — <strong>Radha Dudeja</strong> &nbsp;·&nbsp; Anchor · Emcee · Host
-    </div>
-    <div style={{"marginTop":"3rem"}} className="reveal reveal-delay-2">
-      <a href="#booking" className="btn-primary">Book Your Event</a>
-    </div>
-  </div>
-</section>
-
-{/* GALLERY */}
-<section id="gallery">
-  <div className="section-label reveal">Photo Portfolio</div>
-  <h2 className="section-title reveal reveal-delay-1">Captured moments from <em>real events</em></h2>
-  <p className="gallery-intro reveal reveal-delay-2">
-    A glimpse into the stages, smiles, and stories that define Radha's journey — 
-    from corporate summits to grand wedding receptions across India.
-  </p>
-  <div className="gallery-masonry" id="galleryMasonry">
-    {galleryData.map((item, i) => {
-      const dynamicUrl = getMediaUrl(`gallery_${i + 1}`, item.img);
-      const dynamicAlt = getMediaAlt(`gallery_${i + 1}`, item.caption);
-      return (
-        <div key={i} className="gallery-item reveal" style={{ transitionDelay: `${(i % 3) * 0.1}s` }} onClick={() => setLightboxIndex(i)}>
-          <img src={dynamicUrl} alt={dynamicAlt} loading="lazy" />
-          <div className="gallery-item-overlay"><div className="gallery-expand">⊕</div></div>
-          <div className="gallery-caption">{dynamicAlt}</div>
-        </div>
-      );
-    })}
-  </div>
-  <div style={{"textAlign":"center","marginTop":"3rem"}} className="reveal">
-    <a href="https://www.instagram.com/radha_dudeja_/" target="_blank" className="btn-ghost">
-      📸 &nbsp;View More on Instagram
-    </a>
-  </div>
-</section>
-
-{/* VIDEOS */}
-<section id="videos">
-  <div className="section-label reveal">Watch Radha in Action</div>
-  <h2 className="section-title reveal reveal-delay-1">From the <em>showreel</em> & channel</h2>
-  <p className="video-intro reveal reveal-delay-2">
-    Words describe talent. Videos prove it. Watch Radha host, engage, and electrify audiences 
-    across India's most memorable events.
-  </p>
-  <div className="video-grid">
-    <div className="video-main reveal">
-      <div className="video-embed">
-        <iframe src="https://www.youtube.com/embed/videoseries?list=PLdummylist&autoplay=0"
-          title="Radha Dudeja Showreel"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen>
-        </iframe>
-      </div>
-      <div className="video-label">🔥 Channel Highlight</div>
-      <div className="video-title">Anchor Radha Dudeja — Full Channel Showreel</div>
-    </div>
-    <div>
-      <div className="video-embed reveal reveal-delay-1">
-        <iframe src="https://www.youtube.com/embed/?listType=user_uploads&list=anchorrd8794"
-          title="Corporate Events"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen>
-        </iframe>
-      </div>
-      <div className="video-label">💼 Corporate</div>
-      <div className="video-title">Conference &amp; Summit Hosting</div>
-    </div>
-    <div>
-      <div className="video-embed reveal reveal-delay-2">
-        <iframe src="https://www.youtube.com/embed/?listType=user_uploads&list=anchorrd8794"
-          title="Wedding Events"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen>
-        </iframe>
-      </div>
-      <div className="video-label">💍 Weddings</div>
-      <div className="video-title">Sangeet &amp; Reception Highlights</div>
-    </div>
-  </div>
-  <div className="yt-cta reveal">
-    <a href="https://www.youtube.com/@anchorrd8794" target="_blank" className="yt-btn">
-      <span className="yt-icon">▶</span>
-      Subscribe on YouTube
-    </a>
-    <span style={{"fontSize":"0.75rem","color":"var(--grey)"}}>@anchorrd8794 · 1300+ Videos</span>
-  </div>
-</section>
-
-{/* TESTIMONIALS */}
-<section id="testimonials">
-  <div className="section-label reveal">Client Love</div>
-  <h2 className="section-title reveal reveal-delay-1">What <em>clients say</em> about Radha</h2>
-  <div className="testimonials-grid">
-    <div className="testimonial-card reveal reveal-delay-1">
-      <div className="quote-mark">"</div>
-      <div className="testimonial-stars">★★★★★</div>
-      <div className="testimonial-text">"Radha was the life of our corporate gala — our employees are still talking about her! Her bilingual hosting kept everyone engaged and the energy she brought was electric."</div>
-      <div className="testimonial-author">Priya Sharma</div>
-      <div className="testimonial-role">HR Director, Fortune 500 Company · Delhi</div>
-    </div>
-    <div className="testimonial-card reveal reveal-delay-2">
-      <div className="quote-mark">"</div>
-      <div className="testimonial-stars">★★★★★</div>
-      <div className="testimonial-text">"She didn't just host our sangeet, she became part of our family! Her impromptu games had even our most reserved relatives dancing. We couldn't imagine our wedding without her."</div>
-      <div className="testimonial-author">Ananya & Rohan Mehta</div>
-      <div className="testimonial-role">Wedding Couple · Jim Corbett Destination Wedding</div>
-    </div>
-    <div className="testimonial-card reveal reveal-delay-3">
-      <div className="quote-mark">"</div>
-      <div className="testimonial-stars">★★★★★</div>
-      <div className="testimonial-text">"Radha handled a last-minute change in our conference schedule with such grace and humor that the audience didn't even notice. True professional — highly recommended for any summit!"</div>
-      <div className="testimonial-author">Vikram Negi</div>
-      <div className="testimonial-role">Event Director · Uttarakhand Tourism Festival</div>
-    </div>
-  </div>
-</section>
-
-{/* SOCIAL */}
-<section id="social">
-  <div className="section-label reveal" style={{"justifyContent":"center"}}>Connect With Radha</div>
-  <h2 className="section-title reveal reveal-delay-1" style={{"textAlign":"center"}}>Follow the <em>journey</em></h2>
-  <div className="social-links-row">
-    <a href="https://www.instagram.com/radha_dudeja_/" target="_blank" className="social-card reveal reveal-delay-1">
-      <div className="social-icon">📸</div>
-      <div className="social-name">Instagram</div>
-      <div className="social-handle">@radha_dudeja_</div>
-    </a>
-    <a href="https://www.youtube.com/@anchorrd8794" target="_blank" className="social-card reveal reveal-delay-2">
-      <div className="social-icon">▶️</div>
-      <div className="social-name">YouTube</div>
-      <div className="social-handle">Anchor RDZ</div>
-    </a>
-    <a href="https://starclinch.com/anchor-radha-dudeja" target="_blank" className="social-card reveal reveal-delay-3">
-      <div className="social-icon">⭐</div>
-      <div className="social-name">StarClinch</div>
-      <div className="social-handle">Book Via Platform</div>
-    </a>
-    <a href="#booking" className="social-card reveal reveal-delay-4">
-      <div className="social-icon">📩</div>
-      <div className="social-name">Direct Booking</div>
-      <div className="social-handle">DM or Email</div>
-    </a>
-  </div>
-</section>
-
-{/* BOOKING */}
-<section id="booking">
-  <div className="booking-grid">
-    <div className="booking-info">
-      <div className="section-label reveal">Let's Talk</div>
-      <h2 className="section-title reveal reveal-delay-1">Ready to create something <em>unforgettable?</em></h2>
-      <div className="booking-tagline reveal reveal-delay-2">"Your event, my expertise."</div>
-      <p className="booking-body reveal reveal-delay-3">
-        Whether it's an intimate corporate breakfast or a 5000-guest wedding extravaganza, 
-        Radha brings the same passion, preparation, and presence to every stage. 
-        Dates fill up fast — reach out today.
-      </p>
-      <div className="contact-items reveal reveal-delay-4">
-        <div className="contact-item">
-          <div className="contact-icon">📧</div>
-          <div className="contact-detail">
-            <strong>Email</strong>
-            info@radhadudeja.com
+      {/* LIGHTBOX */}
+      {lightboxItem && (
+        <div
+          className="lightbox active"
+          onClick={() => setLightboxItem(null)}
+        >
+          <div className="lightbox-close" onClick={() => setLightboxItem(null)}>
+            ✕
+          </div>
+          <div className="max-w-4xl w-full p-4" onClick={(e) => e.stopPropagation()}>
+            {lightboxItem.type === "video" ? (
+              <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
+                <iframe
+                  src={lightboxItem.url}
+                  title={lightboxItem.caption}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <img
+                src={lightboxItem.url}
+                alt={lightboxItem.caption}
+                className="max-h-[85vh] max-w-full mx-auto rounded-xl shadow-2xl object-contain"
+              />
+            )}
+            <p className="text-center text-sm text-[#C9A84C] mt-3 font-medium tracking-wide">
+              {lightboxItem.caption}
+            </p>
           </div>
         </div>
-        <div className="contact-item">
-          <div className="contact-icon">📞</div>
-          <div className="contact-detail">
-            <strong>Phone / WhatsApp</strong>
-            +91 XXXXX XXXXX
+      )}
+
+      {/* MOBILE MENU */}
+      <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
+        <a href="#billboard" onClick={() => setIsMenuOpen(false)}>Home</a>
+        <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
+        <a href="#corporate" onClick={() => setIsMenuOpen(false)}>Corporate Summits</a>
+        <a href="#weddings" onClick={() => setIsMenuOpen(false)}>Weddings & Sangeet</a>
+        <a href="#games" onClick={() => setIsMenuOpen(false)}>Family Games</a>
+        <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Google Reviews</a>
+        <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Me</a>
+        <a href="/admin" onClick={() => setIsMenuOpen(false)} className="text-sm text-[#C9A84C]">Admin Portal</a>
+      </div>
+
+      {/* NAVIGATION */}
+      <nav id="navbar" className={isScrolled ? "scrolled" : ""}>
+        <div className="nav-logo">Radha Dudeja</div>
+        <ul className="nav-links">
+          <li><a href="#billboard">Live Reel</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#corporate">Corporate</a></li>
+          <li><a href="#weddings">Weddings</a></li>
+          <li><a href="#reviews">Google Reviews</a></li>
+          <li><a href="#booking" className="nav-cta">Book Now</a></li>
+        </ul>
+        <div
+          className={`hamburger ${isMenuOpen ? "open" : ""}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <span /><span /><span />
+        </div>
+      </nav>
+
+      {/* NETFLIX-STYLE HERO BILLBOARD (CONTINUOUSLY CHANGING & PLAYING MEDIA) */}
+      <section id="billboard">
+        <NetflixBillboard
+          customMedia={customHeroItems}
+          onPlayTrailer={(item) =>
+            setLightboxItem({ url: item.url, caption: item.title, type: item.type })
+          }
+          onBookClick={scrollToBooking}
+        />
+      </section>
+
+      {/* NETFLIX-STYLE HORIZONTAL MEDIA RAILS */}
+      <div className="relative z-20 -mt-10 pb-8 space-y-4">
+        {/* Rail 1: Corporate Summits & Galas */}
+        <NetflixMediaRail
+          title="Trending: Corporate Summits & Annual Galas"
+          subtitle="Fortune 500 conferences, keynotes, and executive stagecraft"
+          tag="Vertical 01 · Corporate"
+          tagColor="#C9A84C"
+          items={dynamicCorporate}
+          onItemSelect={(item) =>
+            setLightboxItem({ url: item.img, caption: item.caption, type: item.type })
+          }
+        />
+
+        {/* Rail 2: Weddings, Sangeet & Royal Celebrations */}
+        <NetflixMediaRail
+          title="Top Picks: Luxury Sangeet & Destination Weddings"
+          subtitle="Electric dance transitions, royal varmala direction, and family storytelling"
+          tag="Vertical 02 · Weddings & Celebrations"
+          tagColor="#CC2936"
+          items={dynamicWeddings}
+          onItemSelect={(item) =>
+            setLightboxItem({ url: item.img, caption: item.caption, type: item.type })
+          }
+        />
+
+        {/* Rail 3: Signature Family Games & Icebreakers */}
+        <NetflixMediaRail
+          title="Crowd Favorites: Signature Family Games & Icebreakers"
+          subtitle="Interactive entertainment getting every generation laughing and dancing"
+          tag="Interactive Highlight"
+          tagColor="#F06292"
+          items={familyGamesRail}
+          onItemSelect={(item) =>
+            setLightboxItem({ url: item.img, caption: item.caption, type: item.type })
+          }
+        />
+      </div>
+
+      {/* ABOUT SECTION */}
+      <section id="about" className="py-20 px-6 sm:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="about-visual reveal-left relative">
+            <div className="about-gold-accent" />
+            <div className="about-frame" />
+            <img src="images/img_14.jpg" alt="Radha Dudeja on stage" className="about-img-main rounded-2xl" />
+            <img src="images/img_28.jpg" alt="Radha Dudeja close-up" className="about-img-accent rounded-xl shadow-2xl" />
+          </div>
+
+          <div className="about-text reveal-right space-y-4">
+            <div className="section-label">The Voice Behind The Energy</div>
+            <h2 className="section-title">
+              From the foothills of <em>Uttarakhand</em> to centre stage across India
+            </h2>
+            <div className="gold-line" />
+            <div className="about-quote">"I don't just host an event, I ignite an experience."</div>
+            <p className="about-body">
+              Radha Dudeja brings the energy of a live wire and the poised elegance of a seasoned speaker to every stage. 
+              Rooted in Ramnagar near the forests of Jim Corbett, her natural magnetism has blossomed into an illustrious career spanning Fortune 500 conferences, luxury destination weddings, and international cultural summits.
+            </p>
+            <p className="about-body">
+              Her philosophy is simple: <em>engage the mind, ignite the heart</em>. Whether moderating senior executive panels or getting 500 wedding guests on their feet for family games, Radha makes every event feel spontaneous, personal, and unforgettable.
+            </p>
+
+            <div className="about-langs flex gap-2 flex-wrap pt-2">
+              <div className="lang-tag">🇮🇳 Hindi</div>
+              <div className="lang-tag">🌍 English</div>
+              <div className="lang-tag">🎉 Punjabi</div>
+            </div>
+
+            <div className="flex gap-4 flex-wrap pt-4">
+              <a href="#booking" className="btn-primary">Book Radha</a>
+              <a href={settings.youtube_url || "https://www.youtube.com/@anchorrd8794"} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                Watch Showreel
+              </a>
+            </div>
           </div>
         </div>
-        <div className="contact-item">
-          <div className="contact-icon">📍</div>
-          <div className="contact-detail">
-            <strong>Based In</strong>
-            Ramnagar / Haldwani, Uttarakhand · PAN India Travel
-          </div>
+      </section>
+
+      {/* STATS STRIP */}
+      <div className="stats-strip my-12">
+        <div className="stat-item reveal reveal-delay-1">
+          <div className="stat-num">500<span style={{ fontSize: "2rem" }}>+</span></div>
+          <div className="stat-label">Events Hosted</div>
         </div>
-        <div className="contact-item">
-          <div className="contact-icon">⏰</div>
-          <div className="contact-detail">
-            <strong>Response Time</strong>
-            Within 24 hours on all inquiries
-          </div>
+        <div className="stat-item reveal reveal-delay-2">
+          <div className="stat-num">8<span style={{ fontSize: "2rem" }}>+</span></div>
+          <div className="stat-label">Years of Mastery</div>
+        </div>
+        <div className="stat-item reveal reveal-delay-3">
+          <div className="stat-num">3</div>
+          <div className="stat-label">Languages Fluent</div>
+        </div>
+        <div className="stat-item reveal reveal-delay-4">
+          <div className="stat-num">100<span style={{ fontSize: "2rem" }}>%</span></div>
+          <div className="stat-label">Client Satisfaction</div>
         </div>
       </div>
-    </div>
-    <div className="booking-form reveal reveal-delay-2">
-      <form id="bookingForm" onSubmit={handleFormSubmit}>
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Your Name</label>
-            <input type="text" className="form-control" placeholder="Full Name" required />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Phone / WhatsApp</label>
-            <input type="tel" className="form-control" placeholder="+91 XXXXX XXXXX" />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input type="email" className="form-control" placeholder="your@email.com" required />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Event Date</label>
-            <input type="date" className="form-control" />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Event Type</label>
-            <select className="form-control">
-              <option value="">Select Event Type</option>
-              <option>Wedding / Sangeet / Reception</option>
-              <option>Corporate Event / Conference</option>
-              <option>Award Night / Gala</option>
-              <option>Cultural / Festive Event</option>
-              <option>Team Building</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label className="form-label">Expected Audience</label>
-            <select className="form-control">
-              <option value="">Audience Size</option>
-              <option>Up to 100</option>
-              <option>100 – 500</option>
-              <option>500 – 1000</option>
-              <option>1000 – 5000</option>
-              <option>5000+</option>
-            </select>
-          </div>
-        </div>
-        <div className="form-group full">
-          <label className="form-label">Event Location</label>
-          <input type="text" className="form-control" placeholder="City, Venue Name" />
-        </div>
-        <div className="form-group full">
-          <label className="form-label">Tell Me About Your Event</label>
-          <textarea className="form-control" placeholder="Share the vision for your event — theme, special requests, languages needed..."></textarea>
-        </div>
-        <button type="submit" className="form-submit" style={isFormSuccess ? {background: "#2a7a2a", color: "#fff"} : {}}>
-          {formStatus}
-        </button>
-        <div className="form-note">🔒 Your details are 100% private. Response within 24 hours guaranteed.</div>
-      </form>
-    </div>
-  </div>
-</section>
 
-{/* FOOTER */}
-<footer>
-  <div className="footer-grid">
-    <div className="footer-brand">
-      <div className="footer-logo">Radha Dudeja</div>
-      <p className="footer-brand-body">
-        India's trilingual anchor & emcee, turning events into unforgettable experiences 
-        — one stage at a time. Based in Uttarakhand, available PAN India.
-      </p>
-      <div className="footer-social-row">
-        <a href="https://www.instagram.com/radha_dudeja_/" target="_blank" className="footer-social-icon" title="Instagram">📸</a>
-        <a href="https://www.youtube.com/@anchorrd8794" target="_blank" className="footer-social-icon" title="YouTube">▶</a>
-        <a href="https://starclinch.com/anchor-radha-dudeja" target="_blank" className="footer-social-icon" title="StarClinch">⭐</a>
-        <a href="#booking" className="footer-social-icon" title="Book Now">📩</a>
-      </div>
-    </div>
-    <div>
-      <div className="footer-title">Navigation</div>
-      <ul className="footer-links">
-        <li><a href="#about">About Radha</a></li>
-        <li><a href="#events">Event Types</a></li>
-        <li><a href="#strengths">Strengths</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#videos">Videos</a></li>
-        <li><a href="#booking">Book Radha</a></li>
-      </ul>
-    </div>
-    <div>
-      <div className="footer-title">Events</div>
-      <ul className="footer-links">
-        <li><a href="#events">Corporate Events</a></li>
-        <li><a href="#events">Weddings & Sangeets</a></li>
-        <li><a href="#events">Cultural Festivals</a></li>
-        <li><a href="#events">Team Building</a></li>
-        <li><a href="#events">Award Ceremonies</a></li>
-        <li><a href="#events">Conferences</a></li>
-      </ul>
-    </div>
-    <div>
-      <div className="footer-title">Contact</div>
-      <ul className="footer-links">
-        <li><a href="mailto:info@radhadudeja.com">info@radhadudeja.com</a></li>
-        <li><a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a></li>
-        <li><a href="https://starclinch.com/anchor-radha-dudeja" target="_blank">Book via StarClinch</a></li>
-        <li><a href="https://www.instagram.com/radha_dudeja_/" target="_blank">@radha_dudeja_</a></li>
-      </ul>
-    </div>
-  </div>
-  <div className="footer-bottom">
-    <div className="footer-copy">
-      © 2026 <span>Radha Dudeja</span>. All rights reserved. &nbsp;·&nbsp;
-      Designed with ✦ passion ✦
-    </div>
-    <div className="footer-copy">
-      "Let's create a <span>moment worth remembering</span>."
-    </div>
-  </div>
-</footer>
+      {/* DETAILED VERTICAL 1: CORPORATE STAGE & SUMMITS */}
+      <section id="corporate" className="py-20 border-t border-b border-white/5 bg-[#0D0D0D]">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C9A84C] mb-3 reveal">
+            <Briefcase className="w-4 h-4" /> Vertical 01
+          </div>
+          <h2 className="section-title reveal reveal-delay-1">
+            Corporate Events, Summits & <em>Galas</em>
+          </h2>
+          <p className="text-sm text-[#A0A0A0] max-w-2xl mt-3 reveal reveal-delay-2">
+            Polished articulation, meticulous schedule adherence, and executive stage presence for your brand's biggest milestones.
+          </p>
 
+          <div className="events-grid mt-12">
+            <TiltCard maxTilt={8} className="reveal reveal-delay-1">
+              <div className="event-card h-full">
+                <img src="images/img_06.jpg" alt="Conferences & Summits" />
+                <div className="event-card-content">
+                  <div className="event-card-tag">Leadership</div>
+                  <div className="event-card-icon">💼</div>
+                  <div className="event-card-title">Tech Summits & Conferences</div>
+                  <div className="event-card-desc">
+                    Seamless speaker introductions, fireside chats, panel discussions, and bilingual transitions that keep international delegations fully engaged.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-2">
+              <div className="event-card h-full">
+                <img src="images/img_11.jpg" alt="Annual Galas & Awards" />
+                <div className="event-card-content">
+                  <div className="event-card-tag">Excellence</div>
+                  <div className="event-card-icon">🏆</div>
+                  <div className="event-card-title">Annual Galas & Award Nights</div>
+                  <div className="event-card-desc">
+                    High-glamour black-tie evenings celebrating organizational triumphs with poise, excitement, and seamless teleprompter execution.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-3">
+              <div className="event-card h-full">
+                <img src="images/img_20.jpg" alt="Brand Launches" />
+                <div className="event-card-content">
+                  <div className="event-card-tag">Brand Impact</div>
+                  <div className="event-card-icon">🚀</div>
+                  <div className="event-card-title">Brand Launches & Keynotes</div>
+                  <div className="event-card-desc">
+                    Dynamic storytelling and dramatic reveal build-ups that maximize media spotlight and customer enthusiasm.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-4">
+              <div className="event-card h-full">
+                <img src="images/img_13.jpg" alt="Offsites & Icebreakers" />
+                <div className="event-card-content">
+                  <div className="event-card-tag">Engagement</div>
+                  <div className="event-card-icon">⚡</div>
+                  <div className="event-card-title">Offsites & Leadership Retreats</div>
+                  <div className="event-card-desc">
+                    Energetic team-building games, leadership icebreakers, and evening entertainment tailored for high-performing teams.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+
+          <div className="mt-12 p-8 bg-[#141414] border border-[#C9A84C]/30 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 reveal">
+            <div>
+              <h4 className="text-lg font-bold text-white tracking-wide">
+                Need Corporate Pitch Materials or Showreel?
+              </h4>
+              <p className="text-xs text-[#888] mt-1">
+                Download Radha's corporate profile or watch specific event cuts.
+              </p>
+            </div>
+            <div className="flex gap-3 flex-wrap">
+              <a
+                href={getMediaUrl("pdf_corporate", "#booking")}
+                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-2"
+              >
+                <FileText className="w-4 h-4 text-[#C9A84C]" /> Corporate Profile
+              </a>
+              <a
+                href="#booking"
+                onClick={() => setSelectedVertical("Corporate Event")}
+                className="px-6 py-2.5 rounded-xl bg-[#C9A84C] text-black text-xs font-semibold tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#C9A84C]/20"
+              >
+                Book Corporate Anchor
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DETAILED VERTICAL 2: WEDDINGS, SANGEET & CELEBRATIONS */}
+      <section id="weddings" className="py-20 bg-gradient-to-b from-[#080808] to-[#120D0E]">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#CC2936] mb-3 reveal">
+            <Heart className="w-4 h-4" /> Vertical 02
+          </div>
+          <h2 className="section-title reveal reveal-delay-1">
+            Weddings, Sangeet & <em>Family Celebrations</em>
+          </h2>
+          <p className="text-sm text-[#A0A0A0] max-w-2xl mt-3 reveal reveal-delay-2">
+            The beating heart of family celebrations — vibrant crowd control, hilarious games, and emotional storytelling that bonds both families into one.
+          </p>
+
+          <div className="events-grid mt-12">
+            <TiltCard maxTilt={8} className="reveal reveal-delay-1">
+              <div className="event-card h-full">
+                <img src="images/img_28.jpg" alt="Luxury Sangeet Night" />
+                <div className="event-card-content">
+                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Celebration</div>
+                  <div className="event-card-icon">💃</div>
+                  <div className="event-card-title">Luxury Sangeet Nights</div>
+                  <div className="event-card-desc">
+                    Electrifying dance performance transitions, couple roast battles, rapid-fire quizzes, and seamless DJ synchronization that keeps the floor packed till 3 AM.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-2">
+              <div className="event-card h-full">
+                <img src="images/img_33.jpg" alt="Interactive Family Games" />
+                <div className="event-card-content">
+                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Signature</div>
+                  <div className="event-card-icon">🎯</div>
+                  <div className="event-card-title">Interactive Family Games & Icebreakers</div>
+                  <div className="event-card-desc">
+                    Curated signature games getting grandparents, cousins, and in-laws laughing and bonding together with zero awkwardness and 100% genuine joy.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-3">
+              <div className="event-card h-full">
+                <img src="images/img_14.jpg" alt="Varmala & Royal Wedding" />
+                <div className="event-card-content">
+                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Royalty</div>
+                  <div className="event-card-icon">💍</div>
+                  <div className="event-card-title">Varmala Direction & Royal Wedding</div>
+                  <div className="event-card-desc">
+                    Poetic Hindi and English narration, customized bride-groom entrance themes, and sacred traditional warmth delivered with cinematic poise.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-4">
+              <div className="event-card h-full">
+                <img src="images/img_32.jpg" alt="Haldi & Mehendi" />
+                <div className="event-card-content">
+                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Festive</div>
+                  <div className="event-card-icon">💛</div>
+                  <div className="event-card-title">Haldi, Mehendi & Pool Parties</div>
+                  <div className="event-card-desc">
+                    Sun-soaked afternoon energy, Punjabi dhol coordination, impromptu dance challenges, and vibrant interactive entertainment.
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+        </div>
+      </section>
+
+      {/* GOOGLE REVIEWS & 3D HOLOGRAPHIC QR CARD */}
+      <section id="reviews" className="py-20 border-t border-white/5 relative">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="section-label reveal">Client Trust & Reputation</div>
+          <h2 className="section-title reveal reveal-delay-1">
+            Google Verified <em>5.0 Star Rating</em>
+          </h2>
+          <p className="text-xs text-[#888] max-w-lg mt-2 mb-10 reveal reveal-delay-2">
+            Directly from Google Business Profile — read verified reviews from corporate HR heads and destination wedding couples.
+          </p>
+
+          {/* 3D Holographic Google QR Card */}
+          <div className="mb-14 reveal reveal-delay-2">
+            <GoogleQRCustomCard />
+          </div>
+
+          {/* 3D Tilt Testimonial Cards */}
+          <div className="testimonials-grid">
+            <TiltCard maxTilt={8} className="reveal reveal-delay-1">
+              <div className="testimonial-card h-full">
+                <div className="quote-mark">"</div>
+                <div className="testimonial-stars">★★★★★</div>
+                <div className="testimonial-text">
+                  "Radha was the life of our corporate annual gala — our executives and international delegates were blown away! Her bilingual delivery kept everyone locked in."
+                </div>
+                <div className="testimonial-author">Priya Sharma</div>
+                <div className="testimonial-role">HR Director · Fortune 500 Tech Summit, Delhi</div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-2">
+              <div className="testimonial-card h-full">
+                <div className="quote-mark">"</div>
+                <div className="testimonial-stars">★★★★★</div>
+                <div className="testimonial-text">
+                  "She didn't just host our sangeet, she became like our elder sister! Her family interactive games had even our strictest grandparents on the dance floor laughing."
+                </div>
+                <div className="testimonial-author">Ananya & Rohan Mehta</div>
+                <div className="testimonial-role">Destination Wedding Couple · Jim Corbett</div>
+              </div>
+            </TiltCard>
+
+            <TiltCard maxTilt={8} className="reveal reveal-delay-3">
+              <div className="testimonial-card h-full">
+                <div className="quote-mark">"</div>
+                <div className="testimonial-stars">★★★★★</div>
+                <div className="testimonial-text">
+                  "We had a sudden 45-minute AV glitch backstage during the awards. Radha held the crowd with spontaneous improv, trivia, and humor without missing a beat. Truly exceptional!"
+                </div>
+                <div className="testimonial-author">Vikram Negi</div>
+                <div className="testimonial-role">Event Director · Brand Activation Summit</div>
+              </div>
+            </TiltCard>
+          </div>
+        </div>
+      </section>
+
+      {/* SOCIAL MEDIA CHANNELS HUB */}
+      <section id="social" className="py-16 bg-[#0E0E0E]">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="section-label reveal" style={{ justifyContent: "center" }}>
+            Connect With Radha
+          </div>
+          <h2 className="section-title reveal reveal-delay-1" style={{ textAlign: "center" }}>
+            Follow the <em>Live Journey</em>
+          </h2>
+          <p className="text-center text-xs text-[#888] max-w-lg mx-auto mb-10 reveal reveal-delay-2">
+            Stay tuned for daily event reels, behind-the-scenes vlogs, and client stories across platforms.
+          </p>
+
+          <SocialChannelsBar variant="section" className="reveal" />
+        </div>
+      </section>
+
+      {/* BOOKING SECTION */}
+      <section id="booking" className="py-20">
+        <div className="booking-grid max-w-6xl mx-auto px-4">
+          <div className="booking-info">
+            <div className="section-label reveal">Reserve Your Dates</div>
+            <h2 className="section-title reveal reveal-delay-1">
+              Ready to create something <em>unforgettable?</em>
+            </h2>
+            <div className="gold-line" />
+            <p className="booking-desc reveal reveal-delay-2">
+              Whether you are organizing a high-profile corporate summit or an intimate family celebration, Radha brings customized preparation and electric stage presence.
+            </p>
+
+            <div className="booking-contact-list">
+              <div className="contact-item reveal">
+                <div className="contact-icon">📍</div>
+                <div className="contact-label">Available Across India & Worldwide</div>
+              </div>
+              <div className="contact-item reveal reveal-delay-1">
+                <div className="contact-icon">💬</div>
+                <div className="contact-label">Direct WhatsApp: +91 98765 43210</div>
+              </div>
+              <div className="contact-item reveal reveal-delay-2">
+                <div className="contact-icon">✉️</div>
+                <div className="contact-label">Email: bookings@radhadudeja.com</div>
+              </div>
+            </div>
+
+            <div className="mt-8 flex gap-4 flex-wrap">
+              <a
+                href={`https://wa.me/${(settings.whatsapp_number || "919876543210").replace(/[^0-9]/g, "")}?text=Hi%20Radha,%20I%20am%20inquiring%20about%20booking%20you%20for%20a%20${encodeURIComponent(selectedVertical)}.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#20ba59] transition-all shadow-lg"
+              >
+                <MessageCircle className="w-4 h-4 fill-black" />
+                Quick Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+
+          {/* Inquiry Form */}
+          <div className="booking-form-wrap reveal reveal-delay-2">
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-[#A0A0A0] mb-2 font-medium">
+                  Select Event Vertical
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedVertical("Corporate Event")}
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
+                      selectedVertical === "Corporate Event"
+                        ? "bg-[#C9A84C] text-black border-[#C9A84C]"
+                        : "bg-white/5 text-white/70 border-white/10"
+                    }`}
+                  >
+                    🏢 Corporate
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedVertical("Wedding / Sangeet / Games")}
+                    className={`py-2.5 px-3 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
+                      selectedVertical === "Wedding / Sangeet / Games"
+                        ? "bg-[#CC2936] text-white border-[#CC2936]"
+                        : "bg-white/5 text-white/70 border-white/10"
+                    }`}
+                  >
+                    💍 Weddings & Sangeet
+                  </button>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Your Name</label>
+                  <input type="text" className="form-input" placeholder="e.g. Priya Sharma" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Phone / WhatsApp</label>
+                  <input type="tel" className="form-input" placeholder="+91 98765 43210" required />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Event Date</label>
+                  <input type="date" className="form-input" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">City / Destination</label>
+                  <input type="text" className="form-input" placeholder="e.g. Delhi / Goa / Jaipur" required />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Event Notes & Details</label>
+                <textarea
+                  className="form-textarea"
+                  rows={3}
+                  placeholder={`Tell Radha about your event, expected guest count, or themes...`}
+                />
+              </div>
+
+              <button type="submit" className="form-submit">
+                {formStatus}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="footer-grid">
+          <div>
+            <div className="footer-logo">Radha Dudeja</div>
+            <p className="footer-tagline">
+              The Radhaa Dudeja Experience: Premier Anchor & Corporate Emcee for High-Stakes Summits, Luxury Sangeets, and Signature Celebrations.
+            </p>
+          </div>
+          <div>
+            <div className="footer-col-title">Verticals</div>
+            <ul className="footer-links">
+              <li><a href="#corporate">Corporate Events</a></li>
+              <li><a href="#corporate">Tech & Annual Summits</a></li>
+              <li><a href="#weddings">Weddings & Sangeet</a></li>
+              <li><a href="#games">Signature Family Games</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="footer-col-title">Channels</div>
+            <ul className="footer-links">
+              <li><a href={settings.instagram_url} target="_blank" rel="noreferrer">Instagram (@radha_dudeja_)</a></li>
+              <li><a href={settings.youtube_url} target="_blank" rel="noreferrer">YouTube (@anchorrd8794)</a></li>
+              <li><a href={settings.facebook_url} target="_blank" rel="noreferrer">Facebook</a></li>
+              <li><a href={settings.google_business_url} target="_blank" rel="noreferrer">Google 5.0★ Reviews</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="footer-col-title">Admin</div>
+            <ul className="footer-links">
+              <li><a href="/admin">Admin Portal</a></li>
+              <li><a href="/admin">Google Drive Uploader</a></li>
+              <li><a href="#booking">Book Now</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>© {new Date().getFullYear()} The Radhaa Dudeja Experience. All rights reserved.</p>
+        </div>
+      </footer>
+
+      {/* FLOATING SOCIAL & WHATSAPP ACTION BAR */}
+      <SocialChannelsBar variant="floating" />
     </div>
   );
 }
+
