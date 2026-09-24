@@ -3,11 +3,13 @@ import { useSiteMedia, type SiteMedia } from "@/hooks/useSiteMedia";
 import VoiceAgentSection from "@/components/VoiceAgentSection";
 import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
+import RadhaaLogo from "@/components/RadhaaLogo";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import ParticleBackground from "@/components/ParticleBackground";
 import TiltCard from "@/components/TiltCard";
 import NetflixBillboard from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
+import MasterVideoVault from "@/components/MasterVideoVault";
 import confetti from "canvas-confetti";
 import {
   Briefcase,
@@ -223,10 +225,10 @@ export default function StellarIndex() {
       {/* MOBILE MENU */}
       <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
         <a href="#billboard" onClick={() => setIsMenuOpen(false)}>Home</a>
-        <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
+        <a href="#master-vault" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C] font-semibold">Video Vault (Reels)</a>
         <a href="#corporate" onClick={() => setIsMenuOpen(false)}>Corporate Summits</a>
         <a href="#weddings" onClick={() => setIsMenuOpen(false)}>Weddings & Sangeet</a>
-        <a href="#games" onClick={() => setIsMenuOpen(false)}>Family Games</a>
+        <a href="#about" onClick={() => setIsMenuOpen(false)}>About Radhaa</a>
         <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Google Reviews</a>
         <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Me</a>
         <a href="/admin" onClick={() => setIsMenuOpen(false)} className="text-sm text-[#C9A84C]">Admin Portal</a>
@@ -234,12 +236,15 @@ export default function StellarIndex() {
 
       {/* NAVIGATION */}
       <nav id="navbar" className={isScrolled ? "scrolled" : ""}>
-        <div className="nav-logo">Radha Dudeja</div>
+        <a href="#billboard" className="no-underline">
+          <RadhaaLogo variant="navbar" />
+        </a>
         <ul className="nav-links">
           <li><a href="#billboard">Live Reel</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#master-vault" className="text-[#C9A84C]">Video Vault</a></li>
           <li><a href="#corporate">Corporate</a></li>
           <li><a href="#weddings">Weddings</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#reviews">Google Reviews</a></li>
           <li><a href="#booking" className="nav-cta">Book Now</a></li>
         </ul>
@@ -301,14 +306,23 @@ export default function StellarIndex() {
         />
       </div>
 
+      {/* MASTER VIDEO VAULT (ALL WEDDING & CORPORATE SUB-GROUPS) */}
+      <MasterVideoVault
+        dynamicMedia={media}
+        onPlayVideo={(item) =>
+          setLightboxItem({ url: item.url, caption: item.caption, type: "video" })
+        }
+        onBookClick={scrollToBooking}
+      />
+
       {/* ABOUT SECTION */}
       <section id="about" className="py-20 px-6 sm:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="about-visual reveal-left relative">
             <div className="about-gold-accent" />
             <div className="about-frame" />
-            <img src="images/img_14.jpg" alt="Radha Dudeja on stage" className="about-img-main rounded-2xl" />
-            <img src="images/img_28.jpg" alt="Radha Dudeja close-up" className="about-img-accent rounded-xl shadow-2xl" />
+            <img src="/images/img_14.jpg" alt="Radhaa Dudeja on stage" className="about-img-main rounded-2xl" />
+            <img src="/images/img_28.jpg" alt="Radhaa Dudeja close-up" className="about-img-accent rounded-xl shadow-2xl" />
           </div>
 
           <div className="about-text reveal-right space-y-4">
@@ -319,11 +333,11 @@ export default function StellarIndex() {
             <div className="gold-line" />
             <div className="about-quote">"I don't just host an event, I ignite an experience."</div>
             <p className="about-body">
-              Radha Dudeja brings the energy of a live wire and the poised elegance of a seasoned speaker to every stage. 
+              Radhaa Dudeja brings the energy of a live wire and the poised elegance of a seasoned speaker to every stage. 
               Rooted in Ramnagar near the forests of Jim Corbett, her natural magnetism has blossomed into an illustrious career spanning Fortune 500 conferences, luxury destination weddings, and international cultural summits.
             </p>
             <p className="about-body">
-              Her philosophy is simple: <em>engage the mind, ignite the heart</em>. Whether moderating senior executive panels or getting 500 wedding guests on their feet for family games, Radha makes every event feel spontaneous, personal, and unforgettable.
+              Her philosophy is simple: <em>engage the mind, ignite the heart</em>. Whether moderating senior executive panels or getting 500 wedding guests on their feet for family games, Radhaa makes every event feel spontaneous, personal, and unforgettable.
             </p>
 
             <div className="about-langs flex gap-2 flex-wrap pt-2">
@@ -333,7 +347,7 @@ export default function StellarIndex() {
             </div>
 
             <div className="flex gap-4 flex-wrap pt-4">
-              <a href="#booking" className="btn-primary">Book Radha</a>
+              <a href="#booking" className="btn-primary">Book Radhaa</a>
               <a href={settings.youtube_url || "https://www.youtube.com/@anchorrd8794"} target="_blank" rel="noopener noreferrer" className="btn-ghost">
                 Watch Showreel
               </a>

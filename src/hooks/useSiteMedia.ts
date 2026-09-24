@@ -11,6 +11,9 @@ export interface SiteMedia {
   sort_order: number;
   source?: "google_drive" | "upload" | "youtube" | "system";
   vertical?: "corporate" | "weddings_sangeet" | "both";
+  subgroup?: string;
+  duration?: string;
+  badge?: string;
 }
 
 export interface SiteSettings {

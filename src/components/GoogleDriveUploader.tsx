@@ -23,11 +23,19 @@ export default function GoogleDriveUploader({
   const [driveUrl, setDriveUrl] = useState("");
   const [mediaType, setMediaType] = useState<"image" | "video">("image");
   const [vertical, setVertical] = useState<"corporate" | "weddings_sangeet">(defaultVertical);
+  const [subgroup, setSubgroup] = useState<string>(defaultVertical === "corporate" ? "summits" : "sangeet");
   const [category, setCategory] = useState<"gallery" | "videos" | "hero" | "corporate" | "weddings_sangeet">("gallery");
   const [title, setTitle] = useState("");
+  const [duration, setDuration] = useState("");
+  const [badge, setBadge] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "testing" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleVerticalChange = (newVertical: "corporate" | "weddings_sangeet") => {
+    setVertical(newVertical);
+    setSubgroup(newVertical === "corporate" ? "summits" : "sangeet");
+  };
 
   const handleUrlChange = (val: string) => {
     setDriveUrl(val);
@@ -83,11 +91,16 @@ export default function GoogleDriveUploader({
         vertical: vertical,
         source: finalSource,
         sort_order: Date.now(),
+        subgroup: subgroup,
+        duration: duration.trim() || (mediaType === "video" ? "1:15" : undefined),
+        badge: badge.trim() || undefined,
       });
 
       setStatus("success");
       setDriveUrl("");
       setTitle("");
+      setDuration("");
+      setBadge("");
       setPreviewUrl(null);
 
       setTimeout(() => setStatus("idle"), 3000);
@@ -125,7 +138,7 @@ export default function GoogleDriveUploader({
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => setVertical("corporate")}
+              onClick={() => handleVerticalChange("corporate")}
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
                 vertical === "corporate"
                   ? "bg-[#C9A84C] text-black border-[#C9A84C] shadow-lg shadow-[#C9A84C]/20"
@@ -136,7 +149,7 @@ export default function GoogleDriveUploader({
             </button>
             <button
               type="button"
-              onClick={() => setVertical("weddings_sangeet")}
+              onClick={() => handleVerticalChange("weddings_sangeet")}
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
                 vertical === "weddings_sangeet"
                   ? "bg-[#C9A84C] text-black border-[#C9A84C] shadow-lg shadow-[#C9A84C]/20"
@@ -146,6 +159,36 @@ export default function GoogleDriveUploader({
               💍 Weddings & Sangeet
             </button>
           </div>
+        </div>
+
+        {/* Master Sub-Group Collection */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-[#E2C775] mb-2">
+            Master Group / Event Format
+          </label>
+          <select
+            value={subgroup}
+            onChange={(e) => setSubgroup(e.target.value)}
+            className="w-full bg-black/60 border border-[#C9A84C]/40 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none font-medium"
+          >
+            {vertical === "weddings_sangeet" ? (
+              <>
+                <option value="sangeet">💃 Sangeet & Dance Battles</option>
+                <option value="haldi">💛 Haldi & Mehendi Fiesta</option>
+                <option value="group_games">🎯 Signature Family Games & Group Activities</option>
+                <option value="varmala">💍 Royal Varmala & Entrances</option>
+                <option value="wedding_general">🎬 General Wedding Highlight</option>
+              </>
+            ) : (
+              <>
+                <option value="summits">💼 Tech Summits & Keynote Panels</option>
+                <option value="awards">🏆 Annual Galas & Award Nights</option>
+                <option value="offsites">⚡ Executive Offsites & Icebreakers</option>
+                <option value="brand_launch">🚀 Brand Launches & Product Reveals</option>
+                <option value="corporate_general">🎬 General Corporate Highlight</option>
+              </>
+            )}
+          </select>
         </div>
 
         {/* Media Type & Category */}
@@ -195,10 +238,39 @@ export default function GoogleDriveUploader({
               onChange={(e) => setCategory(e.target.value as any)}
               className="w-full bg-black/60 border border-white/10 text-white rounded-lg px-3 py-2 text-xs focus:border-[#C9A84C] outline-none"
             >
-              <option value="gallery">Photo & Video Gallery (Main)</option>
+              <option value="gallery">Photo & Video Gallery (Main Rails & Vault)</option>
               <option value="videos">Featured Video Showreel Section</option>
               <option value="hero">Hero Background Spotlight</option>
             </select>
+          </div>
+        </div>
+
+        {/* Video Duration & Badge Inputs (Optional) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
+              Clip Duration (e.g. 1:15)
+            </label>
+            <input
+              type="text"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              placeholder="e.g. 1:30"
+              className="w-full bg-black/60 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#A0A0A0] mb-2">
+              Custom Tag / Badge (Optional)
+            </label>
+            <input
+              type="text"
+              value={badge}
+              onChange={(e) => setBadge(e.target.value)}
+              placeholder="e.g. Trending, Crowd Favorite, Viral"
+              className="w-full bg-black/60 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none"
+            />
           </div>
         </div>
 
