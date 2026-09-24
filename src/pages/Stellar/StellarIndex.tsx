@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSiteMedia, type SiteMedia } from "@/hooks/useSiteMedia";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import VoiceAgentSection from "@/components/VoiceAgentSection";
 import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
@@ -59,6 +60,7 @@ const familyGamesRail: MediaRailItem[] = [
 
 export default function StellarIndex() {
   const { media, settings, getMediaUrl } = useSiteMedia();
+  const { copy } = useSiteContent();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [lightboxItem, setLightboxItem] = useState<{ url: string; caption: string; type: "image" | "video" } | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -228,6 +230,7 @@ export default function StellarIndex() {
         <a href="#master-vault" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C] font-semibold">Video Vault (Reels)</a>
         <a href="/corporate" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-[#C9A84C]">Corporate Portal</a>
         <a href="/weddings" onClick={() => setIsMenuOpen(false)} className="text-white hover:text-[#CC2936]">Weddings & Sangeet Portal</a>
+        <a href="/blog" onClick={() => setIsMenuOpen(false)} className="text-[#C9A84C]">Blog & Insights</a>
         <a href="#about" onClick={() => setIsMenuOpen(false)}>About Radhaa</a>
         <a href="#reviews" onClick={() => setIsMenuOpen(false)}>Google Reviews</a>
         <a href="#booking" onClick={() => setIsMenuOpen(false)}>Book Me</a>
@@ -244,7 +247,7 @@ export default function StellarIndex() {
           <li><a href="#master-vault" className="text-[#C9A84C]">Video Vault</a></li>
           <li><a href="/corporate" className="hover:text-[#C9A84C] transition-colors">Corporate</a></li>
           <li><a href="/weddings" className="hover:text-[#CC2936] transition-colors">Weddings</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="/blog" className="hover:text-[#C9A84C] transition-colors">Blog</a></li>
           <li><a href="#reviews">Google Reviews</a></li>
           <li><a href="#booking" className="nav-cta">Book Now</a></li>
         </ul>
@@ -420,13 +423,12 @@ export default function StellarIndex() {
               From the foothills of <em>Uttarakhand</em> to centre stage across India
             </h2>
             <div className="gold-line" />
-            <div className="about-quote">"I don't just host an event, I ignite an experience."</div>
+            <div className="about-quote">"{copy.about_quote || "I don't just host an event, I ignite an experience."}"</div>
             <p className="about-body">
-              Radhaa Dudeja brings the energy of a live wire and the poised elegance of a seasoned speaker to every stage. 
-              Rooted in Ramnagar near the forests of Jim Corbett, her natural magnetism has blossomed into an illustrious career spanning Fortune 500 conferences, luxury destination weddings, and international cultural summits.
+              {copy.about_body_p1 || "Radhaa Dudeja brings the energy of a live wire and the poised elegance of a seasoned speaker to every stage. Rooted in Ramnagar near the forests of Jim Corbett, her natural magnetism has blossomed into an illustrious career spanning Fortune 500 conferences, luxury destination weddings, and international cultural summits."}
             </p>
             <p className="about-body">
-              Her philosophy is simple: <em>engage the mind, ignite the heart</em>. Whether moderating senior executive panels or getting 500 wedding guests on their feet for family games, Radhaa makes every event feel spontaneous, personal, and unforgettable.
+              {copy.about_body_p2 || "Her philosophy is simple: engage the mind, ignite the heart. Whether moderating senior executive panels or getting 500 wedding guests on their feet for family games, Radhaa makes every event feel spontaneous, personal, and unforgettable."}
             </p>
 
             <div className="about-langs flex gap-2 flex-wrap pt-2">
@@ -448,20 +450,20 @@ export default function StellarIndex() {
       {/* STATS STRIP */}
       <div className="stats-strip my-12">
         <div className="stat-item reveal reveal-delay-1">
-          <div className="stat-num">500<span style={{ fontSize: "2rem" }}>+</span></div>
-          <div className="stat-label">Events Hosted</div>
+          <div className="stat-num">{copy.stat_events || "500+"}</div>
+          <div className="stat-label">{copy.stat_events_label || "Events Hosted"}</div>
         </div>
         <div className="stat-item reveal reveal-delay-2">
-          <div className="stat-num">8<span style={{ fontSize: "2rem" }}>+</span></div>
-          <div className="stat-label">Years of Mastery</div>
+          <div className="stat-num">{copy.stat_audience || "100k+"}</div>
+          <div className="stat-label">{copy.stat_audience_label || "Audience Engaged"}</div>
         </div>
         <div className="stat-item reveal reveal-delay-3">
-          <div className="stat-num">3</div>
-          <div className="stat-label">Languages Fluent</div>
+          <div className="stat-num">{copy.stat_rating || "5.0 ★"}</div>
+          <div className="stat-label">{copy.stat_rating_label || "Google Verified"}</div>
         </div>
         <div className="stat-item reveal reveal-delay-4">
-          <div className="stat-num">100<span style={{ fontSize: "2rem" }}>%</span></div>
-          <div className="stat-label">Client Satisfaction</div>
+          <div className="stat-num">{copy.stat_cities || "25+"}</div>
+          <div className="stat-label">{copy.stat_cities_label || "Destination Cities"}</div>
         </div>
       </div>
 
@@ -852,8 +854,9 @@ export default function StellarIndex() {
             </ul>
           </div>
           <div>
-            <div className="footer-col-title">Admin</div>
+            <div className="footer-col-title">Admin & Journal</div>
             <ul className="footer-links">
+              <li><a href="/blog" className="text-[#C9A84C] font-semibold">Blog & Event Playbooks</a></li>
               <li><a href="/admin">Admin Portal</a></li>
               <li><a href="/admin">Google Drive Uploader</a></li>
               <li><a href="#booking">Book Now</a></li>

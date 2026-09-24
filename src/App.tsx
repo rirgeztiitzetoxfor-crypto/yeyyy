@@ -10,6 +10,7 @@ import GodLevelIndex from "./pages/GodLevel/Index";
 import StellarIndex from "./pages/Stellar/StellarIndex";
 import CorporatePage from "./pages/Corporate/CorporatePage";
 import WeddingsPage from "./pages/Weddings/WeddingsPage";
+import BlogIndex from "./pages/Blog/BlogIndex";
 import NotFound from "./pages/NotFound.tsx";
 import ShadowRoom from './components/ShadowRoom';
 import Admin from "./pages/Admin.tsx";
@@ -55,6 +56,8 @@ export default function App() {
             <Route path="/corporate" element={<CorporatePage />} />
             <Route path="/weddings" element={<WeddingsPage />} />
             <Route path="/weddings-sangeet" element={<WeddingsPage />} />
+            <Route path="/blog" element={<BlogIndex />} />
+            <Route path="/blog/:slug" element={<BlogIndex />} />
             <Route path="/god-level" element={<GodLevelIndex />} />
             <Route path="/old-index" element={<Index />} />
             <Route path="/admin" element={<Admin />} />

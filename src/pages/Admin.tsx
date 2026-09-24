@@ -7,6 +7,8 @@ import {
 } from "@/hooks/useSiteMedia";
 import GoogleDriveUploader from "@/components/GoogleDriveUploader";
 import RadhaaLogo from "@/components/RadhaaLogo";
+import AdminSEOContentManager from "@/components/admin/AdminSEOContentManager";
+import AdminBlogManager from "@/components/admin/AdminBlogManager";
 import {
   Lock,
   LogOut,
@@ -25,6 +27,8 @@ import {
   Youtube,
   Instagram,
   Facebook,
+  Globe,
+  BookOpen,
 } from "lucide-react";
 
 const LOCAL_ADMIN_PASSWORD =
@@ -45,7 +49,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "corporate" | "weddings" | "social" | "all"
+    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "social" | "all"
   >("uploader");
 
   // Local settings edit state
@@ -218,6 +222,30 @@ export default function Admin() {
           >
             <Heart className="w-4 h-4" />
             Weddings & Sangeet ({weddingItems.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab("seo_content")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "seo_content"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Globe className="w-4 h-4" />
+            SEO & Content Text
+          </button>
+
+          <button
+            onClick={() => setActiveTab("blog")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "blog"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            Blog & Playbooks
           </button>
 
           <button
@@ -651,6 +679,16 @@ export default function Admin() {
               </button>
             </form>
           </div>
+        )}
+
+        {/* Tab: SEO & Website Content Text */}
+        {activeTab === "seo_content" && (
+          <AdminSEOContentManager />
+        )}
+
+        {/* Tab: Blog & Playbooks Manager */}
+        {activeTab === "blog" && (
+          <AdminBlogManager />
         )}
 
         {/* Tab 5: All Media Table */}
