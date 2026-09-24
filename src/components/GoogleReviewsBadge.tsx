@@ -13,7 +13,7 @@ export default function GoogleReviewsBadge({
 }: GoogleReviewsBadgeProps) {
   const { settings } = useSiteMedia();
 
-  const gmbUrl = settings.google_business_url || "https://search.google.com/local/writereview?placeid=ChIJ-RadhaDudeja";
+  const gmbUrl = settings.google_business_url || "https://search.google.com/local/writereview?placeid=ChIJlYrZi9s_CjkR-NmXydNGO-Q";
   const rating = settings.google_rating || "5.0";
   const reviewsCount = settings.google_reviews_count || "150+";
 

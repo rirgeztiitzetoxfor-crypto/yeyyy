@@ -29,7 +29,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   instagram_url: "https://www.instagram.com/radha_dudeja_/",
   facebook_url: "https://www.facebook.com/profile.php?id=100091785037914",
   youtube_url: "https://www.youtube.com/@anchorrd8794",
-  google_business_url: "https://search.google.com/local/writereview?placeid=ChIJ-RadhaDudeja",
+  google_business_url: "https://search.google.com/local/writereview?placeid=ChIJlYrZi9s_CjkR-NmXydNGO-Q",
   google_rating: "5.0",
   google_reviews_count: "150+",
   whatsapp_number: "+919876543210",
