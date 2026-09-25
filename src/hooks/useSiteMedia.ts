@@ -15,6 +15,11 @@ export interface SiteMedia {
   subgroup?: string;
   duration?: string;
   badge?: string;
+  clip_start?: number;
+  clip_end?: number;
+  aspect_ratio?: "16/9" | "9/16" | "4/5" | "1/1" | "21/9" | "auto";
+  focal_point?: "center" | "top" | "bottom" | "left" | "right";
+  fit_mode?: "cover" | "contain";
 }
 
 export interface SiteSettings {
@@ -83,18 +88,33 @@ export function parseGoogleDriveUrl(url: string, type: "image" | "video" = "imag
 }
 
 /**
- * Extracts and formats YouTube video embed URL
+ * Extracts and formats YouTube video embed URL, with optional start and end seconds for trimming.
  */
-export function parseYouTubeEmbedUrl(url: string): string {
+export function parseYouTubeEmbedUrl(url: string, clipStart?: number, clipEnd?: number): string {
   if (!url) return "";
   const trimmed = url.trim();
-  if (trimmed.includes("youtube.com/embed/")) return trimmed;
+  let videoId = "";
 
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
-  const match = trimmed.match(regExp);
+  if (trimmed.includes("youtube.com/embed/")) {
+    const match = trimmed.match(/youtube\.com\/embed\/([^?&#]+)/);
+    if (match) videoId = match[1];
+  } else {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+    const match = trimmed.match(regExp);
+    if (match && match[2].length === 11) {
+      videoId = match[2];
+    }
+  }
 
-  if (match && match[2].length === 11) {
-    return `https://www.youtube.com/embed/${match[2]}`;
+  if (videoId) {
+    let embed = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+    if (clipStart !== undefined && clipStart > 0) {
+      embed += `&start=${Math.floor(clipStart)}`;
+    }
+    if (clipEnd !== undefined && clipEnd > 0) {
+      embed += `&end=${Math.floor(clipEnd)}`;
+    }
+    return embed;
   }
   return trimmed;
 }

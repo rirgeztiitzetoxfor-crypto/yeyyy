@@ -129,6 +129,11 @@ export default function CorporatePage() {
       vertical: "corporate",
       type: res.type,
       badge: res.badge,
+      clip_start: res.clip_start,
+      clip_end: res.clip_end,
+      aspect_ratio: res.aspect_ratio,
+      focal_point: res.focal_point,
+      fit_mode: res.fit_mode,
     };
   });
 
@@ -147,6 +152,11 @@ export default function CorporatePage() {
       vertical: "corporate",
       type: res.type,
       badge: res.badge,
+      clip_start: res.clip_start,
+      clip_end: res.clip_end,
+      aspect_ratio: res.aspect_ratio,
+      focal_point: res.focal_point,
+      fit_mode: res.fit_mode,
     };
   });
 

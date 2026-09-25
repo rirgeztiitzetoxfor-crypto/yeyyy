@@ -32,6 +32,7 @@ import {
 } from "@/lib/siteSlots";
 import { storeLocalFile } from "@/lib/indexedDbMedia";
 import GoogleDriveWorkspace from "@/components/GoogleDriveWorkspace";
+import MediaCropAndTrimStudio, { type MediaCropTrimConfig } from "@/components/MediaCropAndTrimStudio";
 
 interface GoogleDriveUploaderProps {
   onMediaAdded: (
@@ -74,6 +75,15 @@ export default function GoogleDriveUploader({
   const [status, setStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
 
+  // Media Framing & Video Trim Config
+  const [cropTrimConfig, setCropTrimConfig] = useState<MediaCropTrimConfig>({
+    clipStart: currentLive.clip_start || 0,
+    clipEnd: currentLive.clip_end || (currentLive.type === "video" ? 30 : 0),
+    aspectRatio: currentLive.aspect_ratio || "16/9",
+    focalPoint: currentLive.focal_point || "top",
+    fitMode: currentLive.fit_mode || "cover",
+  });
+
   // Update form fields when slot changes
   const handleSlotSelect = (slotId: string) => {
     setSelectedSlotId(slotId);
@@ -83,6 +93,13 @@ export default function GoogleDriveUploader({
       setTitle(active.title);
       setMediaType(active.type);
       setBadge(active.badge || "");
+      setCropTrimConfig({
+        clipStart: active.clip_start || 0,
+        clipEnd: active.clip_end || (active.type === "video" ? 30 : 0),
+        aspectRatio: active.aspect_ratio || "16/9",
+        focalPoint: active.focal_point || "top",
+        fitMode: active.fit_mode || "cover",
+      });
     }
   };
 
@@ -188,6 +205,11 @@ export default function GoogleDriveUploader({
           source: "upload",
           sort_order: Date.now(),
           badge: badge.trim() || slotDef?.badge,
+          clip_start: cropTrimConfig.clipStart,
+          clip_end: cropTrimConfig.clipEnd,
+          aspect_ratio: cropTrimConfig.aspectRatio,
+          focal_point: cropTrimConfig.focalPoint,
+          fit_mode: cropTrimConfig.fitMode,
         });
       }
 
@@ -261,7 +283,7 @@ export default function GoogleDriveUploader({
           let finalSource: "google_drive" | "youtube" = "google_drive";
 
           if (rawUrl.includes("youtube") || rawUrl.includes("youtu.be")) {
-            finalUrl = parseYouTubeEmbedUrl(rawUrl);
+            finalUrl = parseYouTubeEmbedUrl(rawUrl, cropTrimConfig.clipStart, cropTrimConfig.clipEnd);
             finalSource = "youtube";
           } else {
             finalUrl = parseGoogleDriveUrl(rawUrl, type);
@@ -290,6 +312,11 @@ export default function GoogleDriveUploader({
             vertical: section === "weddings" ? "weddings_sangeet" : "corporate",
             source: finalSource,
             sort_order: Date.now() + i,
+            clip_start: cropTrimConfig.clipStart,
+            clip_end: cropTrimConfig.clipEnd,
+            aspect_ratio: cropTrimConfig.aspectRatio,
+            focal_point: cropTrimConfig.focalPoint,
+            fit_mode: cropTrimConfig.fitMode,
           });
         }
 
@@ -307,7 +334,7 @@ export default function GoogleDriveUploader({
         let finalSource: "google_drive" | "youtube" = "google_drive";
 
         if (driveUrl.includes("youtube") || driveUrl.includes("youtu.be")) {
-          finalUrl = parseYouTubeEmbedUrl(driveUrl);
+          finalUrl = parseYouTubeEmbedUrl(driveUrl, cropTrimConfig.clipStart, cropTrimConfig.clipEnd);
           finalSource = "youtube";
         } else {
           finalUrl = parseGoogleDriveUrl(driveUrl, mediaType);
@@ -326,6 +353,11 @@ export default function GoogleDriveUploader({
           source: finalSource,
           sort_order: Date.now(),
           badge: badge.trim() || slotDef?.badge,
+          clip_start: cropTrimConfig.clipStart,
+          clip_end: cropTrimConfig.clipEnd,
+          aspect_ratio: cropTrimConfig.aspectRatio,
+          focal_point: cropTrimConfig.focalPoint,
+          fit_mode: cropTrimConfig.fitMode,
         });
 
         setStatus("success");
@@ -551,6 +583,27 @@ export default function GoogleDriveUploader({
             </p>
           </div>
         </div>
+
+        {/* STEP 1.5: TRIM & FRAMING STUDIO (Loading parts of media & photo ratios) */}
+        <div className="pt-2">
+          <MediaCropAndTrimStudio
+            mediaUrl={
+              sourceMode === "laptop" && laptopFiles.length > 0
+                ? laptopFiles[0].preview
+                : sourceMode === "gdrive" && drivePreviewUrl
+                ? drivePreviewUrl
+                : currentLive.url
+            }
+            mediaType={
+              sourceMode === "laptop" && laptopFiles.length > 0
+                ? laptopFiles[0].type
+                : mediaType
+            }
+            slotLabel={targetSlot?.label || selectedSlotId}
+            initialConfig={cropTrimConfig}
+            onChange={(cfg) => setCropTrimConfig(cfg)}
+          />
+        </div>
       </div>
 
       {/* STEP 2A: UPLOAD FROM LAPTOP / DEVICE */}
@@ -759,7 +812,7 @@ export default function GoogleDriveUploader({
           {driveSubMode === "workspace" && (
             <GoogleDriveWorkspace
               defaultSlotId={selectedSlotId}
-              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType) => {
+              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType, trimFraming) => {
                 const slotDef = getSlotById(slotId);
                 const section = slotDef?.section || "corporate";
                 const vertical =
@@ -778,6 +831,11 @@ export default function GoogleDriveUploader({
                   source: "gdrive",
                   sort_order: Date.now(),
                   badge: slotDef?.badge || "Drive Sync",
+                  clip_start: trimFraming?.clipStart,
+                  clip_end: trimFraming?.clipEnd,
+                  aspect_ratio: trimFraming?.aspectRatio,
+                  focal_point: trimFraming?.focalPoint,
+                  fit_mode: trimFraming?.fitMode,
                 });
 
                 setStatus("success");

@@ -133,6 +133,11 @@ export default function StellarIndex() {
         vertical: "corporate" as const,
         type: res.type,
         badge: res.badge,
+        clip_start: res.clip_start,
+        clip_end: res.clip_end,
+        aspect_ratio: res.aspect_ratio,
+        focal_point: res.focal_point,
+        fit_mode: res.fit_mode,
       };
     }),
   ];
@@ -161,6 +166,11 @@ export default function StellarIndex() {
         vertical: "weddings_sangeet" as const,
         type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
         badge: m.badge || "Featured Cut",
+        clip_start: m.clip_start,
+        clip_end: m.clip_end,
+        aspect_ratio: m.aspect_ratio,
+        focal_point: m.focal_point,
+        fit_mode: m.fit_mode,
       })),
     ...weddingSlotIds.map((slotId) => {
       const res = resolveSlotMedia(slotId, media);
@@ -171,6 +181,11 @@ export default function StellarIndex() {
         vertical: "weddings_sangeet" as const,
         type: res.type,
         badge: res.badge,
+        clip_start: res.clip_start,
+        clip_end: res.clip_end,
+        aspect_ratio: res.aspect_ratio,
+        focal_point: res.focal_point,
+        fit_mode: res.fit_mode,
       };
     }),
   ];
@@ -190,6 +205,11 @@ export default function StellarIndex() {
       vertical: "weddings_sangeet" as const,
       type: res.type,
       badge: res.badge,
+      clip_start: res.clip_start,
+      clip_end: res.clip_end,
+      aspect_ratio: res.aspect_ratio,
+      focal_point: res.focal_point,
+      fit_mode: res.fit_mode,
     };
   });
 

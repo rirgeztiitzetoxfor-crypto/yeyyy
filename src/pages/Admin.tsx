@@ -499,7 +499,7 @@ export default function Admin() {
           <div className="space-y-6">
             <GoogleDriveWorkspace
               defaultSlotId={selectedSlotForReplace}
-              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType) => {
+              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType, trimFramingConfig) => {
                 const slotDef = getSlotById(slotId);
                 const section = slotDef?.section || "corporate";
                 const vertical =
@@ -518,6 +518,11 @@ export default function Admin() {
                   source: "gdrive",
                   sort_order: Date.now(),
                   badge: slotDef?.badge || "Drive Sync",
+                  clip_start: trimFramingConfig?.clipStart,
+                  clip_end: trimFramingConfig?.clipEnd,
+                  aspect_ratio: trimFramingConfig?.aspectRatio,
+                  focal_point: trimFramingConfig?.focalPoint,
+                  fit_mode: trimFramingConfig?.fitMode,
                 });
               }}
             />

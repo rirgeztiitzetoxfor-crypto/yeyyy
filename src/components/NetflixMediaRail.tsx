@@ -10,6 +10,11 @@ export interface MediaRailItem {
   type: "image" | "video";
   badge?: string;
   duration?: string;
+  clip_start?: number;
+  clip_end?: number;
+  aspect_ratio?: "16/9" | "9/16" | "4/5" | "1/1" | "21/9" | "auto";
+  focal_point?: "center" | "top" | "bottom" | "left" | "right";
+  fit_mode?: "cover" | "contain";
 }
 
 interface NetflixMediaRailProps {
@@ -106,7 +111,11 @@ export default function NetflixMediaRail({
                 <img
                   src={item.img}
                   alt={item.caption}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-108"
+                  className="w-full h-full transition-transform duration-500 group-hover/card:scale-108"
+                  style={{
+                    objectPosition: item.focal_point === "top" ? "center top" : item.focal_point === "bottom" ? "center bottom" : "center center",
+                    objectFit: item.fit_mode || "cover",
+                  }}
                   loading="lazy"
                 />
 
@@ -115,10 +124,15 @@ export default function NetflixMediaRail({
 
                 {/* Top Badges */}
                 <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="px-2 py-0.5 rounded bg-black/75 backdrop-blur-md text-[9px] font-mono font-bold text-white/90 border border-white/15">
                       {item.type === "video" ? "VIDEO" : "HD PHOTO"}
                     </span>
+                    {item.clip_start !== undefined && item.clip_end !== undefined && (
+                      <span className="px-2 py-0.5 rounded bg-amber-400 text-black text-[9px] font-mono font-bold uppercase shadow-sm">
+                        ⚡ {item.clip_end - item.clip_start}s Clip
+                      </span>
+                    )}
                     {item.badge && (
                       <span
                         className="px-2 py-0.5 rounded text-[9px] font-mono font-bold text-white shadow-md uppercase"

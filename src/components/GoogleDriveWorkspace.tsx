@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { MASTER_SITE_SLOTS, getSlotById } from "@/lib/siteSlots";
 import { parseGoogleDriveUrl, type SiteMedia } from "@/hooks/useSiteMedia";
+import MediaCropAndTrimStudio, { type MediaCropTrimConfig } from "./MediaCropAndTrimStudio";
 
 export interface DriveItem {
   id: string;
@@ -253,7 +254,13 @@ const INITIAL_DRIVE_ITEMS: DriveItem[] = [
 ];
 
 interface GoogleDriveWorkspaceProps {
-  onAssignToSlot?: (slotId: string, mediaUrl: string, title: string, type: "image" | "video") => Promise<void>;
+  onAssignToSlot?: (
+    slotId: string,
+    mediaUrl: string,
+    title: string,
+    type: "image" | "video",
+    trimFramingConfig?: MediaCropTrimConfig
+  ) => Promise<void>;
   onClose?: () => void;
   className?: string;
   defaultSlotId?: string;
@@ -274,6 +281,13 @@ export default function GoogleDriveWorkspace({
   const [assigningItem, setAssigningItem] = useState<DriveItem | null>(null);
   const [targetSlotId, setTargetSlotId] = useState<string>(defaultSlotId);
   const [assignSuccess, setAssignSuccess] = useState<string | null>(null);
+  const [cropTrimConfig, setCropTrimConfig] = useState<MediaCropTrimConfig>({
+    clipStart: 0,
+    clipEnd: 30,
+    aspectRatio: "16/9",
+    focalPoint: "top",
+    fitMode: "cover",
+  });
 
   // New Link modal state
   const [showAddModal, setShowAddModal] = useState(false);
@@ -359,7 +373,8 @@ export default function GoogleDriveWorkspace({
           targetSlotId,
           assigningItem.url,
           assigningItem.name.replace(/\.[^/.]+$/, "").replace(/_/g, " "),
-          assigningItem.type === "video" ? "video" : "image"
+          assigningItem.type === "video" ? "video" : "image",
+          cropTrimConfig
         );
       }
       const slotDef = getSlotById(targetSlotId);
@@ -715,12 +730,12 @@ export default function GoogleDriveWorkspace({
       {/* MODAL 1: ASSIGN TO WEBSITE SLOT */}
       {assigningItem && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#161616] border border-[#C9A84C]/50 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-[#161616] border border-[#C9A84C]/50 rounded-3xl p-6 sm:p-8 max-w-xl max-h-[92vh] overflow-y-auto w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#C9A84C]" />
                 <h4 className="text-base font-bold text-white font-serif">
-                  Assign to Website Slot
+                  Assign to Website Slot & Trim Media
                 </h4>
               </div>
               <button
@@ -799,6 +814,19 @@ export default function GoogleDriveWorkspace({
                 </optgroup>
               </select>
             </div>
+
+            {/* Media Framing & Trim Studio for the selected asset */}
+            {assigningItem.url && (assigningItem.type === "video" || assigningItem.type === "image") && (
+              <div className="max-h-[380px] overflow-y-auto pr-1">
+                <MediaCropAndTrimStudio
+                  mediaUrl={assigningItem.url}
+                  mediaType={assigningItem.type === "video" ? "video" : "image"}
+                  slotLabel={targetSlotId}
+                  initialConfig={cropTrimConfig}
+                  onChange={setCropTrimConfig}
+                />
+              </div>
+            )}
 
             {assignSuccess && (
               <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2 text-xs text-emerald-400">

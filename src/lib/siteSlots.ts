@@ -255,7 +255,7 @@ export function getSlotById(slotId: string): SiteSlotDefinition | undefined {
 
 export function resolveSlotMedia(
   slotId: string,
-  customMediaList: Array<{ slot_id: string; media_url: string; alt_text?: string; media_type?: "image" | "video"; badge?: string }>
+  customMediaList: Array<any>
 ) {
   const custom = customMediaList.find((m) => m.slot_id === slotId);
   const def = getSlotById(slotId);
@@ -266,6 +266,11 @@ export function resolveSlotMedia(
       title: custom.alt_text || def?.default_title || "Stage Media",
       type: custom.media_type || def?.default_type || "image",
       badge: custom.badge || def?.badge,
+      clip_start: custom.clip_start,
+      clip_end: custom.clip_end,
+      aspect_ratio: custom.aspect_ratio || "auto",
+      focal_point: custom.focal_point || "center",
+      fit_mode: custom.fit_mode || "cover",
       isCustom: true,
     };
   }
@@ -275,6 +280,11 @@ export function resolveSlotMedia(
     title: def?.default_title || "Stage Media",
     type: def?.default_type || "image",
     badge: def?.badge,
+    clip_start: undefined,
+    clip_end: undefined,
+    aspect_ratio: "auto" as const,
+    focal_point: "center" as const,
+    fit_mode: "cover" as const,
     isCustom: false,
   };
 }
