@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,8 +14,21 @@ import BlogIndex from "./pages/Blog/BlogIndex";
 import NotFound from "./pages/NotFound.tsx";
 import ShadowRoom from './components/ShadowRoom';
 import Admin from "./pages/Admin.tsx";
+import LiveVisualContentEditor from "./components/LiveVisualContentEditor";
+import AudioAtmosphereBar from "./components/AudioAtmosphereBar";
 
 const queryClient = new QueryClient();
+
+function GlobalAtmosphereControls() {
+  const location = useLocation();
+  if (location.pathname.startsWith("/admin")) return null;
+  return (
+    <>
+      <LiveVisualContentEditor />
+      <AudioAtmosphereBar />
+    </>
+  );
+}
 
 export default function App() {
   const [showShadowPrompt, setShowShadowPrompt] = useState(false);
@@ -64,6 +77,7 @@ export default function App() {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <GlobalAtmosphereControls />
         </BrowserRouter>
         {showShadowPrompt && (
           <div className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center animate-in fade-in zoom-in-95 duration-200">

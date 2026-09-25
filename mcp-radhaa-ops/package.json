@@ -1,0 +1,13 @@
+{
+  "name": "mcp-radhaa-ops",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server for managing Radhaa Dudeja's portfolio, stage bookings, leads CRM, and connectors.",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "radhaa-ops": "./index.js"
+  },
+  "keywords": ["mcp", "radhaa-dudeja", "portfolio", "booking", "crm", "webhooks"],
+  "author": "Antigravity Engineering",
+  "license": "MIT"
+}

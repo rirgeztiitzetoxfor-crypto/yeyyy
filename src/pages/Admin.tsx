@@ -9,6 +9,8 @@ import GoogleDriveUploader from "@/components/GoogleDriveUploader";
 import RadhaaLogo from "@/components/RadhaaLogo";
 import AdminSEOContentManager from "@/components/admin/AdminSEOContentManager";
 import AdminBlogManager from "@/components/admin/AdminBlogManager";
+import AdminLeadsCRM from "@/components/admin/AdminLeadsCRM";
+import AdminConnectorsHub from "@/components/admin/AdminConnectorsHub";
 import {
   Lock,
   LogOut,
@@ -31,6 +33,8 @@ import {
   BookOpen,
   Calendar,
   CalendarCheck,
+  Users,
+  Zap,
 } from "lucide-react";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 
@@ -52,7 +56,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "calendar" | "social" | "all"
+    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
   >("uploader");
 
   // Local settings edit state
@@ -261,6 +265,30 @@ export default function Admin() {
           >
             <Calendar className="w-4 h-4" />
             Google Calendar & Holds
+          </button>
+
+          <button
+            onClick={() => setActiveTab("leads")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "leads"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Leads & Inquiries CRM
+          </button>
+
+          <button
+            onClick={() => setActiveTab("connectors")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "connectors"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            Connectors & Automations
           </button>
 
           <button
@@ -818,6 +846,16 @@ export default function Admin() {
               <GoogleCalendarBooking format="Corporate Summits & Awards" accentColor="gold" />
             </div>
           </div>
+        )}
+
+        {/* Tab: Leads & Inquiries CRM */}
+        {activeTab === "leads" && (
+          <AdminLeadsCRM />
+        )}
+
+        {/* Tab: Connectors & Automations Hub */}
+        {activeTab === "connectors" && (
+          <AdminConnectorsHub />
         )}
 
         {/* Tab 5: All Media Table */}

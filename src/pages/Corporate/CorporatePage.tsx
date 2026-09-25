@@ -5,8 +5,10 @@ import TiltCard from "@/components/TiltCard";
 import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
-import MasterVideoVault from "@/components/MasterVideoVault";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
+import BrandMarquee from "@/components/BrandMarquee";
+import RfpDeckGenerator from "@/components/RfpDeckGenerator";
+import StagePriceEstimator from "@/components/StagePriceEstimator";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
 import {
@@ -199,6 +201,9 @@ export default function CorporatePage() {
         />
       </section>
 
+      {/* LUXURY BRAND MARQUEE */}
+      <BrandMarquee />
+
       {/* CORPORATE MEDIA RAILS */}
       <div id="summits" className="relative z-20 -mt-10 pb-8 space-y-4">
         <NetflixMediaRail
@@ -292,6 +297,27 @@ export default function CorporatePage() {
 
       {/* CORPORATE BOOKING FORM */}
       <section id="booking" className="py-20 border-t border-white/5 bg-[#0D0D0D] relative">
+        {/* Instant Executive RFP Pitch Deck Generator */}
+        <div className="max-w-6xl mx-auto px-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-neutral-900 via-[#181818] to-neutral-900 border border-[#C9A84C]/40 shadow-xl">
+          <div className="space-y-1 text-center sm:text-left">
+            <span className="text-[11px] font-mono tracking-widest text-[#C9A84C] uppercase font-semibold">
+              Instant Corporate Dossier & Stage Rider
+            </span>
+            <h4 className="text-base sm:text-lg font-serif text-white font-medium">
+              Present Radhaa Dudeja to Your Company Board or Events Committee
+            </h4>
+            <p className="text-xs text-neutral-400">
+              Generates an executive-ready proposal PDF customized with your company name, keynote specs, and AV rider.
+            </p>
+          </div>
+          <RfpDeckGenerator initialEventType="Corporate Tech Summit" triggerLabel="⚡ Generate Corporate Proposal (PDF)" />
+        </div>
+
+        {/* Corporate Stage Scope & Investment Estimator */}
+        <div className="max-w-6xl mx-auto px-4 mb-10">
+          <StagePriceEstimator defaultCategory="corporate" />
+        </div>
+
         {/* Real-Time Google Calendar Availability & One-Click Sync */}
         <div className="max-w-6xl mx-auto px-4 mb-12">
           <GoogleCalendarBooking

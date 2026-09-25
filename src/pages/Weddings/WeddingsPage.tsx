@@ -7,6 +7,9 @@ import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillb
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
+import BrandMarquee from "@/components/BrandMarquee";
+import RfpDeckGenerator from "@/components/RfpDeckGenerator";
+import StagePriceEstimator from "@/components/StagePriceEstimator";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
@@ -199,12 +202,15 @@ export default function WeddingsPage() {
         />
       </section>
 
+      {/* LUXURY ENTERPRISE & PALACES BRAND MARQUEE */}
+      <BrandMarquee />
+
       {/* WEDDING MEDIA RAILS */}
       <div id="sangeet" className="relative z-20 -mt-10 pb-8 space-y-4">
         <NetflixMediaRail
           title="Top Picks: Luxury Sangeet & Destination Weddings"
           subtitle="Electric dance transitions, couple roast battles, and royal varmala narration"
-          tag="Vertical 02 · Weddings & Celebrations"
+          tag="Luxury Sangeet & Celebrations"
           tagColor="#CC2936"
           items={weddingsSangeetRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
@@ -279,6 +285,31 @@ export default function WeddingsPage() {
 
       {/* WEDDING BOOKING FORM */}
       <section id="booking" className="py-20 border-t border-white/5 bg-[#120D0E] relative">
+        {/* Instant Luxury Wedding Proposal & Rider Generator */}
+        <div className="max-w-6xl mx-auto px-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-neutral-900 via-[#1a0f12] to-neutral-900 border border-[#CC2936]/40 shadow-xl">
+          <div className="space-y-1 text-center sm:text-left">
+            <span className="text-[11px] font-mono tracking-widest text-[#F06292] uppercase font-semibold">
+              Instant Family Planning Dossier & Sangeet Itinerary
+            </span>
+            <h4 className="text-base sm:text-lg font-serif text-white font-medium">
+              Share Radhaa's Full Sangeet & Wedding Proposal With Your Family
+            </h4>
+            <p className="text-xs text-neutral-400">
+              Generates a personalized luxury dossier with video showreels, game formats, and technical stage rider.
+            </p>
+          </div>
+          <RfpDeckGenerator
+            initialEventType="Luxury Royal Sangeet"
+            triggerLabel="⚡ Generate Wedding Proposal (PDF)"
+            className="bg-gradient-to-r from-[#CC2936] to-[#b01e2b] text-white hover:from-[#e0313f] hover:to-[#CC2936] border border-[#ff4d5e]"
+          />
+        </div>
+
+        {/* Wedding Stage Scope & Investment Estimator */}
+        <div className="max-w-6xl mx-auto px-4 mb-10">
+          <StagePriceEstimator defaultCategory="weddings" />
+        </div>
+
         {/* Real-Time Google Calendar Availability & One-Click Sync */}
         <div className="max-w-6xl mx-auto px-4 mb-12">
           <GoogleCalendarBooking

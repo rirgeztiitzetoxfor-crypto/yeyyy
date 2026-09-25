@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSiteMedia, type SiteMedia } from "@/hooks/useSiteMedia";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useBlog } from "@/hooks/useBlog";
 import VoiceAgentSection from "@/components/VoiceAgentSection";
 import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
@@ -13,6 +14,9 @@ import NetflixBillboard from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
+import BrandMarquee from "@/components/BrandMarquee";
+import RfpDeckGenerator from "@/components/RfpDeckGenerator";
+import StagePriceEstimator from "@/components/StagePriceEstimator";
 import confetti from "canvas-confetti";
 import {
   Briefcase,
@@ -63,12 +67,13 @@ const familyGamesRail: MediaRailItem[] = [
 export default function StellarIndex() {
   const { media, settings, getMediaUrl } = useSiteMedia();
   const { copy } = useSiteContent();
+  const { blogs } = useBlog();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [lightboxItem, setLightboxItem] = useState<{ url: string; caption: string; type: "image" | "video" } | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const [formStatus, setFormStatus] = useState("✨  Send Inquiry  ✨");
-  const [selectedVertical, setSelectedVertical] = useState<"Corporate Event" | "Wedding / Sangeet / Games">("Corporate Event");
+  const [selectedFormat, setSelectedFormat] = useState<"Corporate Summits & Awards" | "Luxury Weddings & Sangeet">("Corporate Summits & Awards");
 
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
@@ -363,6 +368,9 @@ export default function StellarIndex() {
         </div>
       </section>
 
+      {/* LUXURY ENTERPRISE & PALACES BRAND MARQUEE */}
+      <BrandMarquee />
+
       {/* NETFLIX-STYLE HORIZONTAL MEDIA RAILS */}
       <div className="relative z-20 pb-8 space-y-4">
         {/* Rail 1: Corporate Summits & Galas */}
@@ -650,6 +658,27 @@ export default function StellarIndex() {
 
       {/* BOOKING SECTION */}
       <section id="booking" className="py-20 relative">
+        {/* Instant RFP Pitch Deck Generator Banner */}
+        <div className="max-w-6xl mx-auto px-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-neutral-900 via-[#181818] to-neutral-900 border border-[#C9A84C]/40 shadow-xl reveal">
+          <div className="space-y-1 text-center sm:text-left">
+            <span className="text-[11px] font-mono tracking-widest text-[#C9A84C] uppercase font-semibold">
+              Instant Agency & Executive Planning Dossier
+            </span>
+            <h4 className="text-base sm:text-lg font-serif text-white font-medium">
+              Need a Customized Pitch Deck & Technical Rider for Your Client Board?
+            </h4>
+            <p className="text-xs text-neutral-400">
+              Generates a tailored executive PDF proposal with bios, showreel QRs, and hospitality specs in 10 seconds.
+            </p>
+          </div>
+          <RfpDeckGenerator initialEventType={selectedFormat} />
+        </div>
+
+        {/* Stage Scope & Pricing Estimator */}
+        <div className="max-w-6xl mx-auto px-4 mb-10 reveal">
+          <StagePriceEstimator defaultCategory={selectedFormat === "Corporate Summits & Awards" ? "corporate" : "weddings"} />
+        </div>
+
         {/* Real-Time Google Calendar Availability & One-Click Sync */}
         <div className="max-w-6xl mx-auto px-4 mb-12 reveal">
           <GoogleCalendarBooking
