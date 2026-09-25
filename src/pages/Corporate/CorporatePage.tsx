@@ -6,7 +6,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
-import MotionVideoBackground from "@/components/MotionVideoBackground";
+import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
 import {
@@ -110,9 +110,6 @@ export default function CorporatePage() {
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
-      {/* Ambient Looping Motion Video & Stage Spotlight Sweep */}
-      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.7} accentColor="gold" />
-
       <ParticleBackground />
 
       {/* LIGHTBOX */}
@@ -294,7 +291,15 @@ export default function CorporatePage() {
       </section>
 
       {/* CORPORATE BOOKING FORM */}
-      <section id="booking" className="py-20 border-t border-white/5 bg-[#0D0D0D]">
+      <section id="booking" className="py-20 border-t border-white/5 bg-[#0D0D0D] relative">
+        {/* Real-Time Google Calendar Availability & One-Click Sync */}
+        <div className="max-w-6xl mx-auto px-4 mb-12">
+          <GoogleCalendarBooking
+            format="Corporate Summits & Awards"
+            accentColor="gold"
+          />
+        </div>
+
         <div className="booking-grid max-w-6xl mx-auto px-4">
           <div className="booking-info">
             <div className="section-label">Corporate Booking</div>

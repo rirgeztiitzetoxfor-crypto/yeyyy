@@ -34,7 +34,7 @@ export default function SocialChannelsBar({
     },
     {
       name: "Facebook",
-      handle: "Radhaa Dudeja",
+      handle: "Radha Dudeja",
       label: "Community & Event Photos",
       url: settings.facebook_url || "https://www.facebook.com/profile.php?id=100091785037914",
       icon: Facebook,

@@ -29,7 +29,10 @@ import {
   Facebook,
   Globe,
   BookOpen,
+  Calendar,
+  CalendarCheck,
 } from "lucide-react";
+import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 
 const LOCAL_ADMIN_PASSWORD =
   import.meta.env.VITE_ADMIN_PASSWORD || "ATMOSPHERE_2026";
@@ -49,7 +52,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "social" | "all"
+    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "calendar" | "social" | "all"
   >("uploader");
 
   // Local settings edit state
@@ -246,6 +249,18 @@ export default function Admin() {
           >
             <BookOpen className="w-4 h-4" />
             Blog & Playbooks
+          </button>
+
+          <button
+            onClick={() => setActiveTab("calendar")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "calendar"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Calendar className="w-4 h-4" />
+            Google Calendar & Holds
           </button>
 
           <button
@@ -689,6 +704,120 @@ export default function Admin() {
         {/* Tab: Blog & Playbooks Manager */}
         {activeTab === "blog" && (
           <AdminBlogManager />
+        )}
+
+        {/* Tab: Google Calendar & Date Holds */}
+        {activeTab === "calendar" && (
+          <div className="space-y-8">
+            <div className="bg-[#121212] border border-[#C9A84C]/30 rounded-2xl p-6 shadow-2xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-white/10 mb-6">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C9A84C]">
+                    <CalendarCheck className="w-4 h-4" /> Google Calendar & Drive Cloud Sync
+                  </div>
+                  <h3 className="text-xl font-bold text-white mt-1">
+                    Stage Availability, Calendar Sync & Cloud Storage
+                  </h3>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Manage your Google Calendar appointment links, live date holds, and Master Google Drive folder.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <a
+                    href={socialForm.google_calendar_url || "https://calendar.google.com/calendar"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 border border-white/15"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-[#C9A84C]" /> Open Google Calendar ↗
+                  </a>
+                  <a
+                    href={socialForm.google_drive_folder_url || "https://drive.google.com"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 border border-white/15"
+                  >
+                    <FolderOpen className="w-3.5 h-3.5 text-[#E2C775]" /> Open Google Drive ↗
+                  </a>
+                </div>
+              </div>
+
+              {/* Settings Form */}
+              <form onSubmit={handleSaveSocial} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-1.5">
+                      Google Calendar Appointment Link / Calendar URL
+                    </label>
+                    <input
+                      type="url"
+                      value={socialForm.google_calendar_url || ""}
+                      onChange={(e) => setSocialForm({ ...socialForm, google_calendar_url: e.target.value })}
+                      placeholder="https://calendar.google.com/calendar/u/0/appointments/schedules/..."
+                      className="w-full bg-black/60 border border-white/15 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none font-mono"
+                    />
+                    <span className="text-[10px] text-neutral-400 mt-1 block">
+                      Allows visitors to book directly on your personal Google Workspace calendar.
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-1.5">
+                      Google Calendar ID / Notifications Email
+                    </label>
+                    <input
+                      type="email"
+                      value={socialForm.google_calendar_id || ""}
+                      onChange={(e) => setSocialForm({ ...socialForm, google_calendar_id: e.target.value })}
+                      placeholder="bookings@radhaadudeja.com"
+                      className="w-full bg-black/60 border border-white/15 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none font-mono"
+                    />
+                    <span className="text-[10px] text-neutral-400 mt-1 block">
+                      Google account receiving stage brief notifications and date hold invites.
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-300 mb-1.5">
+                    Master Google Drive Vault Folder URL
+                  </label>
+                  <input
+                    type="url"
+                    value={socialForm.google_drive_folder_url || ""}
+                    onChange={(e) => setSocialForm({ ...socialForm, google_drive_folder_url: e.target.value })}
+                    placeholder="https://drive.google.com/drive/folders/..."
+                    className="w-full bg-black/60 border border-white/15 text-white rounded-xl px-4 py-2.5 text-xs focus:border-[#C9A84C] outline-none font-mono"
+                  />
+                  <span className="text-[10px] text-neutral-400 mt-1 block">
+                    Your shared team folder containing event reels, raw clips, and photo collections.
+                  </span>
+                </div>
+
+                {socialSaved && (
+                  <div className="p-3 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-2 text-xs text-green-400">
+                    <Check className="w-4 h-4" />
+                    <span>Google Calendar & Drive settings saved successfully!</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="py-3 px-6 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E2C775] text-black font-semibold text-xs tracking-wider uppercase hover:opacity-95 transition-opacity shadow-lg flex items-center justify-center gap-2"
+                >
+                  <Save className="w-4 h-4" /> Save Calendar & Cloud Settings
+                </button>
+              </form>
+            </div>
+
+            {/* Live Interactive Widget Preview */}
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-[#C9A84C] mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4" /> Live Website Calendar Preview (What Clients Experience)
+              </h4>
+              <GoogleCalendarBooking format="Corporate Summits & Awards" accentColor="gold" />
+            </div>
+          </div>
         )}
 
         {/* Tab 5: All Media Table */}

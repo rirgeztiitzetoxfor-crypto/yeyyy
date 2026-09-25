@@ -130,10 +130,10 @@ export default function GoogleDriveUploader({
       </div>
 
       <form onSubmit={handleSave} className="space-y-5">
-        {/* Vertical Selection */}
+        {/* Portal Selection */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-[#C9A84C] mb-2">
-            Select Vertical
+            Select Portal Showcase
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -145,18 +145,18 @@ export default function GoogleDriveUploader({
                   : "bg-black/40 text-white/70 border-white/10 hover:border-white/30"
               }`}
             >
-              🏢 Corporate Events
+              🏢 Corporate Portal
             </button>
             <button
               type="button"
               onClick={() => handleVerticalChange("weddings_sangeet")}
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
                 vertical === "weddings_sangeet"
-                  ? "bg-[#C9A84C] text-black border-[#C9A84C] shadow-lg shadow-[#C9A84C]/20"
+                  ? "bg-[#CC2936] text-white border-[#CC2936] shadow-lg shadow-[#CC2936]/20"
                   : "bg-black/40 text-white/70 border-white/10 hover:border-white/30"
               }`}
             >
-              💍 Weddings & Sangeet
+              💍 Weddings & Sangeet Portal
             </button>
           </div>
         </div>
@@ -364,6 +364,17 @@ export default function GoogleDriveUploader({
           <Upload className="w-4 h-4" />
           {status === "testing" ? "Processing & Saving..." : "Add to Live Website"}
         </button>
+
+        {/* Cloud Storage Architecture Callout */}
+        <div className="mt-4 p-4 rounded-xl bg-black/60 border border-[#C9A84C]/20 text-[11px] text-neutral-300 leading-relaxed">
+          <div className="flex items-center gap-2 text-[#C9A84C] font-bold uppercase tracking-wider mb-1.5">
+            <Sparkles className="w-3.5 h-3.5" /> Where Is Google Drive Media Stored?
+          </div>
+          <p>
+            When you upload or paste links from Google Drive, your original high-resolution footage and photos <strong className="text-white">remain securely stored in your personal Google Drive account</strong>.
+            The website's cloud proxy streams directly from Google's high-speed global CDN (<code>lh3.googleusercontent.com</code>), providing fast playback with zero hosting storage costs and no bandwidth limits!
+          </p>
+        </div>
       </form>
     </div>
   );

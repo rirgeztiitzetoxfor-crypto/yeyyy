@@ -6,7 +6,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
-import MotionVideoBackground from "@/components/MotionVideoBackground";
+import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
@@ -109,9 +109,6 @@ export default function WeddingsPage() {
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
-      {/* Ambient Looping Motion Video & Stage Spotlight Sweep */}
-      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.7} accentColor="crimson" />
-
       <ParticleBackground />
 
       {/* LIGHTBOX */}
@@ -207,7 +204,7 @@ export default function WeddingsPage() {
         <NetflixMediaRail
           title="Top Picks: Luxury Sangeet & Destination Weddings"
           subtitle="Electric dance transitions, couple roast battles, and royal varmala narration"
-          tag="Luxury Celebrations · Sangeet & Weddings"
+          tag="Vertical 02 · Weddings & Celebrations"
           tagColor="#CC2936"
           items={weddingsSangeetRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
@@ -281,7 +278,15 @@ export default function WeddingsPage() {
       </section>
 
       {/* WEDDING BOOKING FORM */}
-      <section id="booking" className="py-20 border-t border-white/5 bg-[#120D0E]">
+      <section id="booking" className="py-20 border-t border-white/5 bg-[#120D0E] relative">
+        {/* Real-Time Google Calendar Availability & One-Click Sync */}
+        <div className="max-w-6xl mx-auto px-4 mb-12">
+          <GoogleCalendarBooking
+            format="Luxury Weddings & Sangeet"
+            accentColor="crimson"
+          />
+        </div>
+
         <div className="booking-grid max-w-6xl mx-auto px-4">
           <div className="booking-info">
             <div className="section-label" style={{ color: "#CC2936" }}>Reserve Wedding Dates</div>

@@ -26,6 +26,9 @@ export interface SiteSettings {
   whatsapp_number: string;
   corporate_showreel_url: string;
   weddings_showreel_url: string;
+  google_calendar_url?: string;
+  google_calendar_id?: string;
+  google_drive_folder_url?: string;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -38,6 +41,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   whatsapp_number: "+919876543210",
   corporate_showreel_url: "https://www.youtube.com/embed/videoseries?list=PLdummylist",
   weddings_showreel_url: "https://www.youtube.com/embed/videoseries?list=PLdummylist",
+  google_calendar_url: "https://calendar.google.com/calendar/u/0/r",
+  google_calendar_id: "bookings@radhaadudeja.com",
+  google_drive_folder_url: "https://drive.google.com/drive/folders/1RadhaaDudejaMediaVault",
 };
 
 const LOCAL_STORAGE_MEDIA_KEY = "radha_site_media_v2";

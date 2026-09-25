@@ -12,6 +12,7 @@ import TiltCard from "@/components/TiltCard";
 import NetflixBillboard from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
+import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import confetti from "canvas-confetti";
 import {
   Briefcase,
@@ -648,7 +649,19 @@ export default function StellarIndex() {
       </section>
 
       {/* BOOKING SECTION */}
-      <section id="booking" className="py-20">
+      <section id="booking" className="py-20 relative">
+        {/* Real-Time Google Calendar Availability & One-Click Sync */}
+        <div className="max-w-6xl mx-auto px-4 mb-12 reveal">
+          <GoogleCalendarBooking
+            format={selectedFormat}
+            accentColor={selectedFormat === "Corporate Summits & Awards" ? "gold" : "crimson"}
+            onDateSelected={(dateStr) => {
+              const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+              if (dateInput) dateInput.value = dateStr;
+            }}
+          />
+        </div>
+
         <div className="booking-grid max-w-6xl mx-auto px-4">
           <div className="booking-info">
             <div className="section-label reveal">Reserve Your Dates</div>
