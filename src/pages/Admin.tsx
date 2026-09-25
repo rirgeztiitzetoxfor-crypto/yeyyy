@@ -14,6 +14,8 @@ import AdminLeadsCRM from "@/components/admin/AdminLeadsCRM";
 import AdminConnectorsHub from "@/components/admin/AdminConnectorsHub";
 import LiveVisualContentEditor from "@/components/LiveVisualContentEditor";
 import AudioAtmosphereBar from "@/components/AudioAtmosphereBar";
+import SimpleMediaStudio from "@/components/admin/SimpleMediaStudio";
+import AdminSocialManager from "@/components/admin/AdminSocialManager";
 import { MASTER_SITE_SLOTS, resolveSlotMedia, getSlotById } from "@/lib/siteSlots";
 import {
   Lock,
@@ -64,15 +66,15 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "drive_workspace" | "corporate" | "weddings" | "visual_editor" | "audio_studio" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
-  >("uploader");
+    "simple_studio" | "leads" | "social" | "corporate" | "weddings" | "blog" | "seo_content" | "drive_workspace" | "all"
+  >("simple_studio");
 
   // Track which slot the user wants to replace from cards
-  const [selectedSlotForReplace, setSelectedSlotForReplace] = useState<string>("corp_rail_1");
+  const [selectedSlotForReplace, setSelectedSlotForReplace] = useState<string>("hero_billboard");
 
   const handleInitiateReplace = (slotId: string) => {
     setSelectedSlotForReplace(slotId);
-    setActiveTab("uploader");
+    setActiveTab("simple_studio");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -214,27 +216,39 @@ export default function Admin() {
         {/* Navigation Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-white/10 scrollbar-none">
           <button
-            onClick={() => setActiveTab("uploader")}
+            onClick={() => setActiveTab("simple_studio")}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "uploader"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <FolderOpen className="w-4 h-4" />
-            Media Uploader
-          </button>
-
-          <button
-            onClick={() => setActiveTab("drive_workspace")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "drive_workspace"
+              activeTab === "simple_studio"
                 ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20 font-bold"
                 : "bg-white/5 text-white/70 hover:bg-white/10"
             }`}
           >
-            <HardDrive className="w-4 h-4 text-emerald-400" />
-            Google Drive Workspace
+            <Sparkles className="w-4 h-4 text-black" />
+            Upload & Embed Studio
+          </button>
+
+          <button
+            onClick={() => setActiveTab("leads")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "leads"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20 font-bold"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Leads & Inquiries CRM
+          </button>
+
+          <button
+            onClick={() => setActiveTab("social")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "social"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20 font-bold"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Share2 className="w-4 h-4 text-pink-400" />
+            Social Profiles & IDs
           </button>
 
           <button
@@ -246,7 +260,7 @@ export default function Admin() {
             }`}
           >
             <Briefcase className="w-4 h-4" />
-            Corporate Events ({corporateItems.length})
+            Corporate Slots ({corporateItems.length})
           </button>
 
           <button
@@ -262,42 +276,6 @@ export default function Admin() {
           </button>
 
           <button
-            onClick={() => setActiveTab("visual_editor")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "visual_editor"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <Edit3 className="w-4 h-4" />
-            Visual Content Editor
-          </button>
-
-          <button
-            onClick={() => setActiveTab("audio_studio")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "audio_studio"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <Headphones className="w-4 h-4" />
-            Stage Audio Studio
-          </button>
-
-          <button
-            onClick={() => setActiveTab("seo_content")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "seo_content"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <Globe className="w-4 h-4" />
-            SEO & Content Text
-          </button>
-
-          <button
             onClick={() => setActiveTab("blog")}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
               activeTab === "blog"
@@ -310,51 +288,27 @@ export default function Admin() {
           </button>
 
           <button
-            onClick={() => setActiveTab("calendar")}
+            onClick={() => setActiveTab("seo_content")}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "calendar"
+              activeTab === "seo_content"
                 ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
                 : "bg-white/5 text-white/70 hover:bg-white/10"
             }`}
           >
-            <Calendar className="w-4 h-4" />
-            Google Calendar & Holds
+            <Globe className="w-4 h-4" />
+            SEO & Content
           </button>
 
           <button
-            onClick={() => setActiveTab("leads")}
+            onClick={() => setActiveTab("drive_workspace")}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "leads"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+              activeTab === "drive_workspace"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20 font-bold"
                 : "bg-white/5 text-white/70 hover:bg-white/10"
             }`}
           >
-            <Users className="w-4 h-4" />
-            Leads & Inquiries CRM
-          </button>
-
-          <button
-            onClick={() => setActiveTab("connectors")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "connectors"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <Zap className="w-4 h-4" />
-            Connectors & Automations
-          </button>
-
-          <button
-            onClick={() => setActiveTab("social")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
-              activeTab === "social"
-                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
-                : "bg-white/5 text-white/70 hover:bg-white/10"
-            }`}
-          >
-            <Share2 className="w-4 h-4" />
-            Social & Google Business
+            <HardDrive className="w-4 h-4 text-emerald-400" />
+            Drive Workspace
           </button>
 
           <button
@@ -370,13 +324,13 @@ export default function Admin() {
           </button>
         </div>
 
-        {/* Tab 1: Media Manager & Uploader */}
-        {activeTab === "uploader" && (
+        {/* Tab 1: Simple Upload & Embed Studio */}
+        {activeTab === "simple_studio" && (
           <div className="space-y-8">
-            <GoogleDriveUploader
+            <SimpleMediaStudio
               initialSlotId={selectedSlotForReplace}
               existingMediaList={media}
-              onMediaAdded={async (item) => {
+              onMediaSaved={async (item) => {
                 await addOrUpdateMedia(item);
               }}
             />
@@ -386,10 +340,10 @@ export default function Admin() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-white font-semibold text-sm uppercase tracking-wider">
-                    Active Customized Slots & Recent Uploads ({media.length})
+                    Active Customized Slots & Live Media ({media.length})
                   </h3>
                   <p className="text-xs text-[#777]">
-                    Media items overriding default site showreels and photos
+                    Media items overriding default site showreels, photos, and rails
                   </p>
                 </div>
                 <button
@@ -408,7 +362,6 @@ export default function Admin() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {media.map((item) => {
                     const slotDef = MASTER_SITE_SLOTS.find((s) => s.slot_id === item.slot_id);
-                    const isGdrive = item.source === "google_drive" || item.media_url.includes("google");
                     return (
                       <div
                         key={item.id || item.slot_id}
@@ -431,15 +384,15 @@ export default function Admin() {
                             )}
                             <div className="absolute top-2 left-2 flex items-center gap-1">
                               <span className="bg-black/70 backdrop-blur-md px-2 py-0.5 rounded text-[9px] font-mono text-[#C9A84C] border border-white/10 uppercase">
-                                {item.media_type}
+                                {item.aspect_ratio || "16/9"}
                               </span>
                               {item.source === "upload" ? (
                                 <span className="bg-emerald-500/80 text-black px-1.5 py-0.5 rounded text-[9px] font-bold">
-                                  💻 Laptop
+                                  💻 File
                                 </span>
                               ) : (
                                 <span className="bg-blue-500/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">
-                                  ☁️ Cloud Link
+                                  ☁️ Embed
                                 </span>
                               )}
                             </div>
@@ -449,41 +402,27 @@ export default function Admin() {
                               <span className="text-[10px] font-mono text-[#E2C775] bg-[#E2C775]/10 px-1.5 py-0.5 rounded border border-[#E2C775]/20 truncate">
                                 {item.slot_id}
                               </span>
-                              <span className="text-[10px] text-[#888] truncate">
-                                {slotDef?.sectionName || item.category}
-                              </span>
                             </div>
-                            <p className="text-xs text-white truncate font-medium">
+                            <h4 className="text-xs font-semibold text-white truncate">
                               {item.alt_text}
-                            </p>
+                            </h4>
                           </div>
                         </div>
 
-                        <div className="p-3 pt-0 space-y-2 border-t border-white/5">
-                          {isGdrive && (
-                            <button
-                              onClick={() => handleInitiateReplace(item.slot_id)}
-                              className="w-full py-1 px-2 rounded-lg bg-[#C9A84C]/15 hover:bg-[#C9A84C]/30 text-[#C9A84C] text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                              title="Replace this Google Drive link with a file directly from laptop"
-                            >
-                              <span>💻 Replace with Laptop File</span>
-                            </button>
-                          )}
-                          <div className="flex items-center justify-between gap-2">
-                            <button
-                              onClick={() => handleInitiateReplace(item.slot_id)}
-                              className="flex-1 py-1 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors"
-                            >
-                              <RefreshCw className="w-3 h-3" /> Change
-                            </button>
-                            <button
-                              onClick={() => removeMedia(item.id || item.slot_id)}
-                              className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                              title="Revert slot to curated default"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
+                        <div className="p-3 pt-0 flex items-center justify-between border-t border-white/5 mt-2">
+                          <button
+                            onClick={() => handleInitiateReplace(item.slot_id)}
+                            className="text-[11px] text-[#C9A84C] hover:underline flex items-center gap-1"
+                          >
+                            <Edit3 className="w-3 h-3" /> Edit in Studio
+                          </button>
+                          <button
+                            onClick={() => removeMedia(item.id || item.slot_id)}
+                            className="text-[11px] text-neutral-500 hover:text-red-400"
+                            title="Reset to default"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </div>
                     );
@@ -492,6 +431,14 @@ export default function Admin() {
               )}
             </div>
           </div>
+        )}
+
+        {/* Tab: Social Profile IDs */}
+        {activeTab === "social" && (
+          <AdminSocialManager
+            settings={settings}
+            onSaveSettings={updateSettings}
+          />
         )}
 
         {/* Tab: Google Drive Workspace */}

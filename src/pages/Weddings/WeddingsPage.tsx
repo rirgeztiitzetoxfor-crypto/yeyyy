@@ -6,10 +6,8 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
-import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import BrandMarquee from "@/components/BrandMarquee";
-import RfpDeckGenerator from "@/components/RfpDeckGenerator";
-import StagePriceEstimator from "@/components/StagePriceEstimator";
+import LuxuryLeadGenerator from "@/components/LuxuryLeadGenerator";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
@@ -332,125 +330,12 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* WEDDING BOOKING FORM */}
-      <section id="booking" className="py-20 border-t border-white/5 bg-[#120D0E] relative">
-        {/* Instant Luxury Wedding Proposal & Rider Generator */}
-        <div className="max-w-6xl mx-auto px-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-neutral-900 via-[#1a0f12] to-neutral-900 border border-[#CC2936]/40 shadow-xl">
-          <div className="space-y-1 text-center sm:text-left">
-            <span className="text-[11px] font-mono tracking-widest text-[#F06292] uppercase font-semibold">
-              Instant Family Planning Dossier & Sangeet Itinerary
-            </span>
-            <h4 className="text-base sm:text-lg font-serif text-white font-medium">
-              Share Radhaa's Full Sangeet & Wedding Proposal With Your Family
-            </h4>
-            <p className="text-xs text-neutral-400">
-              Generates a personalized luxury dossier with video showreels, game formats, and technical stage rider.
-            </p>
-          </div>
-          <RfpDeckGenerator
-            initialEventType="Luxury Royal Sangeet"
-            triggerLabel="⚡ Generate Wedding Proposal (PDF)"
-            className="bg-gradient-to-r from-[#CC2936] to-[#b01e2b] text-white hover:from-[#e0313f] hover:to-[#CC2936] border border-[#ff4d5e]"
-          />
-        </div>
-
-        {/* Wedding Stage Scope & Investment Estimator */}
-        <div className="max-w-6xl mx-auto px-4 mb-10">
-          <StagePriceEstimator defaultCategory="weddings" />
-        </div>
-
-        {/* Real-Time Google Calendar Availability & One-Click Sync */}
-        <div className="max-w-6xl mx-auto px-4 mb-12">
-          <GoogleCalendarBooking
-            format="Luxury Weddings & Sangeet"
-            accentColor="crimson"
-          />
-        </div>
-
-        <div className="booking-grid max-w-6xl mx-auto px-4">
-          <div className="booking-info">
-            <div className="section-label" style={{ color: "#CC2936" }}>Reserve Wedding Dates</div>
-            <h2 className="section-title">
-              Let's Make Your Sangeet & <em>Wedding Legendary</em>
-            </h2>
-            <div className="gold-line" />
-            <p className="booking-desc">
-              Customized couple questions, grandparents' tribute cues, bridal entrance narration, and zero-awkwardness crowd control that creates memories for a lifetime.
-            </p>
-
-            <div className="booking-contact-list">
-              <div className="contact-item">
-                <div className="contact-icon">📍</div>
-                <div className="contact-label">Destination Weddings Across India & Worldwide</div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-icon">💬</div>
-                <div className="contact-label">Direct WhatsApp: +91 98765 43210</div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-icon">✉️</div>
-                <div className="contact-label">Email: weddings@radhaadudeja.com</div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex gap-4 flex-wrap">
-              <a
-                href={`https://wa.me/${(settings.whatsapp_number || "919876543210").replace(/[^0-9]/g, "")}?text=Hi%20Radhaa,%20we%20are%20planning%20our%20Wedding%20and%20would%20love%20to%20check%20your%20availability%20for%20our%20functions.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#20ba59] transition-all shadow-lg"
-              >
-                <MessageCircle className="w-4 h-4 fill-black" />
-                Direct Chat with Radhaa on WhatsApp
-              </a>
-            </div>
-          </div>
-
-          <div className="booking-form-wrap" style={{ borderColor: "rgba(204,41,54,0.3)" }}>
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div className="form-group">
-                <label className="form-label">Bride & Groom Names</label>
-                <input type="text" className="form-input" placeholder="e.g. Ananya & Rohan" required />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="form-group">
-                  <label className="form-label">Contact Person Phone / WhatsApp</label>
-                  <input type="tel" className="form-input" placeholder="+91 98765 43210" required />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Email Address</label>
-                  <input type="email" className="form-input" placeholder="youremail@gmail.com" required />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="form-group">
-                  <label className="form-label">Functions Needed</label>
-                  <select className="form-select" required>
-                    <option value="Sangeet & Games">Sangeet Night & Family Games</option>
-                    <option value="Complete Wedding">Full 2-3 Day Wedding (Haldi, Sangeet, Varmala)</option>
-                    <option value="Haldi & Mehendi">Haldi & Mehendi Afternoon Fiesta</option>
-                    <option value="Varmala & Reception">Varmala & Reception Gala</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Destination / City</label>
-                  <input type="text" className="form-input" placeholder="e.g. Jim Corbett / Udaipur / Goa" required />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Estimated Guest Count & Dates</label>
-                <input type="text" className="form-input" placeholder="e.g. 400 Guests · Nov 2026" />
-              </div>
-
-              <button type="submit" className="form-submit" style={{ background: "linear-gradient(to right, #CC2936, #E53935)", color: "#fff" }}>
-                {formStatus}
-              </button>
-            </form>
-          </div>
-        </div>
+      {/* WEDDING BOOKING & LEAD GENERATION */}
+      <section id="booking" className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 relative">
+        <LuxuryLeadGenerator
+          defaultVertical="weddings"
+          whatsappNumber={settings.whatsapp_number}
+        />
       </section>
 
       {/* FOOTER */}

@@ -6,10 +6,8 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
-import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import BrandMarquee from "@/components/BrandMarquee";
-import RfpDeckGenerator from "@/components/RfpDeckGenerator";
-import StagePriceEstimator from "@/components/StagePriceEstimator";
+import LuxuryLeadGenerator from "@/components/LuxuryLeadGenerator";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
 import { resolveSlotMedia } from "@/lib/siteSlots";
@@ -345,109 +343,12 @@ export default function CorporatePage() {
         </div>
       </section>
 
-      {/* CORPORATE BOOKING FORM */}
-      <section id="booking" className="py-20 border-t border-white/5 bg-[#0D0D0D] relative">
-        {/* Instant Executive RFP Pitch Deck Generator */}
-        <div className="max-w-6xl mx-auto px-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-neutral-900 via-[#181818] to-neutral-900 border border-[#C9A84C]/40 shadow-xl">
-          <div className="space-y-1 text-center sm:text-left">
-            <span className="text-[11px] font-mono tracking-widest text-[#C9A84C] uppercase font-semibold">
-              Instant Corporate Dossier & Stage Rider
-            </span>
-            <h4 className="text-base sm:text-lg font-serif text-white font-medium">
-              Present Radhaa Dudeja to Your Company Board or Events Committee
-            </h4>
-            <p className="text-xs text-neutral-400">
-              Generates an executive-ready proposal PDF customized with your company name, keynote specs, and AV rider.
-            </p>
-          </div>
-          <RfpDeckGenerator initialEventType="Corporate Tech Summit" triggerLabel="⚡ Generate Corporate Proposal (PDF)" />
-        </div>
-
-        {/* Corporate Stage Scope & Investment Estimator */}
-        <div className="max-w-6xl mx-auto px-4 mb-10">
-          <StagePriceEstimator defaultCategory="corporate" />
-        </div>
-
-        {/* Real-Time Google Calendar Availability & One-Click Sync */}
-        <div className="max-w-6xl mx-auto px-4 mb-12">
-          <GoogleCalendarBooking
-            format="Corporate Summits & Awards"
-            accentColor="gold"
-          />
-        </div>
-
-        <div className="booking-grid max-w-6xl mx-auto px-4">
-          <div className="booking-info">
-            <div className="section-label">Corporate Booking</div>
-            <h2 className="section-title">
-              Secure Your Summit & <em>Gala Dates</em>
-            </h2>
-            <div className="gold-line" />
-            <p className="booking-desc">
-              Customized script preparation, rehearsal coordination, teleprompter execution, and commanding bilingual delivery for your company's most important stage moments.
-            </p>
-
-            <div className="booking-contact-list">
-              <div className="contact-item">
-                <div className="contact-icon">📍</div>
-                <div className="contact-label">Pan-India & International Summits</div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-icon">✉️</div>
-                <div className="contact-label">Corporate Inquiries: bookings@radhaadudeja.com</div>
-              </div>
-              <div className="contact-item">
-                <div className="contact-icon">💬</div>
-                <div className="contact-label">Direct Corporate Desk: +91 98765 43210</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="booking-form-wrap">
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div className="form-group">
-                <label className="form-label">Company / Organization Name</label>
-                <input type="text" className="form-input" placeholder="e.g. Google India / Infosys / Tata Motors" required />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="form-group">
-                  <label className="form-label">Contact Person Name</label>
-                  <input type="text" className="form-input" placeholder="Your Full Name" required />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Corporate Email</label>
-                  <input type="email" className="form-input" placeholder="name@company.com" required />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="form-group">
-                  <label className="form-label">Event Format</label>
-                  <select className="form-select" required>
-                    <option value="Annual Leadership Summit">Tech / Industry Summit</option>
-                    <option value="Award Gala">Annual Excellence Awards Gala</option>
-                    <option value="Brand Launch">Product / Brand Reveal</option>
-                    <option value="Leadership Offsite">Executive Offsite & Team Energizer</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">City / Venue Location</label>
-                  <input type="text" className="form-input" placeholder="e.g. Delhi NCR / Mumbai / Bengaluru" required />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Estimated Delegation / Attendee Count</label>
-                <input type="text" className="form-input" placeholder="e.g. 300 - 500 Attendees" />
-              </div>
-
-              <button type="submit" className="form-submit">
-                {formStatus}
-              </button>
-            </form>
-          </div>
-        </div>
+      {/* CORPORATE BOOKING & LEAD GENERATION */}
+      <section id="booking" className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 relative">
+        <LuxuryLeadGenerator
+          defaultVertical="corporate"
+          whatsappNumber={settings.whatsapp_number}
+        />
       </section>
 
       {/* FOOTER */}

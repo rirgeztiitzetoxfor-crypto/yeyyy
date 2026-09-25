@@ -26,6 +26,9 @@ export interface SiteSettings {
   instagram_url: string;
   facebook_url: string;
   youtube_url: string;
+  linkedin_url?: string;
+  starclinch_url?: string;
+  email_address?: string;
   google_business_url: string;
   google_rating: string;
   google_reviews_count: string;
@@ -41,6 +44,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   instagram_url: "https://www.instagram.com/radha_dudeja_/",
   facebook_url: "https://www.facebook.com/profile.php?id=100091785037914",
   youtube_url: "https://www.youtube.com/@anchorrd8794",
+  linkedin_url: "https://www.linkedin.com/in/radhaadudeja",
+  starclinch_url: "https://starclinch.com/book-anchor-online/l--dehradun",
+  email_address: "bookings@radhaadudeja.com",
   google_business_url: "https://search.google.com/local/writereview?placeid=ChIJlYrZi9s_CjkR-NmXydNGO-Q",
   google_rating: "5.0",
   google_reviews_count: "150+",

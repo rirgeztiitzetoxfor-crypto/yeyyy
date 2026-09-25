@@ -31,7 +31,7 @@ export default function ParticleBackground() {
     window.addEventListener("resize", onResize);
 
     // Mouse coordinates
-    let mouse = { x: -1000, y: -1000 };
+    const mouse = { x: -1000, y: -1000 };
     const onMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
