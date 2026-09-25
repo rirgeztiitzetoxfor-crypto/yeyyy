@@ -6,6 +6,7 @@ import {
   parseYouTubeEmbedUrl,
 } from "@/hooks/useSiteMedia";
 import GoogleDriveUploader from "@/components/GoogleDriveUploader";
+import GoogleDriveWorkspace from "@/components/GoogleDriveWorkspace";
 import RadhaaLogo from "@/components/RadhaaLogo";
 import AdminSEOContentManager from "@/components/admin/AdminSEOContentManager";
 import AdminBlogManager from "@/components/admin/AdminBlogManager";
@@ -13,7 +14,7 @@ import AdminLeadsCRM from "@/components/admin/AdminLeadsCRM";
 import AdminConnectorsHub from "@/components/admin/AdminConnectorsHub";
 import LiveVisualContentEditor from "@/components/LiveVisualContentEditor";
 import AudioAtmosphereBar from "@/components/AudioAtmosphereBar";
-import { MASTER_SITE_SLOTS, resolveSlotMedia } from "@/lib/siteSlots";
+import { MASTER_SITE_SLOTS, resolveSlotMedia, getSlotById } from "@/lib/siteSlots";
 import {
   Lock,
   LogOut,
@@ -40,6 +41,8 @@ import {
   Zap,
   Edit3,
   Headphones,
+  HardDrive,
+  Sparkles,
 } from "lucide-react";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 
@@ -61,7 +64,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "corporate" | "weddings" | "visual_editor" | "audio_studio" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
+    "uploader" | "drive_workspace" | "corporate" | "weddings" | "visual_editor" | "audio_studio" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
   >("uploader");
 
   // Track which slot the user wants to replace from cards
@@ -219,7 +222,19 @@ export default function Admin() {
             }`}
           >
             <FolderOpen className="w-4 h-4" />
-            Google Drive Uploader
+            Media Uploader
+          </button>
+
+          <button
+            onClick={() => setActiveTab("drive_workspace")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "drive_workspace"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20 font-bold"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <HardDrive className="w-4 h-4 text-emerald-400" />
+            Google Drive Workspace
           </button>
 
           <button
@@ -476,6 +491,36 @@ export default function Admin() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Tab: Google Drive Workspace */}
+        {activeTab === "drive_workspace" && (
+          <div className="space-y-6">
+            <GoogleDriveWorkspace
+              defaultSlotId={selectedSlotForReplace}
+              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType) => {
+                const slotDef = getSlotById(slotId);
+                const section = slotDef?.section || "corporate";
+                const vertical =
+                  section === "weddings" || section === "games"
+                    ? "weddings_sangeet"
+                    : "corporate";
+
+                await addOrUpdateMedia({
+                  id: `media_${slotId}`,
+                  slot_id: slotId,
+                  media_url: mediaUrl,
+                  media_type: itemType,
+                  alt_text: itemTitle || slotDef?.default_title || "Stage Media",
+                  category: section === "weddings" ? "weddings_sangeet" : section === "corporate" ? "corporate" : "gallery",
+                  vertical: vertical,
+                  source: "gdrive",
+                  sort_order: Date.now(),
+                  badge: slotDef?.badge || "Drive Sync",
+                });
+              }}
+            />
           </div>
         )}
 

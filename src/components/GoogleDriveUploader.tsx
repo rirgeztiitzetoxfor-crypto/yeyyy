@@ -31,6 +31,7 @@ import {
   type SiteSlotDefinition,
 } from "@/lib/siteSlots";
 import { storeLocalFile } from "@/lib/indexedDbMedia";
+import GoogleDriveWorkspace from "@/components/GoogleDriveWorkspace";
 
 interface GoogleDriveUploaderProps {
   onMediaAdded: (
@@ -206,8 +207,8 @@ export default function GoogleDriveUploader({
   // ----------------------------------------------------
   // OPTION 2: GOOGLE DRIVE & CLOUD LINK STATE
   // ----------------------------------------------------
+  const [driveSubMode, setDriveSubMode] = useState<"workspace" | "single" | "bulk">("workspace");
   const [driveUrl, setDriveUrl] = useState("");
-  const [isBulkDriveMode, setIsBulkDriveMode] = useState(false);
   const [bulkDriveText, setBulkDriveText] = useState("");
   const [drivePreviewUrl, setDrivePreviewUrl] = useState<string | null>(null);
 
@@ -238,7 +239,7 @@ export default function GoogleDriveUploader({
     setStatus("uploading");
 
     try {
-      if (isBulkDriveMode) {
+      if (driveSubMode === "bulk") {
         // Bulk link mode: Split by newlines or commas
         const lines = bulkDriveText
           .split(/[\n,]/)
@@ -687,36 +688,52 @@ export default function GoogleDriveUploader({
 
       {/* STEP 2B: GOOGLE DRIVE & CLOUD LINK */}
       {sourceMode === "gdrive" && (
-        <form onSubmit={handleDriveSave} className="space-y-6 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
+        <div className="space-y-6 animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-[#C9A84C] text-black text-xs font-bold flex items-center justify-center font-mono">
                 2
               </span>
               <label className="text-xs uppercase font-mono tracking-wider text-[#C9A84C] font-semibold">
-                Google Drive or YouTube Cloud Input
+                Google Drive Cloud Integration
               </label>
             </div>
 
-            {/* Single vs Bulk Link Mode */}
-            <div className="flex items-center gap-2">
+            {/* Sub Mode Switcher: Workspace Folders vs Single vs Bulk */}
+            <div className="flex items-center gap-1.5 bg-black/60 p-1 rounded-xl border border-white/10">
               <button
                 type="button"
-                onClick={() => setIsBulkDriveMode(false)}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold ${
-                  !isBulkDriveMode ? "bg-[#C9A84C] text-black" : "bg-white/5 text-neutral-400"
+                onClick={() => setDriveSubMode("workspace")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                  driveSubMode === "workspace"
+                    ? "bg-[#C9A84C] text-black shadow-md font-bold"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                <FolderOpen className="w-3.5 h-3.5" />
+                <span>Drive Folders & Vault</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDriveSubMode("single")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  driveSubMode === "single"
+                    ? "bg-[#C9A84C] text-black shadow-md font-bold"
+                    : "text-neutral-400 hover:text-white"
                 }`}
               >
                 Single Link
               </button>
               <button
                 type="button"
-                onClick={() => setIsBulkDriveMode(true)}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold ${
-                  isBulkDriveMode ? "bg-[#C9A84C] text-black" : "bg-white/5 text-neutral-400"
+                onClick={() => setDriveSubMode("bulk")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  driveSubMode === "bulk"
+                    ? "bg-[#C9A84C] text-black shadow-md font-bold"
+                    : "text-neutral-400 hover:text-white"
                 }`}
               >
-                Bulk Links (Paste Multiple)
+                Bulk Links
               </button>
             </div>
           </div>
@@ -738,94 +755,131 @@ export default function GoogleDriveUploader({
             </div>
           </div>
 
-          {/* SINGLE LINK INPUT */}
-          {!isBulkDriveMode ? (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1.5">
-                  Google Drive Share Link, File ID, or YouTube Embed URL
-                </label>
-                <div className="relative">
-                  <LinkIcon className="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="url"
-                    value={driveUrl}
-                    onChange={(e) => handleSingleDriveUrlChange(e.target.value)}
-                    placeholder="https://drive.google.com/file/d/1XyZ.../view?usp=sharing"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:border-[#C9A84C] outline-none font-mono"
-                    required
-                  />
-                </div>
-              </div>
+          {/* SUB-VIEW 1: Interactive Drive Folders Workspace */}
+          {driveSubMode === "workspace" && (
+            <GoogleDriveWorkspace
+              defaultSlotId={selectedSlotId}
+              onAssignToSlot={async (slotId, mediaUrl, itemTitle, itemType) => {
+                const slotDef = getSlotById(slotId);
+                const section = slotDef?.section || "corporate";
+                const vertical =
+                  section === "weddings" || section === "games"
+                    ? "weddings_sangeet"
+                    : "corporate";
 
-              {/* Title & Badge */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1">
-                    Display Caption / Event Title
-                  </label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Brand Reveal Keynote Gala"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-[#C9A84C] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1">
-                    Badge Tag (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={badge}
-                    onChange={(e) => setBadge(e.target.value)}
-                    placeholder="e.g. Trending, Black Tie"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-[#C9A84C] outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* BULK DRIVE LINKS INPUT */
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1.5">
-                  Paste Multiple Google Drive / YouTube URLs (One per line)
-                </label>
-                <textarea
-                  rows={5}
-                  value={bulkDriveText}
-                  onChange={(e) => setBulkDriveText(e.target.value)}
-                  placeholder="https://drive.google.com/file/d/1ABC...\nhttps://drive.google.com/file/d/2XYZ...\nhttps://www.youtube.com/watch?v=..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-white focus:border-[#C9A84C] outline-none font-mono leading-relaxed"
-                  required
-                />
-                <span className="text-[10px] text-neutral-500 mt-1 block font-mono">
-                  Each link will automatically be converted to a direct embed and assigned to sequential slots or the video vault.
-                </span>
-              </div>
-            </div>
+                await onMediaAdded({
+                  id: `media_${slotId}`,
+                  slot_id: slotId,
+                  media_url: mediaUrl,
+                  media_type: itemType,
+                  alt_text: itemTitle || slotDef?.default_title || "Stage Media",
+                  category: section === "weddings" ? "weddings_sangeet" : section === "corporate" ? "corporate" : "gallery",
+                  vertical: vertical,
+                  source: "gdrive",
+                  sort_order: Date.now(),
+                  badge: slotDef?.badge || "Drive Sync",
+                });
+
+                setStatus("success");
+                setStatusMessage(`Successfully synced "${itemTitle}" to slot ${slotDef?.label || slotId}!`);
+                setTimeout(() => setStatus("idle"), 2500);
+              }}
+            />
           )}
 
-          <button
-            type="submit"
-            disabled={status === "uploading"}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E2C775] text-black font-bold text-xs uppercase tracking-wider hover:opacity-95 shadow-lg flex items-center justify-center gap-2 transition-all"
-          >
-            {status === "uploading" ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Importing Cloud Media...</span>
-              </>
-            ) : (
-              <>
-                <Check className="w-4 h-4" />
-                <span>Save Google Drive Media to Website</span>
-              </>
-            )}
-          </button>
-        </form>
+          {/* SUB-VIEW 2 & 3: Single Link or Bulk Links form */}
+          {driveSubMode !== "workspace" && (
+            <form onSubmit={handleDriveSave} className="space-y-6">
+              {/* SINGLE LINK INPUT */}
+              {driveSubMode === "single" ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1.5">
+                      Google Drive Share Link, File ID, or YouTube Embed URL
+                    </label>
+                    <div className="relative">
+                      <LinkIcon className="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="url"
+                        value={driveUrl}
+                        onChange={(e) => handleSingleDriveUrlChange(e.target.value)}
+                        placeholder="https://drive.google.com/file/d/1XyZ.../view?usp=sharing"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:border-[#C9A84C] outline-none font-mono"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Title & Badge */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1">
+                        Display Caption / Event Title
+                      </label>
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="e.g. Brand Reveal Keynote Gala"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-[#C9A84C] outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1">
+                        Badge Tag (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={badge}
+                        onChange={(e) => setBadge(e.target.value)}
+                        placeholder="e.g. Trending, Black Tie"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-[#C9A84C] outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* BULK DRIVE LINKS INPUT */
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs uppercase font-mono tracking-wider text-neutral-400 mb-1.5">
+                      Paste Multiple Google Drive / YouTube URLs (One per line)
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={bulkDriveText}
+                      onChange={(e) => setBulkDriveText(e.target.value)}
+                      placeholder="https://drive.google.com/file/d/1ABC...&#10;https://drive.google.com/file/d/2XYZ...&#10;https://www.youtube.com/watch?v=..."
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-white focus:border-[#C9A84C] outline-none font-mono leading-relaxed"
+                      required
+                    />
+                    <span className="text-[10px] text-neutral-500 mt-1 block font-mono">
+                      Each link will automatically be converted to a direct embed and assigned to sequential slots or the video vault.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "uploading"}
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E2C775] text-black font-bold text-xs uppercase tracking-wider hover:opacity-95 shadow-lg flex items-center justify-center gap-2 transition-all"
+              >
+                {status === "uploading" ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Importing Cloud Media...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span>Save Google Drive Media to Website</span>
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
       )}
 
       {/* Status Notifications */}
