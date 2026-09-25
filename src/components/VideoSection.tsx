@@ -6,7 +6,7 @@ const DEFAULT_VIDEOS = [
     slotId: "video_showreel",
     urlSlotId: "video_showreel_url",
     label: "🔥 Channel Highlight",
-    title: "Anchor Radha Dudeja — Full Channel Showreel",
+    title: "Anchor Radhaa Dudeja — Full Channel Showreel",
     fallbackUrl: "https://www.youtube.com/@anchorrd8794",
   },
   {
@@ -53,12 +53,12 @@ export default function VideoSection() {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}
       >
-        <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">Watch Radha in Action</p>
+        <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">Watch Radhaa in Action</p>
         <h2 className="font-heading text-3xl md:text-4xl text-foreground text-center mb-4">
           From the <em className="text-primary not-italic">showreel</em> & channel
         </h2>
         <p className="text-muted-foreground text-center max-w-xl mx-auto mb-16 text-sm">
-          Words describe talent. Videos prove it. Watch Radha host, engage, and electrify audiences across India's most memorable events.
+          Words describe talent. Videos prove it. Watch Radhaa host, engage, and electrify audiences across India's most memorable events.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">

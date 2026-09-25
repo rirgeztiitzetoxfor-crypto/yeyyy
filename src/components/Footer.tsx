@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <h3 className="font-heading text-xl text-primary tracking-widest mb-1">RADHA DUDEJA</h3>
+            <h3 className="font-heading text-xl text-primary tracking-widest mb-1">RADHAA DUDEJA</h3>
             <p className="text-muted-foreground text-xs tracking-widest">Anchor · Emcee · Host · Speaker</p>
           </div>
           <div className="flex gap-6">

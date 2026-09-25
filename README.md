@@ -1,10 +1,10 @@
-# Media Drop Box — Radha Landing Experience
+# Media Drop Box — Radhaa Landing Experience
 
-This project is a Vite + React landing page for Radha's premium event-hosting brand.
+This project is a Vite + React landing page for Radhaa's premium event-hosting brand.
 
-## Hear Radha voice preview
+## Hear Radhaa voice preview
 
-The **Hear Radha** section includes a live preview flow for ElevenLabs Text to Speech, but the vendor API key is now expected on the **server side only**.
+The **Hear Radhaa** section includes a live preview flow for ElevenLabs Text to Speech, but the vendor API key is now expected on the **server side only**.
 
 ## Local setup
 
@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-### 3) Open the Hear Radha section
+### 3) Open the Hear Radhaa section
 Enter a line and click **Generate voice preview**. The browser posts to `/api/voice-preview`, and the Vite server forwards the request to ElevenLabs.
 
 ## Voice settings used

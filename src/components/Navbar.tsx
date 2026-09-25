@@ -28,7 +28,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="#" className="font-heading text-xl tracking-widest text-primary">
-          RADHA
+          RADHAA
         </a>
 
         {/* Desktop */}
