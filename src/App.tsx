@@ -14,20 +14,14 @@ import BlogIndex from "./pages/Blog/BlogIndex";
 import NotFound from "./pages/NotFound.tsx";
 import ShadowRoom from './components/ShadowRoom';
 import Admin from "./pages/Admin.tsx";
-import LiveVisualContentEditor from "./components/LiveVisualContentEditor";
-import AudioAtmosphereBar from "./components/AudioAtmosphereBar";
+import HearRadhaScroll from "./components/HearRadhaScroll";
 
 const queryClient = new QueryClient();
 
 function GlobalAtmosphereControls() {
   const location = useLocation();
   if (location.pathname.startsWith("/admin")) return null;
-  return (
-    <>
-      <LiveVisualContentEditor />
-      <AudioAtmosphereBar />
-    </>
-  );
+  return <HearRadhaScroll />;
 }
 
 export default function App() {

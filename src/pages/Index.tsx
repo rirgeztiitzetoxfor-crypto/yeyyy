@@ -9,7 +9,6 @@ import WhyRadhaSection from "@/components/WhyRadhaSection";
 import QuoteSection from "@/components/QuoteSection";
 import VideoSection from "@/components/VideoSection";
 import EditorialPhilosophy from "@/components/EditorialPhilosophy";
-import VoiceAgentSection from "@/components/VoiceAgentSection";
 import GallerySection from "@/components/GallerySection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import InlineMediaKit from "@/components/InlineMediaKit";
@@ -45,7 +44,6 @@ export default function Index() {
       <VideoSection />
       <EditorialPhilosophy />
       <DigitalTwinSection />
-      <VoiceAgentSection />
       <GallerySection />
       <WhyRadhaSection />
       <QuoteSection />

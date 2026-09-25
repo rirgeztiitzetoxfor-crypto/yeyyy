@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSiteMedia, type SiteMedia } from "@/hooks/useSiteMedia";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { useBlog } from "@/hooks/useBlog";
-import VoiceAgentSection from "@/components/VoiceAgentSection";
 import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import RadhaaLogo from "@/components/RadhaaLogo";
@@ -193,8 +192,6 @@ export default function StellarIndex() {
 
       {/* 3D Gold Particle Constellation */}
       <ParticleBackground />
-
-      <VoiceAgentSection />
 
       {/* CUSTOM CURSOR */}
       <div className="cursor" ref={cursorRef} />

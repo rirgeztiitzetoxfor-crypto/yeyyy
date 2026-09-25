@@ -11,6 +11,8 @@ import AdminSEOContentManager from "@/components/admin/AdminSEOContentManager";
 import AdminBlogManager from "@/components/admin/AdminBlogManager";
 import AdminLeadsCRM from "@/components/admin/AdminLeadsCRM";
 import AdminConnectorsHub from "@/components/admin/AdminConnectorsHub";
+import LiveVisualContentEditor from "@/components/LiveVisualContentEditor";
+import AudioAtmosphereBar from "@/components/AudioAtmosphereBar";
 import {
   Lock,
   LogOut,
@@ -35,6 +37,8 @@ import {
   CalendarCheck,
   Users,
   Zap,
+  Edit3,
+  Headphones,
 } from "lucide-react";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 
@@ -56,7 +60,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "uploader" | "corporate" | "weddings" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
+    "uploader" | "corporate" | "weddings" | "visual_editor" | "audio_studio" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
   >("uploader");
 
   // Local settings edit state
@@ -75,6 +79,7 @@ export default function Admin() {
       password === "ATMOSPHERE_2026" ||
       password === "radhaa2026" ||
       password === "radha2026" ||
+      password === "radhaadudeja2026" ||
       password === "admin"
     ) {
       setAuthed(true);
@@ -229,6 +234,30 @@ export default function Admin() {
           >
             <Heart className="w-4 h-4" />
             Weddings & Sangeet ({weddingItems.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab("visual_editor")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "visual_editor"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Edit3 className="w-4 h-4" />
+            Visual Content Editor
+          </button>
+
+          <button
+            onClick={() => setActiveTab("audio_studio")}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${
+              activeTab === "audio_studio"
+                ? "bg-[#C9A84C] text-black shadow-lg shadow-[#C9A84C]/20"
+                : "bg-white/5 text-white/70 hover:bg-white/10"
+            }`}
+          >
+            <Headphones className="w-4 h-4" />
+            Stage Audio Studio
           </button>
 
           <button
@@ -722,6 +751,16 @@ export default function Admin() {
               </button>
             </form>
           </div>
+        )}
+
+        {/* Tab: Visual Content Editor */}
+        {activeTab === "visual_editor" && (
+          <LiveVisualContentEditor embedded={true} />
+        )}
+
+        {/* Tab: Stage Audio Studio */}
+        {activeTab === "audio_studio" && (
+          <AudioAtmosphereBar embedded={true} />
         )}
 
         {/* Tab: SEO & Website Content Text */}
