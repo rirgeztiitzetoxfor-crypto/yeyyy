@@ -2,7 +2,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const testimonials = [
   {
-    quote: "Radha was the life of our corporate gala — our employees are still talking about her! Her bilingual hosting kept everyone engaged and the energy she brought was electric.",
+    quote: "Radhaa was the life of our corporate gala — our employees are still talking about her! Her bilingual hosting kept everyone engaged and the energy she brought was electric.",
     name: "Priya Sharma",
     role: "HR Director, Fortune 500 Company · Delhi",
   },
@@ -12,7 +12,7 @@ const testimonials = [
     role: "Wedding Couple · Jim Corbett Destination Wedding",
   },
   {
-    quote: "Radha handled a last-minute change in our conference schedule with such grace and humor that the audience didn't even notice. True professional — highly recommended for any summit!",
+    quote: "Radhaa handled a last-minute change in our conference schedule with such grace and humor that the audience didn't even notice. True professional — highly recommended for any summit!",
     name: "Vikram Negi",
     role: "Event Director · Uttarakhand Tourism Festival",
   },
@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
       >
         <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">Client Love</p>
         <h2 className="font-heading text-3xl md:text-4xl text-foreground text-center mb-16">
-          What <em className="text-primary not-italic">clients say</em> about Radha
+          What <em className="text-primary not-italic">clients say</em> about Radhaa Dudeja
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">

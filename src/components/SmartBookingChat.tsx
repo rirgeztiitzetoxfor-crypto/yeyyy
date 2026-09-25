@@ -6,7 +6,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 const quickPrompts = [
-  "What events does Radha host?",
+  "What events does Radhaa host?",
   "Check availability for a wedding",
   "Corporate event inquiry",
   "Tell me about pricing",
@@ -145,7 +145,7 @@ export default function SmartBookingChat() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/30">
         <div>
-          <p className="text-foreground font-heading text-sm tracking-wide">Radha's Concierge</p>
+          <p className="text-foreground font-heading text-sm tracking-wide">Radhaa's Concierge</p>
           <p className="text-muted-foreground text-xs">Smart booking assistant</p>
         </div>
         <button
@@ -164,7 +164,7 @@ export default function SmartBookingChat() {
         {messages.length === 0 && (
           <div className="space-y-3">
             <p className="text-muted-foreground text-sm text-center py-4">
-              ✨ Ask me anything about Radha's availability, services, or event hosting.
+              ✨ Ask me anything about Radhaa's availability, services, or event hosting.
             </p>
             <div className="grid grid-cols-2 gap-2">
               {quickPrompts.map((q) => (

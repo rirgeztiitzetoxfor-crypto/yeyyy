@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Volume2, X, Play, Square } from "lucide-react";
 import { requestVoicePreview } from "@/lib/voicePreview";
 
-const INTRO_TEXT = "Namaste! I am Radha Dudeja. Welcome to my digital portfolio and interactive experience. From corporate galas to luxury sangeets, let my voice guide the energy of your next event. Feel free to explore my event lanes, check out my media cuts in the resource matrix, and secure your dates directly.";
+const INTRO_TEXT = "Namaste! I am Radhaa Dudeja. Welcome to my digital portfolio and interactive experience. From corporate summits to luxury sangeets, let my voice guide the energy of your next event. Feel free to explore my dedicated portals, watch my live reels in the video vault, and secure your dates directly.";
 
 export default function VoiceAgentSection() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +65,7 @@ export default function VoiceAgentSection() {
           
           <img 
             src="https://stellular-blancmange-2a0822.netlify.app/radha/photos/WhatsApp%20Image%202026-03-12%20at%2022.00.46.jpeg" 
-            alt="Radha Preview" 
+            alt="Radhaa Dudeja Preview" 
             className="w-full h-32 object-cover mb-4 border border-[#C9A84C]/30 grayscale opacity-80"
           />
 

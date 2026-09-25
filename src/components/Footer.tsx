@@ -20,7 +20,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-center mt-8 pt-8 border-t border-border">
-          <p className="text-muted-foreground text-xs">© 2026 Radha Dudeja. All rights reserved.</p>
+          <p className="text-muted-foreground text-xs">© 2026 Radhaa Dudeja. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -6,6 +6,7 @@ import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import RadhaaLogo from "@/components/RadhaaLogo";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
+import MotionVideoBackground from "@/components/MotionVideoBackground";
 import ParticleBackground from "@/components/ParticleBackground";
 import TiltCard from "@/components/TiltCard";
 import NetflixBillboard from "@/components/NetflixBillboard";
@@ -159,7 +160,7 @@ export default function StellarIndex() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFormStatus("🎉 Inquiry Sent! Radha will respond within 24 hours.");
+    setFormStatus("🎉 Inquiry Sent! Radhaa will respond within 24 hours.");
 
     confetti({
       particleCount: 90,
@@ -181,6 +182,9 @@ export default function StellarIndex() {
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
+      {/* Continuous Ambient Looping Motion Video & Dynamic Stage Spotlight Sweep */}
+      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.68} accentColor="gold" />
+
       {/* 3D Gold Particle Constellation */}
       <ParticleBackground />
 
@@ -293,7 +297,7 @@ export default function StellarIndex() {
                     <Briefcase className="w-6 h-6" />
                   </div>
                   <span className="text-[11px] font-semibold tracking-wider text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/30 px-2.5 py-1 rounded-full uppercase">
-                    Vertical 01 · Corporate
+                    Corporate Conclaves
                   </span>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-serif text-white font-bold group-hover:text-[#C9A84C] transition-colors">
@@ -328,7 +332,7 @@ export default function StellarIndex() {
                     <Heart className="w-6 h-6 fill-[#CC2936] text-[#CC2936]" />
                   </div>
                   <span className="text-[11px] font-semibold tracking-wider text-[#F06292] bg-[#CC2936]/10 border border-[#CC2936]/30 px-2.5 py-1 rounded-full uppercase">
-                    Vertical 02 · Weddings
+                    Luxury Celebrations
                   </span>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-serif text-white font-bold group-hover:text-[#F06292] transition-colors">
@@ -364,7 +368,7 @@ export default function StellarIndex() {
         <NetflixMediaRail
           title="Trending: Corporate Summits & Annual Galas"
           subtitle="Fortune 500 conferences, keynotes, and executive stagecraft"
-          tag="Vertical 01 · Corporate"
+          tag="Corporate Conclaves"
           tagColor="#C9A84C"
           items={dynamicCorporate}
           onItemSelect={(item) =>
@@ -376,7 +380,7 @@ export default function StellarIndex() {
         <NetflixMediaRail
           title="Top Picks: Luxury Sangeet & Destination Weddings"
           subtitle="Electric dance transitions, royal varmala direction, and family storytelling"
-          tag="Vertical 02 · Weddings & Celebrations"
+          tag="Luxury Celebrations"
           tagColor="#CC2936"
           items={dynamicWeddings}
           onItemSelect={(item) =>
@@ -467,174 +471,104 @@ export default function StellarIndex() {
         </div>
       </div>
 
-      {/* DETAILED VERTICAL 1: CORPORATE STAGE & SUMMITS */}
-      <section id="corporate" className="py-20 border-t border-b border-white/5 bg-[#0D0D0D]">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C9A84C] mb-3 reveal">
-            <Briefcase className="w-4 h-4" /> Vertical 01
-          </div>
-          <h2 className="section-title reveal reveal-delay-1">
-            Corporate Events, Summits & <em>Galas</em>
-          </h2>
-          <p className="text-sm text-[#A0A0A0] max-w-2xl mt-3 reveal reveal-delay-2">
-            Polished articulation, meticulous schedule adherence, and executive stage presence for your brand's biggest milestones.
-          </p>
-
-          <div className="events-grid mt-12">
-            <TiltCard maxTilt={8} className="reveal reveal-delay-1">
-              <div className="event-card h-full">
-                <img src="images/img_06.jpg" alt="Conferences & Summits" />
-                <div className="event-card-content">
-                  <div className="event-card-tag">Leadership</div>
-                  <div className="event-card-icon">💼</div>
-                  <div className="event-card-title">Tech Summits & Conferences</div>
-                  <div className="event-card-desc">
-                    Seamless speaker introductions, fireside chats, panel discussions, and bilingual transitions that keep international delegations fully engaged.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-2">
-              <div className="event-card h-full">
-                <img src="images/img_11.jpg" alt="Annual Galas & Awards" />
-                <div className="event-card-content">
-                  <div className="event-card-tag">Excellence</div>
-                  <div className="event-card-icon">🏆</div>
-                  <div className="event-card-title">Annual Galas & Award Nights</div>
-                  <div className="event-card-desc">
-                    High-glamour black-tie evenings celebrating organizational triumphs with poise, excitement, and seamless teleprompter execution.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-3">
-              <div className="event-card h-full">
-                <img src="images/img_20.jpg" alt="Brand Launches" />
-                <div className="event-card-content">
-                  <div className="event-card-tag">Brand Impact</div>
-                  <div className="event-card-icon">🚀</div>
-                  <div className="event-card-title">Brand Launches & Keynotes</div>
-                  <div className="event-card-desc">
-                    Dynamic storytelling and dramatic reveal build-ups that maximize media spotlight and customer enthusiasm.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-4">
-              <div className="event-card h-full">
-                <img src="images/img_13.jpg" alt="Offsites & Icebreakers" />
-                <div className="event-card-content">
-                  <div className="event-card-tag">Engagement</div>
-                  <div className="event-card-icon">⚡</div>
-                  <div className="event-card-title">Offsites & Leadership Retreats</div>
-                  <div className="event-card-desc">
-                    Energetic team-building games, leadership icebreakers, and evening entertainment tailored for high-performing teams.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-          </div>
-
-          <div className="mt-12 p-8 bg-[#141414] border border-[#C9A84C]/30 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 reveal">
+      {/* FEATURED STAGE INSIGHTS & INDUSTRY ARTICLES */}
+      <section id="insights" className="py-20 border-t border-b border-white/5 relative bg-gradient-to-b from-[#0A0A0A] via-[#111111] to-[#0A0A0A]">
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
+          <div className="flex items-center justify-between flex-wrap gap-4 mb-10">
             <div>
-              <h4 className="text-lg font-bold text-white tracking-wide">
-                Need Corporate Pitch Materials or Showreel?
-              </h4>
-              <p className="text-xs text-[#888] mt-1">
-                Download Radha's corporate profile or watch specific event cuts.
+              <div className="section-label reveal">Knowledge & Stagecraft</div>
+              <h2 className="section-title reveal reveal-delay-1">
+                Featured Stage Insights & <em>Industry Articles</em>
+              </h2>
+              <p className="text-xs text-[#888] max-w-xl mt-2 reveal reveal-delay-2">
+                Curated playbooks on luxury sangeet pacing, executive stagecraft, crowd psychology, and high-stakes conference moderation by Radhaa Dudeja.
               </p>
             </div>
-            <div className="flex gap-3 flex-wrap">
-              <a
-                href={getMediaUrl("pdf_corporate", "#booking")}
-                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-2"
-              >
-                <FileText className="w-4 h-4 text-[#C9A84C]" /> Corporate Profile
-              </a>
-              <a
-                href="#booking"
-                onClick={() => setSelectedVertical("Corporate Event")}
-                className="px-6 py-2.5 rounded-xl bg-[#C9A84C] text-black text-xs font-semibold tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#C9A84C]/20"
-              >
-                Book Corporate Anchor
-              </a>
+            <a
+              href="/blog"
+              className="reveal px-5 py-2.5 rounded-full border border-[#C9A84C]/40 text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-2 shadow-lg"
+            >
+              Explore All Articles <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {blogs.slice(0, 3).map((post, idx) => (
+              <TiltCard key={post.id} maxTilt={6} className={`reveal reveal-delay-${idx + 1}`}>
+                <div className="group h-full rounded-2xl overflow-hidden bg-neutral-900/90 border border-white/10 hover:border-[#C9A84C]/50 transition-all flex flex-col justify-between p-4 shadow-xl">
+                  <div>
+                    <div className="relative aspect-video rounded-xl overflow-hidden mb-4 bg-black">
+                      <img
+                        src={post.cover_image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <span className="absolute top-2.5 left-2.5 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md text-[#C9A84C] border border-[#C9A84C]/30">
+                        {post.category}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-[#A0A0A0] flex items-center justify-between mb-2">
+                      <span>{post.published_date}</span>
+                      <span>{post.read_time}</span>
+                    </div>
+                    <h3 className="text-base font-bold text-white group-hover:text-[#C9A84C] transition-colors line-clamp-2 leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-xs text-neutral-400 mt-2 line-clamp-3 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                  <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex gap-1 flex-wrap">
+                      {post.tags.slice(0, 2).map((t) => (
+                        <span key={t} className="text-[10px] text-neutral-300 bg-white/5 px-2 py-0.5 rounded">
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
+                    <a
+                      href={`/blog/${post.slug}`}
+                      className="text-xs font-semibold text-[#C9A84C] hover:underline flex items-center gap-1"
+                    >
+                      Read Playbook →
+                    </a>
+                  </div>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
+
+          {/* DEDICATED PORTALS SEPARATION BANNER */}
+          <div className="mt-16 p-8 rounded-3xl border border-white/10 bg-gradient-to-r from-[#17130A] via-black to-[#1A0A0E] relative overflow-hidden reveal">
+            <MotionVideoBackground variant="card" overlayOpacity={0.75} accentColor="gold" />
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#C9A84C] block mb-1">
+                  100% Dedicated & Separated Portals
+                </span>
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  Corporate Conclaves & Luxury Celebrations
+                </h3>
+                <p className="text-xs text-neutral-300 mt-1 max-w-xl">
+                  Each portal is uniquely customized with tailored showreels, verified client testimonials, and dedicated booking desks.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="/corporate"
+                  className="px-5 py-2.5 rounded-xl bg-[#C9A84C] text-black font-semibold text-xs tracking-wider uppercase hover:bg-[#E2C775] transition-all flex items-center gap-2 shadow-lg"
+                >
+                  <Briefcase className="w-4 h-4" /> Corporate Portal
+                </a>
+                <a
+                  href="/weddings"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#CC2936] to-[#b01e2b] text-white font-semibold text-xs tracking-wider uppercase hover:opacity-95 transition-all flex items-center gap-2 shadow-lg"
+                >
+                  <Heart className="w-4 h-4" /> Weddings Portal
+                </a>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* DETAILED VERTICAL 2: WEDDINGS, SANGEET & CELEBRATIONS */}
-      <section id="weddings" className="py-20 bg-gradient-to-b from-[#080808] to-[#120D0E]">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#CC2936] mb-3 reveal">
-            <Heart className="w-4 h-4" /> Vertical 02
-          </div>
-          <h2 className="section-title reveal reveal-delay-1">
-            Weddings, Sangeet & <em>Family Celebrations</em>
-          </h2>
-          <p className="text-sm text-[#A0A0A0] max-w-2xl mt-3 reveal reveal-delay-2">
-            The beating heart of family celebrations — vibrant crowd control, hilarious games, and emotional storytelling that bonds both families into one.
-          </p>
-
-          <div className="events-grid mt-12">
-            <TiltCard maxTilt={8} className="reveal reveal-delay-1">
-              <div className="event-card h-full">
-                <img src="images/img_28.jpg" alt="Luxury Sangeet Night" />
-                <div className="event-card-content">
-                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Celebration</div>
-                  <div className="event-card-icon">💃</div>
-                  <div className="event-card-title">Luxury Sangeet Nights</div>
-                  <div className="event-card-desc">
-                    Electrifying dance performance transitions, couple roast battles, rapid-fire quizzes, and seamless DJ synchronization that keeps the floor packed till 3 AM.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-2">
-              <div className="event-card h-full">
-                <img src="images/img_33.jpg" alt="Interactive Family Games" />
-                <div className="event-card-content">
-                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Signature</div>
-                  <div className="event-card-icon">🎯</div>
-                  <div className="event-card-title">Interactive Family Games & Icebreakers</div>
-                  <div className="event-card-desc">
-                    Curated signature games getting grandparents, cousins, and in-laws laughing and bonding together with zero awkwardness and 100% genuine joy.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-3">
-              <div className="event-card h-full">
-                <img src="images/img_14.jpg" alt="Varmala & Royal Wedding" />
-                <div className="event-card-content">
-                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Royalty</div>
-                  <div className="event-card-icon">💍</div>
-                  <div className="event-card-title">Varmala Direction & Royal Wedding</div>
-                  <div className="event-card-desc">
-                    Poetic Hindi and English narration, customized bride-groom entrance themes, and sacred traditional warmth delivered with cinematic poise.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <TiltCard maxTilt={8} className="reveal reveal-delay-4">
-              <div className="event-card h-full">
-                <img src="images/img_32.jpg" alt="Haldi & Mehendi" />
-                <div className="event-card-content">
-                  <div className="event-card-tag" style={{ background: "#CC2936", color: "#fff" }}>Festive</div>
-                  <div className="event-card-icon">💛</div>
-                  <div className="event-card-title">Haldi, Mehendi & Pool Parties</div>
-                  <div className="event-card-desc">
-                    Sun-soaked afternoon energy, Punjabi dhol coordination, impromptu dance challenges, and vibrant interactive entertainment.
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
           </div>
         </div>
       </section>
@@ -662,7 +596,7 @@ export default function StellarIndex() {
                 <div className="quote-mark">"</div>
                 <div className="testimonial-stars">★★★★★</div>
                 <div className="testimonial-text">
-                  "Radha was the life of our corporate annual gala — our executives and international delegates were blown away! Her bilingual delivery kept everyone locked in."
+                  "Radhaa was the life of our corporate annual gala — our executives and international delegates were blown away! Her bilingual delivery kept everyone locked in."
                 </div>
                 <div className="testimonial-author">Priya Sharma</div>
                 <div className="testimonial-role">HR Director · Fortune 500 Tech Summit, Delhi</div>
@@ -686,7 +620,7 @@ export default function StellarIndex() {
                 <div className="quote-mark">"</div>
                 <div className="testimonial-stars">★★★★★</div>
                 <div className="testimonial-text">
-                  "We had a sudden 45-minute AV glitch backstage during the awards. Radha held the crowd with spontaneous improv, trivia, and humor without missing a beat. Truly exceptional!"
+                  "We had a sudden 45-minute AV glitch backstage during the awards. Radhaa held the crowd with spontaneous improv, trivia, and humor without missing a beat. Truly exceptional!"
                 </div>
                 <div className="testimonial-author">Vikram Negi</div>
                 <div className="testimonial-role">Event Director · Brand Activation Summit</div>
@@ -700,7 +634,7 @@ export default function StellarIndex() {
       <section id="social" className="py-16 bg-[#0E0E0E]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="section-label reveal" style={{ justifyContent: "center" }}>
-            Connect With Radha
+            Connect With Radhaa Dudeja
           </div>
           <h2 className="section-title reveal reveal-delay-1" style={{ textAlign: "center" }}>
             Follow the <em>Live Journey</em>
@@ -723,7 +657,7 @@ export default function StellarIndex() {
             </h2>
             <div className="gold-line" />
             <p className="booking-desc reveal reveal-delay-2">
-              Whether you are organizing a high-profile corporate summit or an intimate family celebration, Radha brings customized preparation and electric stage presence.
+              Whether you are organizing a high-profile corporate summit or an intimate family celebration, Radhaa Dudeja brings customized preparation and electric stage presence.
             </p>
 
             <div className="booking-contact-list">
@@ -737,13 +671,13 @@ export default function StellarIndex() {
               </div>
               <div className="contact-item reveal reveal-delay-2">
                 <div className="contact-icon">✉️</div>
-                <div className="contact-label">Email: bookings@radhadudeja.com</div>
+                <div className="contact-label">Email: bookings@radhaadudeja.com</div>
               </div>
             </div>
 
             <div className="mt-8 flex gap-4 flex-wrap">
               <a
-                href={`https://wa.me/${(settings.whatsapp_number || "919876543210").replace(/[^0-9]/g, "")}?text=Hi%20Radha,%20I%20am%20inquiring%20about%20booking%20you%20for%20a%20${encodeURIComponent(selectedVertical)}.`}
+                href={`https://wa.me/${(settings.whatsapp_number || "919876543210").replace(/[^0-9]/g, "")}?text=Hi%20Radhaa,%20I%20am%20inquiring%20about%20booking%20you%20for%20a%20${encodeURIComponent(selectedFormat)}.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#20ba59] transition-all shadow-lg"
@@ -759,14 +693,14 @@ export default function StellarIndex() {
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs uppercase tracking-wider text-[#A0A0A0] mb-2 font-medium">
-                  Select Event Vertical
+                  Select Experience Format
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={() => setSelectedVertical("Corporate Event")}
+                    onClick={() => setSelectedFormat("Corporate Summits & Awards")}
                     className={`py-2.5 px-3 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
-                      selectedVertical === "Corporate Event"
+                      selectedFormat === "Corporate Summits & Awards"
                         ? "bg-[#C9A84C] text-black border-[#C9A84C]"
                         : "bg-white/5 text-white/70 border-white/10"
                     }`}
@@ -775,9 +709,9 @@ export default function StellarIndex() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSelectedVertical("Wedding / Sangeet / Games")}
+                    onClick={() => setSelectedFormat("Luxury Weddings & Sangeet")}
                     className={`py-2.5 px-3 rounded-xl border text-xs font-semibold tracking-wider uppercase transition-all ${
-                      selectedVertical === "Wedding / Sangeet / Games"
+                      selectedFormat === "Luxury Weddings & Sangeet"
                         ? "bg-[#CC2936] text-white border-[#CC2936]"
                         : "bg-white/5 text-white/70 border-white/10"
                     }`}
@@ -814,7 +748,7 @@ export default function StellarIndex() {
                 <textarea
                   className="form-textarea"
                   rows={3}
-                  placeholder={`Tell Radha about your event, expected guest count, or themes...`}
+                  placeholder={`Tell Radhaa about your event, expected guest count, or themes...`}
                 />
               </div>
 
@@ -830,18 +764,19 @@ export default function StellarIndex() {
       <footer>
         <div className="footer-grid">
           <div>
-            <div className="footer-logo">Radha Dudeja</div>
+            <div className="footer-logo">Radhaa Dudeja</div>
             <p className="footer-tagline">
               The Radhaa Dudeja Experience: Premier Anchor & Corporate Emcee for High-Stakes Summits, Luxury Sangeets, and Signature Celebrations.
             </p>
           </div>
           <div>
-            <div className="footer-col-title">Verticals</div>
+            <div className="footer-col-title">Portals & Experiences</div>
             <ul className="footer-links">
-              <li><a href="#corporate">Corporate Events</a></li>
-              <li><a href="#corporate">Tech & Annual Summits</a></li>
-              <li><a href="#weddings">Weddings & Sangeet</a></li>
-              <li><a href="#games">Signature Family Games</a></li>
+              <li><a href="/corporate">Corporate Summits</a></li>
+              <li><a href="/corporate">Tech & Annual Galas</a></li>
+              <li><a href="/weddings">Luxury Weddings & Sangeet</a></li>
+              <li><a href="/weddings#games">Signature Family Games</a></li>
+              <li><a href="/blog">Stage Insights & Blog</a></li>
             </ul>
           </div>
           <div>

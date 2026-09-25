@@ -120,7 +120,7 @@ export default function BookingSection() {
                   className="mt-1 accent-[hsl(var(--primary))]"
                 />
                 <span className="text-muted-foreground text-xs leading-relaxed">
-                  I want Radha or her team to contact me about this event brief.
+                  I want Radhaa or her team to contact me about this event brief.
                 </span>
               </label>
 

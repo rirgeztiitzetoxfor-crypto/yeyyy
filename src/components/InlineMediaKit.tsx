@@ -3,8 +3,8 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 const socials = [
   { label: "Instagram", handle: "@radha_dudeja_", url: "https://www.instagram.com/radha_dudeja_/" },
   { label: "Facebook", handle: "radha.dudeja.2025", url: "https://www.facebook.com/radha.dudeja.2025" },
-  { label: "Facebook", handle: "Radha Dudeja", url: "https://www.facebook.com/profile.php?id=100091785037914" },
-  { label: "StarClinch", handle: "Anchor Radha Dudeja", url: "https://starclinch.com/book-anchor-online/l--dehradun" },
+  { label: "Facebook", handle: "Radhaa Dudeja", url: "https://www.facebook.com/profile.php?id=100091785037914" },
+  { label: "StarClinch", handle: "Anchor Radhaa Dudeja", url: "https://starclinch.com/book-anchor-online/l--dehradun" },
 ];
 
 export default function InlineMediaKit() {
@@ -104,13 +104,13 @@ export default function InlineMediaKit() {
           <div className="grid grid-cols-2 gap-4">
             <img
               src="https://stellular-blancmange-2a0822.netlify.app/radha/photos/WhatsApp%20Image%202026-03-12%20at%2022.00.49.jpeg"
-              alt="Radha Dudeja editorial"
+              alt="Radhaa Dudeja editorial"
               className="w-full aspect-[3/4] object-cover border border-border"
               loading="lazy"
             />
             <img
               src="https://stellular-blancmange-2a0822.netlify.app/radha/photos/WhatsApp%20Image%202026-03-12%20at%2022.00.50.jpeg"
-              alt="Radha Dudeja portrait"
+              alt="Radhaa Dudeja portrait"
               className="w-full aspect-[3/4] object-cover border border-border mt-8"
               loading="lazy"
             />

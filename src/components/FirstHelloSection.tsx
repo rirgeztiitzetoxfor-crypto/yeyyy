@@ -6,7 +6,7 @@ const moods = [
     id: "celebration",
     tab: "Celebration Spark",
     tagline: "For sangeets, receptions, and moments that need brightness, charm, and movement.",
-    greeting: "Hello, if this is a wedding or celebration, this is the Radha who makes the room feel glowing, graceful, and fully alive.",
+    greeting: "Hello, if this is a wedding or celebration, this is the Radhaa who makes the room feel glowing, graceful, and fully alive.",
     looks: "Editorial and expensive",
     sounds: "Warm, clear, trusted",
     leads: "Straight into booking",
@@ -16,7 +16,7 @@ const moods = [
     id: "ivory",
     tab: "Soft Ivory Grace",
     tagline: "For elegant family rooms, intimate luxury events, and softer romantic mood.",
-    greeting: "Hello, if this is an intimate gathering or elegant affair, this is the Radha who brings warmth, poise, and quiet luxury to every moment.",
+    greeting: "Hello, if this is an intimate gathering or elegant affair, this is the Radhaa who brings warmth, poise, and quiet luxury to every moment.",
     looks: "Soft and refined",
     sounds: "Gentle, poised, intimate",
     leads: "Into curated experience",
@@ -26,7 +26,7 @@ const moods = [
     id: "editorial",
     tab: "Editorial Sunlight",
     tagline: "For polished brand-facing moments, premium portraits, and fashion-forward first impressions.",
-    greeting: "Hello, if this is a brand or editorial stage, this is the Radha who commands the frame with cinematic presence and sharp authority.",
+    greeting: "Hello, if this is a brand or editorial stage, this is the Radhaa who commands the frame with cinematic presence and sharp authority.",
     looks: "Fashion-forward and bold",
     sounds: "Polished, confident, magnetic",
     leads: "Into brand collaboration",
@@ -54,7 +54,7 @@ export default function FirstHelloSection() {
       >
         <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">First Hello</p>
         <h2 className="font-heading text-3xl md:text-4xl text-foreground text-center mb-4">
-          Let the first ten seconds feel like Radha already <em className="text-primary not-italic">entered the room.</em>
+          Let the first ten seconds feel like Radhaa already <em className="text-primary not-italic">entered the room.</em>
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12 text-sm leading-relaxed">
           This is where image, voice, mood, and booking stop feeling like separate pieces. A planner should see her,
@@ -120,7 +120,7 @@ export default function FirstHelloSection() {
               loading="lazy"
             />
             <div className="absolute bottom-4 left-4">
-              <p className="text-foreground text-sm font-medium">Radha Dudeja</p>
+              <p className="text-foreground text-sm font-medium">Radhaa Dudeja</p>
               <p className="text-muted-foreground text-xs">Anchor RDJ</p>
             </div>
           </div>

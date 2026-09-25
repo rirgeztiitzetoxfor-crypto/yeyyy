@@ -6,6 +6,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
+import MotionVideoBackground from "@/components/MotionVideoBackground";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
@@ -108,6 +109,9 @@ export default function WeddingsPage() {
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
+      {/* Ambient Looping Motion Video & Stage Spotlight Sweep */}
+      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.7} accentColor="crimson" />
+
       <ParticleBackground />
 
       {/* LIGHTBOX */}
@@ -203,7 +207,7 @@ export default function WeddingsPage() {
         <NetflixMediaRail
           title="Top Picks: Luxury Sangeet & Destination Weddings"
           subtitle="Electric dance transitions, couple roast battles, and royal varmala narration"
-          tag="Vertical 02 · Weddings & Celebrations"
+          tag="Luxury Celebrations · Sangeet & Weddings"
           tagColor="#CC2936"
           items={weddingsSangeetRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}

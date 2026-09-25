@@ -30,7 +30,7 @@ export default function ShadowRoom({ onExit }: ShadowRoomProps) {
       </header>
       
       <p className="max-w-xl text-white/70 tracking-wide text-sm leading-relaxed mb-12">
-        Access Radha's curated, event-specific packages. These PDF narratives and high-fidelity media cuts are designed specifically for planners, brands, and engaged couples to review.
+        Access Radhaa's curated, event-specific packages. These PDF narratives and high-fidelity media cuts are designed specifically for planners, brands, and engaged couples to review.
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

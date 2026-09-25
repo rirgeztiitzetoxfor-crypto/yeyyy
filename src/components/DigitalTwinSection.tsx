@@ -7,17 +7,17 @@ const FALLBACK_AVATAR = "https://stellular-blancmange-2a0822.netlify.app/radha/p
 const GREETINGS = [
   {
     lang: "Hindi",
-    text: "Namaste! Main Radha Dudeja ki Digital Twin hoon. Chaliye main aapko is website ke important hisson tak guide karti hoon.",
+    text: "Namaste! Main Radhaa Dudeja ki Digital Twin hoon. Chaliye main aapko is website ke important hisson tak guide karti hoon.",
     label: "🇮🇳 Hindi",
   },
   {
     lang: "English",
-    text: "Hello! I am Radha's Digital Twin. I can guide you to her booking sections, media kits, or the shadow matrix.",
+    text: "Hello! I am Radhaa's Digital Twin. I can guide you to her booking sections, media kits, or the shadow matrix.",
     label: "🇬🇧 English",
   },
   {
     lang: "Punjabi",
-    text: "Sat Sri Akal! Main Radha di AI Twin haan. Aao main tuhanu website ghuma ke dikhawan.",
+    text: "Sat Sri Akal! Main Radhaa di AI Twin haan. Aao main tuhanu website ghuma ke dikhawan.",
     label: "🇮🇳 Punjabi",
   },
 ];
@@ -85,11 +85,11 @@ export default function DigitalTwinSection() {
           Voice of the Gods + Digital Twin
         </p>
         <h2 className="font-heading text-3xl md:text-4xl text-foreground text-center mb-4">
-          Hear Radha — in{" "}
+          Hear Radhaa — in{" "}
           <em className="text-primary not-italic">three languages.</em>
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12 text-sm leading-relaxed">
-          AI-powered voice synthesis lets you experience Radha's warmth before she arrives.
+          AI-powered voice synthesis lets you experience Radhaa's warmth before she arrives.
           Click a language below to hear her greet you — powered by ElevenLabs multilingual voice technology.
         </p>
 
@@ -142,7 +142,7 @@ export default function DigitalTwinSection() {
               <>
                 <img
                   src={avatarUrl}
-                  alt="Radha Dudeja — Digital Twin Preview"
+                  alt="Radhaa Dudeja — Digital Twin Preview"
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                   loading="lazy"
                 />
@@ -169,7 +169,7 @@ export default function DigitalTwinSection() {
                 <div className="relative mb-6">
                   <img
                     src={avatarUrl}
-                    alt="AI Radha speaking"
+                    alt="AI Radhaa speaking"
                     className="w-40 h-40 rounded-full object-cover border-2 border-primary"
                   />
                   <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping" />
@@ -178,7 +178,7 @@ export default function DigitalTwinSection() {
                   "Let me guide you."
                 </p>
                 <p className="text-muted-foreground text-sm max-w-md text-center mb-6">
-                  I am Radha's AI Clone. Where would you like to explore next?
+                  I am Radhaa's AI Clone. Where would you like to explore next?
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <button
@@ -191,7 +191,7 @@ export default function DigitalTwinSection() {
                     Explore Event Lanes
                   </a>
                   <a href="#booking" className="px-5 py-2.5 bg-primary text-primary-foreground text-xs tracking-widest uppercase font-heading hover:bg-primary/90 transition-colors">
-                    Book Radha Live
+                    Book Radhaa Live
                   </a>
                 </div>
               </div>
@@ -216,7 +216,7 @@ export default function DigitalTwinSection() {
         </div>
 
         <p className="text-muted-foreground text-xs text-center mt-8 tracking-wide">
-          Powered by ElevenLabs + HeyGen + D-ID — Part of Radha's GOD LEVEL 2 AI Ecosystem
+          Powered by ElevenLabs + HeyGen + D-ID — Part of Radhaa's GOD LEVEL 2 AI Ecosystem
         </p>
       </div>
     </section>

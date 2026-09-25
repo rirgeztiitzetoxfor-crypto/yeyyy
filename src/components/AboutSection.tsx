@@ -33,13 +33,13 @@ export default function AboutSection() {
           <div className="grid grid-cols-2 gap-4">
             <img
               src={getMediaUrl("about_photo_1", FALLBACK_ABOUT_1)}
-              alt="Radha Dudeja on stage"
+              alt="Radhaa Dudeja on stage"
               className="w-full aspect-[3/4] object-cover"
               loading="lazy"
             />
             <img
               src={getMediaUrl("about_photo_2", FALLBACK_ABOUT_2)}
-              alt="Radha Dudeja close-up"
+              alt="Radhaa Dudeja close-up"
               className="w-full aspect-[3/4] object-cover mt-8"
               loading="lazy"
             />
@@ -56,7 +56,7 @@ export default function AboutSection() {
               "I don't just host an event, I ignite an experience."
             </blockquote>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Radha Dudeja enters every stage with the energy of a live wire and the poise of a seasoned speaker.
+              Radhaa Dudeja enters every stage with the energy of a live wire and the poise of a seasoned speaker.
               Growing up in Ramnagar near the lush forests of Jim Corbett, she was always the one who could charm
               a room — and today, that natural magnetism has blossomed into a career that spans Fortune 500
               conferences, destination weddings, and cultural festivals across India.
@@ -77,7 +77,7 @@ export default function AboutSection() {
 
             <div className="flex gap-4">
               <a href="#booking" className="px-6 py-3 bg-primary text-primary-foreground font-heading text-xs tracking-widest uppercase">
-                Book Radha
+                Book Radhaa
               </a>
               <a href="https://www.youtube.com/@anchorrd8794" target="_blank" rel="noopener noreferrer" className="px-6 py-3 border border-primary text-primary font-heading text-xs tracking-widest uppercase hover:bg-primary/10 transition-colors">
                 Watch Showreel

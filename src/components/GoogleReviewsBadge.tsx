@@ -113,7 +113,7 @@ export default function GoogleReviewsBadge({
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#C9A84C] to-[#E2C775] text-black font-semibold text-xs tracking-wider uppercase hover:opacity-95 transition-opacity shadow-lg"
           >
-            Review Radha on Google
+            Review Radhaa on Google
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>

@@ -138,7 +138,7 @@ export default function NetflixBillboard({
 
           {/* Main Hero Name */}
           <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.05]">
-            Radha <span className="text-[#C9A84C]">Dudeja</span>
+            Radhaa <span className="text-[#C9A84C]">Dudeja</span>
           </h1>
 
           {/* Subtitle / Category metadata */}

@@ -27,7 +27,7 @@ export default function ShadowRoom({ onExit }: ShadowRoomProps) {
               <p className="font-bold text-sm">Tata Motors Gala</p>
               <p className="text-xs text-white/50 mb-4">Intent: High | Date: Dec 14</p>
               <div className="p-4 bg-black/50 text-sm text-white/80 font-serif leading-relaxed italic border border-white/5">
-                "Dear Sanjay, Radha is currently available on December 14th to anchor the Tata Motors Gala. To ensure the atmosphere is perfectly curated, my management team will be in touch regarding the retainer..."
+                "Dear Sanjay, Radhaa is currently available on December 14th to anchor the Tata Motors Gala. To ensure the atmosphere is perfectly curated, my management team will be in touch regarding the retainer..."
               </div>
               <div className="mt-4 flex gap-2">
                 <button className="text-[10px] tracking-widest uppercase px-3 py-2 border border-[#C9A84C]/30 text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black transition-colors">Warmer</button>

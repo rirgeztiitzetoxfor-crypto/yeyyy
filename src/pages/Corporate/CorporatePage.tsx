@@ -6,6 +6,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
 import MasterVideoVault from "@/components/MasterVideoVault";
+import MotionVideoBackground from "@/components/MotionVideoBackground";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
 import {
@@ -109,6 +110,9 @@ export default function CorporatePage() {
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
+      {/* Ambient Looping Motion Video & Stage Spotlight Sweep */}
+      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.7} accentColor="gold" />
+
       <ParticleBackground />
 
       {/* LIGHTBOX */}

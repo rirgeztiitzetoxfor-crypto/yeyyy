@@ -352,7 +352,7 @@ export default function GoogleDriveUploader({
         {status === "success" && (
           <div className="p-3 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-2 text-xs text-green-400">
             <Check className="w-4 h-4 flex-shrink-0" />
-            <span>Successfully added to {vertical === "corporate" ? "Corporate" : "Weddings & Sangeet"} showcase!</span>
+            <span>Successfully added to {vertical === "corporate" ? "Corporate Portal" : "Weddings & Sangeet Portal"}!</span>
           </div>
         )}
 

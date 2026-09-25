@@ -31,7 +31,7 @@ export default function GoogleQRCustomCard({ className = "" }: GoogleQRCustomCar
               >
                 <img
                   src="/google_qr_code.png"
-                  alt="Scan to Review Radha Dudeja on Google"
+                  alt="Scan to Review Radhaa Dudeja on Google"
                   className="w-36 h-36 sm:w-44 sm:h-44 object-contain rounded-lg"
                   onError={(e) => {
                     // Fallback to Google API QR generator if local png fails

@@ -718,7 +718,7 @@ export default function Admin() {
                     <tr>
                       <th className="p-3">Preview</th>
                       <th className="p-3">Slot / Title</th>
-                      <th className="p-3">Vertical</th>
+                      <th className="p-3">Portal Category</th>
                       <th className="p-3">Category</th>
                       <th className="p-3">Source</th>
                       <th className="p-3 text-right">Actions</th>

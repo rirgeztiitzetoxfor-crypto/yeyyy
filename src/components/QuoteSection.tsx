@@ -8,7 +8,7 @@ export default function QuoteSection() {
         </blockquote>
         <p className="text-primary tracking-widest text-sm mb-8">✦ ✦ ✦</p>
         <p className="text-muted-foreground text-sm">
-          — <strong className="text-foreground">Radha Dudeja</strong> &nbsp;·&nbsp; Anchor · Emcee · Host
+          — <strong className="text-foreground">Radhaa Dudeja</strong> &nbsp;·&nbsp; Anchor · Emcee · Host
         </p>
         <a
           href="#booking"

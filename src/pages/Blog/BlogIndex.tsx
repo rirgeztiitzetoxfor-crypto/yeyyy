@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useBlog, type BlogPost } from "@/hooks/useBlog";
 import RadhaaLogo from "@/components/RadhaaLogo";
 import ParticleBackground from "@/components/ParticleBackground";
+import MotionVideoBackground from "@/components/MotionVideoBackground";
 import TiltCard from "@/components/TiltCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import {
@@ -96,6 +97,9 @@ export default function BlogIndex() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white relative overflow-hidden font-sans">
+      {/* Continuous Ambient Looping Motion Video & Stage Spotlight Sweep */}
+      <MotionVideoBackground variant="fullscreen" overlayOpacity={0.7} accentColor="gold" />
+
       <ParticleBackground />
 
       {/* TOP NOTIFICATION BAR */}

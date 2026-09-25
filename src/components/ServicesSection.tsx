@@ -22,7 +22,7 @@ const services = [
     emoji: "💍",
     tag: "Celebrations",
     title: "Weddings & Sangeets",
-    description: "From intimate mehendi ceremonies to grand reception nights — Radha becomes the heartbeat of your celebration.",
+    description: "From intimate mehendi ceremonies to grand reception nights — Radhaa becomes the heartbeat of your celebration.",
     slotId: "service_wedding",
     pdfSlot: "pdf_sangeet",
     videoSlot: "media_sangeet",
@@ -31,7 +31,7 @@ const services = [
     emoji: "🎭",
     tag: "Cultural",
     title: "Cultural & Festive Events",
-    description: "Holi, New Year, community nights, public ceremonies — Radha's bilingual energy unites diverse audiences.",
+    description: "Holi, New Year, community nights, public ceremonies — Radhaa's bilingual energy unites diverse audiences.",
     slotId: "service_cultural",
     pdfSlot: null,
     videoSlot: null,
@@ -62,7 +62,7 @@ export default function ServicesSection() {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}
       >
-        <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">What Radha Hosts</p>
+        <p className="text-primary tracking-[0.3em] text-xs uppercase text-center mb-2">What Radhaa Hosts</p>
         <h2 className="font-heading text-3xl md:text-4xl text-foreground text-center mb-16">
           Versatile across every <em className="text-primary not-italic">stage & setting</em>
         </h2>

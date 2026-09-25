@@ -56,7 +56,7 @@ export default function HeroSection() {
         </p>
 
         <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl tracking-wider mb-4">
-          <span className="text-gold-gradient">Radha</span>
+          <span className="text-gold-gradient">Radhaa</span>
           <span className="text-foreground ml-3">Dudeja</span>
         </h1>
 

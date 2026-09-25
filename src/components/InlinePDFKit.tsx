@@ -64,7 +64,7 @@ export default function InlinePDFKit() {
         {/* Compact lanes */}
         <p className="text-primary/60 tracking-[0.2em] text-xs uppercase text-center mb-2">Event lanes in one glance</p>
         <h3 className="font-heading text-xl text-foreground text-center mb-8">
-          Different rooms. Different Radha <em className="text-primary not-italic">electricity.</em>
+          Different rooms. Different Radhaa <em className="text-primary not-italic">electricity.</em>
         </h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
           {compactLanes.map((l) => (
