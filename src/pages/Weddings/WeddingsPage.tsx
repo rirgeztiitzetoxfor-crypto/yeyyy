@@ -13,6 +13,7 @@ import StagePriceEstimator from "@/components/StagePriceEstimator";
 import GoogleQRCustomCard from "@/components/GoogleQRCustomCard";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
+import { resolveSlotMedia } from "@/lib/siteSlots";
 import {
   Heart,
   Music,
@@ -109,6 +110,44 @@ export default function WeddingsPage() {
   };
 
   const weddingOnlyMedia = media.filter((m) => m.vertical === "weddings_sangeet" || m.category === "weddings_sangeet");
+
+  // Dynamic Weddings & Sangeet Rail from Master Slots
+  const dynamicWeddingsRail: MediaRailItem[] = [
+    "wed_rail_1",
+    "wed_rail_2",
+    "wed_rail_3",
+    "wed_rail_4",
+    "wed_rail_5",
+    "wed_rail_6",
+  ].map((slotId) => {
+    const res = resolveSlotMedia(slotId, media);
+    return {
+      id: slotId,
+      img: res.url,
+      caption: res.title,
+      vertical: "weddings_sangeet",
+      type: res.type,
+      badge: res.badge,
+    };
+  });
+
+  // Dynamic Family Games Rail from Master Slots
+  const dynamicGamesRail: MediaRailItem[] = [
+    "games_rail_1",
+    "games_rail_2",
+    "games_rail_3",
+    "games_rail_4",
+  ].map((slotId) => {
+    const res = resolveSlotMedia(slotId, media);
+    return {
+      id: slotId,
+      img: res.url,
+      caption: res.title,
+      vertical: "weddings_sangeet",
+      type: res.type,
+      badge: res.badge,
+    };
+  });
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
@@ -212,7 +251,7 @@ export default function WeddingsPage() {
           subtitle="Electric dance transitions, couple roast battles, and royal varmala narration"
           tag="Luxury Sangeet & Celebrations"
           tagColor="#CC2936"
-          items={weddingsSangeetRail}
+          items={dynamicWeddingsRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
         />
 
@@ -222,7 +261,7 @@ export default function WeddingsPage() {
             subtitle="Interactive entertainment getting every generation laughing and dancing together"
             tag="Interactive Highlight"
             tagColor="#F06292"
-            items={familyGamesRail}
+            items={dynamicGamesRail}
             onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
           />
         </div>

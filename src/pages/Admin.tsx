@@ -13,6 +13,7 @@ import AdminLeadsCRM from "@/components/admin/AdminLeadsCRM";
 import AdminConnectorsHub from "@/components/admin/AdminConnectorsHub";
 import LiveVisualContentEditor from "@/components/LiveVisualContentEditor";
 import AudioAtmosphereBar from "@/components/AudioAtmosphereBar";
+import { MASTER_SITE_SLOTS, resolveSlotMedia } from "@/lib/siteSlots";
 import {
   Lock,
   LogOut,
@@ -62,6 +63,15 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState<
     "uploader" | "corporate" | "weddings" | "visual_editor" | "audio_studio" | "seo_content" | "blog" | "calendar" | "leads" | "connectors" | "social" | "all"
   >("uploader");
+
+  // Track which slot the user wants to replace from cards
+  const [selectedSlotForReplace, setSelectedSlotForReplace] = useState<string>("corp_rail_1");
+
+  const handleInitiateReplace = (slotId: string) => {
+    setSelectedSlotForReplace(slotId);
+    setActiveTab("uploader");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Local settings edit state
   const [socialForm, setSocialForm] = useState(settings);
@@ -345,10 +355,12 @@ export default function Admin() {
           </button>
         </div>
 
-        {/* Tab 1: Google Drive Uploader */}
+        {/* Tab 1: Media Manager & Uploader */}
         {activeTab === "uploader" && (
           <div className="space-y-8">
             <GoogleDriveUploader
+              initialSlotId={selectedSlotForReplace}
+              existingMediaList={media}
               onMediaAdded={async (item) => {
                 await addOrUpdateMedia(item);
               }}
@@ -357,234 +369,556 @@ export default function Admin() {
             {/* Quick overview of latest additions */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-semibold text-sm uppercase tracking-wider">
-                  Recently Added Media Items ({media.slice(0, 8).length})
-                </h3>
-                <span className="text-xs text-[#777]">
-                  Stored locally & synced with Supabase
-                </span>
+                <div>
+                  <h3 className="text-white font-semibold text-sm uppercase tracking-wider">
+                    Active Customized Slots & Recent Uploads ({media.length})
+                  </h3>
+                  <p className="text-xs text-[#777]">
+                    Media items overriding default site showreels and photos
+                  </p>
+                </div>
+                <button
+                  onClick={() => refreshMedia()}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-white/80 hover:bg-white/10"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" /> Refresh Cache
+                </button>
               </div>
 
               {media.length === 0 ? (
                 <div className="p-8 text-center bg-[#121212] rounded-2xl border border-white/5 text-[#888] text-xs">
-                  No custom media added yet. Use the Google Drive form above to add your first photo or video!
+                  No custom media uploaded yet. All website sections are currently running in high-definition Curated Default mode. Select any slot above to customize it!
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {media.slice(0, 8).map((item) => (
-                    <div
-                      key={item.id || item.slot_id}
-                      className="group relative bg-[#141414] border border-white/10 rounded-xl overflow-hidden shadow-lg"
-                    >
-                      <div className="aspect-video bg-black flex items-center justify-center overflow-hidden">
-                        {item.media_type === "video" ? (
-                          <iframe
-                            src={item.media_url}
-                            title={item.alt_text}
-                            className="w-full h-full pointer-events-none"
-                          />
-                        ) : (
-                          <img
-                            src={item.media_url}
-                            alt={item.alt_text}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                          />
-                        )}
-                      </div>
-                      <div className="p-2.5 flex items-center justify-between">
-                        <div className="truncate pr-2">
-                          <p className="text-xs text-white truncate font-medium">
-                            {item.alt_text}
-                          </p>
-                          <span className="text-[10px] text-[#C9A84C] uppercase tracking-wider">
-                            {item.vertical === "corporate" ? "Corporate" : "Wedding"}
-                          </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {media.map((item) => {
+                    const slotDef = MASTER_SITE_SLOTS.find((s) => s.slot_id === item.slot_id);
+                    const isGdrive = item.source === "google_drive" || item.media_url.includes("google");
+                    return (
+                      <div
+                        key={item.id || item.slot_id}
+                        className="group relative bg-[#141414] border border-white/10 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="aspect-video bg-black relative flex items-center justify-center overflow-hidden border-b border-white/10">
+                            {item.media_type === "video" ? (
+                              <iframe
+                                src={item.media_url}
+                                title={item.alt_text}
+                                className="w-full h-full pointer-events-none"
+                              />
+                            ) : (
+                              <img
+                                src={item.media_url}
+                                alt={item.alt_text}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                              />
+                            )}
+                            <div className="absolute top-2 left-2 flex items-center gap-1">
+                              <span className="bg-black/70 backdrop-blur-md px-2 py-0.5 rounded text-[9px] font-mono text-[#C9A84C] border border-white/10 uppercase">
+                                {item.media_type}
+                              </span>
+                              {item.source === "upload" ? (
+                                <span className="bg-emerald-500/80 text-black px-1.5 py-0.5 rounded text-[9px] font-bold">
+                                  💻 Laptop
+                                </span>
+                              ) : (
+                                <span className="bg-blue-500/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold">
+                                  ☁️ Cloud Link
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="p-3">
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <span className="text-[10px] font-mono text-[#E2C775] bg-[#E2C775]/10 px-1.5 py-0.5 rounded border border-[#E2C775]/20 truncate">
+                                {item.slot_id}
+                              </span>
+                              <span className="text-[10px] text-[#888] truncate">
+                                {slotDef?.sectionName || item.category}
+                              </span>
+                            </div>
+                            <p className="text-xs text-white truncate font-medium">
+                              {item.alt_text}
+                            </p>
+                          </div>
                         </div>
-                        <button
-                          onClick={() => removeMedia(item.id || item.slot_id)}
-                          className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                          title="Delete item"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+
+                        <div className="p-3 pt-0 space-y-2 border-t border-white/5">
+                          {isGdrive && (
+                            <button
+                              onClick={() => handleInitiateReplace(item.slot_id)}
+                              className="w-full py-1 px-2 rounded-lg bg-[#C9A84C]/15 hover:bg-[#C9A84C]/30 text-[#C9A84C] text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                              title="Replace this Google Drive link with a file directly from laptop"
+                            >
+                              <span>💻 Replace with Laptop File</span>
+                            </button>
+                          )}
+                          <div className="flex items-center justify-between gap-2">
+                            <button
+                              onClick={() => handleInitiateReplace(item.slot_id)}
+                              className="flex-1 py-1 px-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors"
+                            >
+                              <RefreshCw className="w-3 h-3" /> Change
+                            </button>
+                            <button
+                              onClick={() => removeMedia(item.id || item.slot_id)}
+                              className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              title="Revert slot to curated default"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
           </div>
         )}
 
-        {/* Tab 2: Corporate Events Media */}
+        {/* Tab 2: Corporate Events Media Slots */}
         {activeTab === "corporate" && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
               <div>
-                <h3 className="text-lg font-bold text-white">
-                  Corporate Events & Summits
+                <h3 className="text-xl font-serif font-bold text-white flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-[#C9A84C]" /> Corporate Events & Summits Media Slots
                 </h3>
-                <p className="text-xs text-[#888]">
-                  Photos, video showreels, and client gala moments for corporate clients
+                <p className="text-xs text-[#888] mt-1">
+                  Manage all photos and videos appearing across Corporate Conclaves and Executive Offsite rails. Click "Change Photo / Video" on any slot to upload from your laptop or paste a Google Drive link.
                 </p>
               </div>
               <button
-                onClick={() => setActiveTab("uploader")}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#C9A84C] text-black text-xs font-semibold tracking-wider uppercase hover:opacity-95"
+                onClick={() => {
+                  setSelectedSlotForReplace("corp_rail_1");
+                  setActiveTab("uploader");
+                }}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#C9A84C] text-black text-xs font-semibold tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#C9A84C]/20"
               >
-                <Plus className="w-3.5 h-3.5" /> Add Corporate Media
+                <Plus className="w-3.5 h-3.5" /> Open Media Uploader
               </button>
             </div>
 
-            {corporateItems.length === 0 ? (
-              <div className="p-12 text-center bg-[#121212] rounded-2xl border border-dashed border-white/10">
-                <Briefcase className="w-10 h-10 text-[#C9A84C]/50 mx-auto mb-3" />
-                <h4 className="text-white text-sm font-semibold">
-                  No Corporate Media Items Yet
+            {/* Corporate Conclaves Slots */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-[#C9A84C] flex items-center gap-2">
+                  <span>🏢 Rail 1: Tech Summits & Annual Leadership Conclaves</span>
+                  <span className="text-[10px] text-neutral-400 font-mono font-normal">
+                    (6 Designated Slots on Live Site)
+                  </span>
                 </h4>
-                <p className="text-[#888] text-xs max-w-sm mx-auto mt-1 mb-4">
-                  Add photos and video cuts from Google Drive to display in the Corporate section.
-                </p>
-                <button
-                  onClick={() => setActiveTab("uploader")}
-                  className="px-4 py-2 rounded-lg bg-white/10 text-white text-xs hover:bg-white/20 transition-all"
-                >
-                  Go to Google Drive Uploader
-                </button>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {corporateItems.map((item) => (
-                  <div
-                    key={item.id || item.slot_id}
-                    className="bg-[#121212] border border-white/10 rounded-2xl overflow-hidden shadow-xl"
-                  >
-                    <div className="aspect-video bg-black relative">
-                      {item.media_type === "video" ? (
-                        <iframe
-                          src={item.media_url}
-                          title={item.alt_text}
-                          className="w-full h-full"
-                          allowFullScreen
-                        />
-                      ) : (
-                        <img
-                          src={item.media_url}
-                          alt={item.alt_text}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                      <span className="absolute top-2 left-2 bg-black/70 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#C9A84C] border border-white/10">
-                        {item.media_type.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="p-3.5 flex items-center justify-between">
-                      <div className="truncate pr-2">
-                        <p className="text-xs font-semibold text-white truncate">
-                          {item.alt_text}
-                        </p>
-                        <p className="text-[10px] text-[#777] font-mono truncate">
-                          Slot: {item.slot_id}
-                        </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {MASTER_SITE_SLOTS.filter(
+                  (s) => s.section === "corporate" && s.slot_id.startsWith("corp_rail_")
+                ).map((slot) => {
+                  const resolved = resolveSlotMedia(slot.slot_id, media);
+                  return (
+                    <div
+                      key={slot.slot_id}
+                      className={`bg-[#121212] border rounded-2xl overflow-hidden shadow-xl transition-all flex flex-col justify-between ${
+                        resolved.isCustom
+                          ? "border-emerald-500/40 shadow-emerald-500/5"
+                          : "border-white/10"
+                      }`}
+                    >
+                      <div>
+                        {/* Live Preview Screen */}
+                        <div className="aspect-video bg-black relative overflow-hidden border-b border-white/10">
+                          {resolved.type === "video" ? (
+                            <iframe
+                              src={resolved.url}
+                              title={resolved.title}
+                              className="w-full h-full pointer-events-none"
+                            />
+                          ) : (
+                            <img
+                              src={resolved.url}
+                              alt={resolved.title}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+
+                          {/* Overlay Badges */}
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                            <span className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#C9A84C] border border-white/10">
+                              {slot.slot_id}
+                            </span>
+                            {slot.badge && (
+                              <span className="bg-[#C9A84C] text-black px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
+                                {slot.badge}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="absolute top-2 right-2">
+                            {resolved.isCustom ? (
+                              <span className="bg-emerald-500 text-black px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                <Check className="w-3 h-3" /> Custom Active
+                              </span>
+                            ) : (
+                              <span className="bg-white/20 backdrop-blur-md text-white/80 px-2 py-0.5 rounded-full text-[10px] font-mono">
+                                Default Curated
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Slot Information */}
+                        <div className="p-4 space-y-1.5">
+                          <p className="text-xs font-bold text-white line-clamp-1">
+                            {slot.label}
+                          </p>
+                          <p className="text-[11px] text-neutral-300 line-clamp-1">
+                            Current: <span className="text-[#E2C775]">{resolved.title}</span>
+                          </p>
+                        </div>
                       </div>
-                      <button
-                        onClick={() => removeMedia(item.id || item.slot_id)}
-                        className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+
+                      {/* Actions */}
+                      <div className="p-4 pt-0 flex items-center gap-2">
+                        <button
+                          onClick={() => handleInitiateReplace(slot.slot_id)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-[#C9A84C] text-black font-semibold text-xs uppercase tracking-wider hover:bg-[#E2C775] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#C9A84C]/10"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5" />
+                          <span>Change Photo / Video</span>
+                        </button>
+
+                        {resolved.isCustom && (
+                          <button
+                            onClick={() => removeMedia(slot.slot_id)}
+                            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Revert this slot to original default"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            )}
+            </div>
+
+            {/* Corporate Offsites Slots */}
+            <div className="space-y-4 pt-4 border-t border-white/10">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-[#E2C775] flex items-center gap-2">
+                  <span>🌲 Rail 2: Executive Retreats & Offsite Energizers</span>
+                  <span className="text-[10px] text-neutral-400 font-mono font-normal">
+                    (4 Designated Slots on Live Site)
+                  </span>
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {MASTER_SITE_SLOTS.filter(
+                  (s) => s.section === "corporate" && s.slot_id.startsWith("corp_offsite_")
+                ).map((slot) => {
+                  const resolved = resolveSlotMedia(slot.slot_id, media);
+                  return (
+                    <div
+                      key={slot.slot_id}
+                      className={`bg-[#121212] border rounded-2xl overflow-hidden shadow-xl transition-all flex flex-col justify-between ${
+                        resolved.isCustom
+                          ? "border-emerald-500/40 shadow-emerald-500/5"
+                          : "border-white/10"
+                      }`}
+                    >
+                      <div>
+                        <div className="aspect-video bg-black relative overflow-hidden border-b border-white/10">
+                          {resolved.type === "video" ? (
+                            <iframe
+                              src={resolved.url}
+                              title={resolved.title}
+                              className="w-full h-full pointer-events-none"
+                            />
+                          ) : (
+                            <img
+                              src={resolved.url}
+                              alt={resolved.title}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                            <span className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#C9A84C] border border-white/10">
+                              {slot.slot_id}
+                            </span>
+                          </div>
+
+                          <div className="absolute top-2 right-2">
+                            {resolved.isCustom ? (
+                              <span className="bg-emerald-500 text-black px-1.5 py-0.5 rounded-full text-[9px] font-bold">
+                                Custom
+                              </span>
+                            ) : (
+                              <span className="bg-white/20 text-white/80 px-1.5 py-0.5 rounded-full text-[9px] font-mono">
+                                Default
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="p-3 space-y-1">
+                          <p className="text-xs font-bold text-white line-clamp-1">
+                            {slot.label}
+                          </p>
+                          <p className="text-[10px] text-neutral-300 line-clamp-1">
+                            {resolved.title}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-3 pt-0 flex items-center gap-2">
+                        <button
+                          onClick={() => handleInitiateReplace(slot.slot_id)}
+                          className="flex-1 py-1.5 px-2 rounded-lg bg-[#C9A84C] text-black font-semibold text-[11px] uppercase tracking-wider hover:bg-[#E2C775] transition-all flex items-center justify-center gap-1"
+                        >
+                          <RefreshCw className="w-3 h-3" />
+                          <span>Change</span>
+                        </button>
+                        {resolved.isCustom && (
+                          <button
+                            onClick={() => removeMedia(slot.slot_id)}
+                            className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Revert to original default"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
 
-        {/* Tab 3: Weddings & Sangeet Media */}
+        {/* Tab 3: Weddings, Sangeet & Family Celebrations Media Slots */}
         {activeTab === "weddings" && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
               <div>
-                <h3 className="text-lg font-bold text-white">
-                  Weddings, Sangeet & Family Celebrations
+                <h3 className="text-xl font-serif font-bold text-white flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-[#CC2936] fill-[#CC2936]" /> Luxury Weddings, Sangeet & Family Games Slots
                 </h3>
-                <p className="text-xs text-[#888]">
-                  Curated photos, sangeet video clips, and interactive family games moments
+                <p className="text-xs text-[#888] mt-1">
+                  Manage all photos and videos appearing across Sangeet, Royal Varmala, and Family Interactive Games rails. Click "Change Photo / Video" on any slot to upload from your laptop or paste a Google Drive link.
                 </p>
               </div>
               <button
-                onClick={() => setActiveTab("uploader")}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#C9A84C] text-black text-xs font-semibold tracking-wider uppercase hover:opacity-95"
+                onClick={() => {
+                  setSelectedSlotForReplace("wed_rail_1");
+                  setActiveTab("uploader");
+                }}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#CC2936] to-[#E91E63] text-white text-xs font-semibold tracking-wider uppercase hover:opacity-95 shadow-lg shadow-[#CC2936]/20"
               >
-                <Plus className="w-3.5 h-3.5" /> Add Wedding Media
+                <Plus className="w-3.5 h-3.5" /> Open Media Uploader
               </button>
             </div>
 
-            {weddingItems.length === 0 ? (
-              <div className="p-12 text-center bg-[#121212] rounded-2xl border border-dashed border-white/10">
-                <Heart className="w-10 h-10 text-[#C9A84C]/50 mx-auto mb-3" />
-                <h4 className="text-white text-sm font-semibold">
-                  No Wedding / Sangeet Media Items Yet
+            {/* Wedding & Sangeet Rail Slots */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-[#F06292] flex items-center gap-2">
+                  <span>💍 Rail 1: Luxury Sangeet & Destination Wedding Moments</span>
+                  <span className="text-[10px] text-neutral-400 font-mono font-normal">
+                    (6 Designated Slots on Live Site)
+                  </span>
                 </h4>
-                <p className="text-[#888] text-xs max-w-sm mx-auto mt-1 mb-4">
-                  Add photos and video cuts from Google Drive to display in the Wedding and Sangeet section.
-                </p>
-                <button
-                  onClick={() => setActiveTab("uploader")}
-                  className="px-4 py-2 rounded-lg bg-white/10 text-white text-xs hover:bg-white/20 transition-all"
-                >
-                  Go to Google Drive Uploader
-                </button>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {weddingItems.map((item) => (
-                  <div
-                    key={item.id || item.slot_id}
-                    className="bg-[#121212] border border-white/10 rounded-2xl overflow-hidden shadow-xl"
-                  >
-                    <div className="aspect-video bg-black relative">
-                      {item.media_type === "video" ? (
-                        <iframe
-                          src={item.media_url}
-                          title={item.alt_text}
-                          className="w-full h-full"
-                          allowFullScreen
-                        />
-                      ) : (
-                        <img
-                          src={item.media_url}
-                          alt={item.alt_text}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                      <span className="absolute top-2 left-2 bg-black/70 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#C9A84C] border border-white/10">
-                        {item.media_type.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="p-3.5 flex items-center justify-between">
-                      <div className="truncate pr-2">
-                        <p className="text-xs font-semibold text-white truncate">
-                          {item.alt_text}
-                        </p>
-                        <p className="text-[10px] text-[#777] font-mono truncate">
-                          Slot: {item.slot_id}
-                        </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {MASTER_SITE_SLOTS.filter((s) => s.section === "weddings").map((slot) => {
+                  const resolved = resolveSlotMedia(slot.slot_id, media);
+                  return (
+                    <div
+                      key={slot.slot_id}
+                      className={`bg-[#121212] border rounded-2xl overflow-hidden shadow-xl transition-all flex flex-col justify-between ${
+                        resolved.isCustom
+                          ? "border-[#CC2936]/50 shadow-[#CC2936]/10"
+                          : "border-white/10"
+                      }`}
+                    >
+                      <div>
+                        <div className="aspect-video bg-black relative overflow-hidden border-b border-white/10">
+                          {resolved.type === "video" ? (
+                            <iframe
+                              src={resolved.url}
+                              title={resolved.title}
+                              className="w-full h-full pointer-events-none"
+                            />
+                          ) : (
+                            <img
+                              src={resolved.url}
+                              alt={resolved.title}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                            <span className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#F06292] border border-white/10">
+                              {slot.slot_id}
+                            </span>
+                            {slot.badge && (
+                              <span className="bg-[#CC2936] text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
+                                {slot.badge}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="absolute top-2 right-2">
+                            {resolved.isCustom ? (
+                              <span className="bg-[#CC2936] text-white px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md">
+                                <Check className="w-3 h-3" /> Custom Active
+                              </span>
+                            ) : (
+                              <span className="bg-white/20 backdrop-blur-md text-white/80 px-2 py-0.5 rounded-full text-[10px] font-mono">
+                                Default Curated
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="p-4 space-y-1.5">
+                          <p className="text-xs font-bold text-white line-clamp-1">
+                            {slot.label}
+                          </p>
+                          <p className="text-[11px] text-neutral-300 line-clamp-1">
+                            Current: <span className="text-[#F06292]">{resolved.title}</span>
+                          </p>
+                        </div>
                       </div>
-                      <button
-                        onClick={() => removeMedia(item.id || item.slot_id)}
-                        className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+
+                      <div className="p-4 pt-0 flex items-center gap-2">
+                        <button
+                          onClick={() => handleInitiateReplace(slot.slot_id)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-[#CC2936] to-[#E91E63] text-white font-semibold text-xs uppercase tracking-wider hover:opacity-95 transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#CC2936]/10"
+                        >
+                          <RefreshCw className="w-3.5 h-3.5" />
+                          <span>Change Photo / Video</span>
+                        </button>
+
+                        {resolved.isCustom && (
+                          <button
+                            onClick={() => removeMedia(slot.slot_id)}
+                            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Revert this slot to original default"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            )}
+            </div>
+
+            {/* Signature Family Games Slots */}
+            <div className="space-y-4 pt-4 border-t border-white/10">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-[#E2C775] flex items-center gap-2">
+                  <span>🎲 Rail 2: Signature Family Interactive Games & Icebreakers</span>
+                  <span className="text-[10px] text-neutral-400 font-mono font-normal">
+                    (4 Designated Slots on Live Site)
+                  </span>
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {MASTER_SITE_SLOTS.filter((s) => s.section === "games").map((slot) => {
+                  const resolved = resolveSlotMedia(slot.slot_id, media);
+                  return (
+                    <div
+                      key={slot.slot_id}
+                      className={`bg-[#121212] border rounded-2xl overflow-hidden shadow-xl transition-all flex flex-col justify-between ${
+                        resolved.isCustom
+                          ? "border-[#CC2936]/50 shadow-[#CC2936]/10"
+                          : "border-white/10"
+                      }`}
+                    >
+                      <div>
+                        <div className="aspect-video bg-black relative overflow-hidden border-b border-white/10">
+                          {resolved.type === "video" ? (
+                            <iframe
+                              src={resolved.url}
+                              title={resolved.title}
+                              className="w-full h-full pointer-events-none"
+                            />
+                          ) : (
+                            <img
+                              src={resolved.url}
+                              alt={resolved.title}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                            <span className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-[#F06292] border border-white/10">
+                              {slot.slot_id}
+                            </span>
+                            {slot.badge && (
+                              <span className="bg-[#CC2936] text-white px-1.5 py-0.5 rounded text-[8px] font-bold uppercase">
+                                {slot.badge}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="absolute top-2 right-2">
+                            {resolved.isCustom ? (
+                              <span className="bg-[#CC2936] text-white px-1.5 py-0.5 rounded-full text-[9px] font-bold">
+                                Custom
+                              </span>
+                            ) : (
+                              <span className="bg-white/20 text-white/80 px-1.5 py-0.5 rounded-full text-[9px] font-mono">
+                                Default
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="p-3 space-y-1">
+                          <p className="text-xs font-bold text-white line-clamp-1">
+                            {slot.label}
+                          </p>
+                          <p className="text-[10px] text-neutral-300 line-clamp-1">
+                            {resolved.title}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-3 pt-0 flex items-center gap-2">
+                        <button
+                          onClick={() => handleInitiateReplace(slot.slot_id)}
+                          className="flex-1 py-1.5 px-2 rounded-lg bg-gradient-to-r from-[#CC2936] to-[#E91E63] text-white font-semibold text-[11px] uppercase tracking-wider hover:opacity-95 transition-all flex items-center justify-center gap-1"
+                        >
+                          <RefreshCw className="w-3 h-3" />
+                          <span>Change</span>
+                        </button>
+                        {resolved.isCustom && (
+                          <button
+                            onClick={() => removeMedia(slot.slot_id)}
+                            className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Revert to original default"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
 

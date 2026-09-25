@@ -5,12 +5,14 @@ import TiltCard from "@/components/TiltCard";
 import ParticleBackground from "@/components/ParticleBackground";
 import NetflixBillboard, { type BillboardMedia } from "@/components/NetflixBillboard";
 import NetflixMediaRail, { type MediaRailItem } from "@/components/NetflixMediaRail";
+import MasterVideoVault from "@/components/MasterVideoVault";
 import GoogleCalendarBooking from "@/components/GoogleCalendarBooking";
 import BrandMarquee from "@/components/BrandMarquee";
 import RfpDeckGenerator from "@/components/RfpDeckGenerator";
 import StagePriceEstimator from "@/components/StagePriceEstimator";
 import SocialChannelsBar from "@/components/SocialChannelsBar";
 import confetti from "canvas-confetti";
+import { resolveSlotMedia } from "@/lib/siteSlots";
 import {
   Briefcase,
   Trophy,
@@ -109,6 +111,44 @@ export default function CorporatePage() {
   };
 
   const corporateOnlyMedia = media.filter((m) => m.vertical === "corporate" || m.category === "corporate");
+
+  // Dynamic Corporate Summits Rail from Master Slots
+  const dynamicSummitsRail: MediaRailItem[] = [
+    "corp_rail_1",
+    "corp_rail_2",
+    "corp_rail_3",
+    "corp_rail_4",
+    "corp_rail_5",
+    "corp_rail_6",
+  ].map((slotId) => {
+    const res = resolveSlotMedia(slotId, media);
+    return {
+      id: slotId,
+      img: res.url,
+      caption: res.title,
+      vertical: "corporate",
+      type: res.type,
+      badge: res.badge,
+    };
+  });
+
+  // Dynamic Corporate Offsites Rail from Master Slots
+  const dynamicOffsitesRail: MediaRailItem[] = [
+    "corp_offsite_1",
+    "corp_offsite_2",
+    "corp_offsite_3",
+    "corp_offsite_4",
+  ].map((slotId) => {
+    const res = resolveSlotMedia(slotId, media);
+    return {
+      id: slotId,
+      img: res.url,
+      caption: res.title,
+      vertical: "corporate",
+      type: res.type,
+      badge: res.badge,
+    };
+  });
 
   return (
     <div className="stellar-wrapper relative overflow-hidden bg-[#0A0A0A] text-white">
@@ -211,7 +251,7 @@ export default function CorporatePage() {
           subtitle="Fortune 500 panel discussions, VIP introductions, and teleprompter precision"
           tag="Corporate Excellence"
           tagColor="#C9A84C"
-          items={corporateSummitsRail}
+          items={dynamicSummitsRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
         />
         <NetflixMediaRail
@@ -219,7 +259,7 @@ export default function CorporatePage() {
           subtitle="High-impact leadership games and evening entertainment breaking cross-department silos"
           tag="Offsite Engagement"
           tagColor="#E2C775"
-          items={corporateOffsitesRail}
+          items={dynamicOffsitesRail}
           onItemSelect={(item) => setLightboxItem({ url: item.img, caption: item.caption, type: item.type })}
         />
       </div>

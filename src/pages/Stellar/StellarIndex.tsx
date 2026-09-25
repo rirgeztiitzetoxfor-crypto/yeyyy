@@ -17,6 +17,7 @@ import BrandMarquee from "@/components/BrandMarquee";
 import RfpDeckGenerator from "@/components/RfpDeckGenerator";
 import StagePriceEstimator from "@/components/StagePriceEstimator";
 import confetti from "canvas-confetti";
+import { resolveSlotMedia } from "@/lib/siteSlots";
 import {
   Briefcase,
   Heart,
@@ -77,42 +78,122 @@ export default function StellarIndex() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic items from Admin Google Drive / Supabase
-  const customHeroItems = media
-    .filter((m) => m.category === "hero" || m.category === "videos")
-    .map((m) => ({
-      url: m.media_url,
-      title: m.alt_text,
-      type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
-    }));
+  // Dynamic Hero Billboard Slot
+  const heroSlot = resolveSlotMedia("hero_billboard", media);
 
-  const dynamicCorporate = [
+  // Dynamic items from Admin Google Drive / Supabase / Laptop
+  const customHeroItems = [
+    ...(heroSlot.isCustom
+      ? [{ url: heroSlot.url, title: heroSlot.title, type: heroSlot.type }]
+      : []),
     ...media
-      .filter((m) => m.vertical === "corporate" || m.category === "corporate")
+      .filter(
+        (m) =>
+          (m.category === "hero" || m.category === "videos") &&
+          m.slot_id !== "hero_billboard"
+      )
+      .map((m) => ({
+        url: m.media_url,
+        title: m.alt_text,
+        type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
+      })),
+  ];
+
+  // Master Corporate Slots (corp_rail_1 to corp_rail_6)
+  const corporateSlotIds = [
+    "corp_rail_1",
+    "corp_rail_2",
+    "corp_rail_3",
+    "corp_rail_4",
+    "corp_rail_5",
+    "corp_rail_6",
+  ];
+
+  const dynamicCorporate: MediaRailItem[] = [
+    ...media
+      .filter(
+        (m) =>
+          (m.vertical === "corporate" || m.category === "corporate") &&
+          !corporateSlotIds.includes(m.slot_id)
+      )
       .map((m) => ({
         id: m.id || m.slot_id,
         img: m.media_url,
         caption: m.alt_text,
         vertical: "corporate" as const,
         type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
-        badge: "Admin Added",
+        badge: m.badge || "Featured Cut",
       })),
-    ...baseCorporateRail,
+    ...corporateSlotIds.map((slotId) => {
+      const res = resolveSlotMedia(slotId, media);
+      return {
+        id: slotId,
+        img: res.url,
+        caption: res.title,
+        vertical: "corporate" as const,
+        type: res.type,
+        badge: res.badge,
+      };
+    }),
   ];
 
-  const dynamicWeddings = [
+  // Master Wedding Slots (wed_rail_1 to wed_rail_6)
+  const weddingSlotIds = [
+    "wed_rail_1",
+    "wed_rail_2",
+    "wed_rail_3",
+    "wed_rail_4",
+    "wed_rail_5",
+    "wed_rail_6",
+  ];
+
+  const dynamicWeddings: MediaRailItem[] = [
     ...media
-      .filter((m) => m.vertical === "weddings_sangeet" || m.category === "weddings_sangeet")
+      .filter(
+        (m) =>
+          (m.vertical === "weddings_sangeet" || m.category === "weddings_sangeet") &&
+          !weddingSlotIds.includes(m.slot_id)
+      )
       .map((m) => ({
         id: m.id || m.slot_id,
         img: m.media_url,
         caption: m.alt_text,
         vertical: "weddings_sangeet" as const,
         type: (m.media_type === "video" ? "video" : "image") as "image" | "video",
-        badge: "Admin Added",
+        badge: m.badge || "Featured Cut",
       })),
-    ...baseWeddingsRail,
+    ...weddingSlotIds.map((slotId) => {
+      const res = resolveSlotMedia(slotId, media);
+      return {
+        id: slotId,
+        img: res.url,
+        caption: res.title,
+        vertical: "weddings_sangeet" as const,
+        type: res.type,
+        badge: res.badge,
+      };
+    }),
   ];
+
+  // Master Family Games Slots (games_rail_1 to games_rail_4)
+  const dynamicFamilyGames: MediaRailItem[] = [
+    "games_rail_1",
+    "games_rail_2",
+    "games_rail_3",
+    "games_rail_4",
+  ].map((slotId) => {
+    const res = resolveSlotMedia(slotId, media);
+    return {
+      id: slotId,
+      img: res.url,
+      caption: res.title,
+      vertical: "weddings_sangeet" as const,
+      type: res.type,
+      badge: res.badge,
+    };
+  });
+
+  const aboutPortrait = resolveSlotMedia("about_portrait", media);
 
   useEffect(() => {
     let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
@@ -400,7 +481,7 @@ export default function StellarIndex() {
           subtitle="Interactive entertainment getting every generation laughing and dancing"
           tag="Interactive Highlight"
           tagColor="#F06292"
-          items={familyGamesRail}
+          items={dynamicFamilyGames}
           onItemSelect={(item) =>
             setLightboxItem({ url: item.img, caption: item.caption, type: item.type })
           }
@@ -422,7 +503,7 @@ export default function StellarIndex() {
           <div className="about-visual reveal-left relative">
             <div className="about-gold-accent" />
             <div className="about-frame" />
-            <img src="/images/img_14.jpg" alt="Radhaa Dudeja on stage" className="about-img-main rounded-2xl" />
+            <img src={aboutPortrait.url} alt={aboutPortrait.title} className="about-img-main rounded-2xl" />
             <img src="/images/img_28.jpg" alt="Radhaa Dudeja close-up" className="about-img-accent rounded-xl shadow-2xl" />
           </div>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getAllLocalFiles, deleteLocalFile } from "@/lib/indexedDbMedia";
 
 export interface SiteMedia {
   id: string;
@@ -162,9 +163,17 @@ async function fetchAllMedia(): Promise<SiteMedia[]> {
     }
 
     // Merge supabase and local items (local items take precedence or append)
+    const localBlobs = await getAllLocalFiles();
     const map = new Map<string, SiteMedia>();
     supabaseItems.forEach((item) => map.set(item.slot_id || item.id, item));
-    localItems.forEach((item) => map.set(item.slot_id || item.id, item));
+    localItems.forEach((item) => {
+      const slot = item.slot_id || item.id;
+      if (localBlobs.has(slot)) {
+        map.set(slot, { ...item, media_url: localBlobs.get(slot)! });
+      } else {
+        map.set(slot, item);
+      }
+    });
 
     mediaCache = Array.from(map.values());
     return mediaCache;
@@ -278,6 +287,7 @@ export function useSiteMedia() {
         (m) => m.id !== idOrSlotId && m.slot_id !== idOrSlotId
       );
       saveLocalMedia(current);
+      await deleteLocalFile(idOrSlotId);
 
       try {
         await supabase.from("site_media").delete().eq("slot_id", idOrSlotId);
